@@ -192,16 +192,19 @@ class CVBuilder {
 
     return `<header class="header">
       <div class="header__photo">${photoHtml}</div>
-      <div class="header__main">
-        <ul class="contact contact--inline" aria-label="Contact information">${contactHtml}</ul>
-        <div class="header__intro">
-          <h1 class="name">
-            <span class="name__first">${escapeHtml(profile.firstName)}</span>
-            <span class="name__last">${escapeHtml(profile.lastName)}</span>
-          </h1>
-          <p class="title">${escapeHtml(profile.title)}</p>
+      <div class="header__right">
+        <div class="header__main">
+          <div class="header__intro">
+            <h1 class="name">
+              <span class="name__first">${escapeHtml(profile.firstName)}</span>
+              <span class="name__last">${escapeHtml(profile.lastName)}</span>
+            </h1>
+            <p class="title">${escapeHtml(profile.title)}</p>
+          </div>
+          <p class="summary summary--intro">${escapeHtml(profile.summary)}</p>
+          <div class="stat-cards stat-cards--header">${statsHtml}</div>
         </div>
-        <p class="summary summary--intro">${escapeHtml(profile.summary)}</p>
+        <ul class="contact contact--stacked" aria-label="Contact information">${contactHtml}</ul>
       </div>
       <section class="journey" aria-label="Career journey">
         <div class="timeline" aria-label="Career timeline">
@@ -214,7 +217,6 @@ class CVBuilder {
             ${trackHtml}
           </div>
         </div>
-        <div class="stat-cards">${statsHtml}</div>
       </section>
     </header>`;
   }
