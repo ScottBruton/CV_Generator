@@ -149,22 +149,39 @@ class CVBuilder {
       href: item.href || ''
     }));
 
-    const timelineHtml = renderEach('timeline-point', journey.timeline, (point) => {
+    const mapTimelinePoint = (point) => {
       const name = point.name || '';
       const hasIcon = point.icon && fs.existsSync(path.join(this.root, point.icon));
       const iconHtml = hasIcon
-        ? `<img class="timeline__icon" src="${escapeHtml(point.icon)}" alt="${escapeHtml(name)}">`
+        ? `<img class="timeline__icon" src="${escapeHtml(point.icon)}" alt="">`
         : `<span class="timeline__icon-fallback" aria-hidden="true">${escapeHtml((name || point.start || point.year || '?').charAt(0).toUpperCase())}</span>`;
 
       return {
-        className: point.isPresent ? 'timeline__point timeline__point--present' : 'timeline__point',
         dateRange: formatDateRange(point),
+        label: point.label || name,
         name,
         url: point.url || '',
         iconHtml,
         isPresent: point.isPresent || false
       };
-    });
+    };
+
+    const timelineItems = journey.timeline || [];
+
+    const logosRowHtml = timelineItems
+      .map((point) => {
+        const mapped = mapTimelinePoint(point);
+        const gapClass = point.isPresent ? 'timeline__logo-gap timeline__logo-gap--present' : 'timeline__logo-gap';
+        return `<div class="timeline__logo-bridge">${renderComponent('timeline-logo-cell', mapped)}</div><div class="${gapClass}" aria-hidden="true"></div>`;
+      })
+      .join('\n');
+
+    const trackHtml = timelineItems
+      .map((point) => {
+        const mapped = mapTimelinePoint(point);
+        return renderComponent('timeline-segment', mapped) + renderComponent('timeline-dot-cell', mapped);
+      })
+      .join('\n');
 
     const statsHtml = renderEach('stat-card', journey.stats, (stat) => ({
       variant: stat.variant,
@@ -173,30 +190,28 @@ class CVBuilder {
       description: stat.description
     }));
 
-    const journeyLabel = renderComponent('section-label', {
-      modifierClass: 'section-label',
-      id: 'journey-heading',
-      sectionNumber: journey.sectionNumber,
-      sectionTitle: journey.sectionTitle
-    });
-
     return `<header class="header">
       <div class="header__photo">${photoHtml}</div>
-      <div class="header__identity">
-        <h1 class="name">
-          <span class="name__first">${escapeHtml(profile.firstName)}</span>
-          <span class="name__last">${escapeHtml(profile.lastName)}</span>
-        </h1>
-        <p class="title">${escapeHtml(profile.title)}</p>
-        <p class="summary">${escapeHtml(profile.summary)}</p>
-        <ul class="contact" aria-label="Contact information">${contactHtml}</ul>
+      <div class="header__main">
+        <ul class="contact contact--inline" aria-label="Contact information">${contactHtml}</ul>
+        <div class="header__intro">
+          <h1 class="name">
+            <span class="name__first">${escapeHtml(profile.firstName)}</span>
+            <span class="name__last">${escapeHtml(profile.lastName)}</span>
+          </h1>
+          <p class="title">${escapeHtml(profile.title)}</p>
+        </div>
+        <p class="summary summary--intro">${escapeHtml(profile.summary)}</p>
       </div>
-      <section class="journey" aria-labelledby="journey-heading">
-        ${journeyLabel}
+      <section class="journey" aria-label="Career journey">
         <div class="timeline" aria-label="Career timeline">
-          <div class="timeline__track">
-            <div class="timeline__line"></div>
-            <ul class="timeline__points">${timelineHtml}</ul>
+          <div class="timeline__logos-row">
+            <div class="timeline__logo-spacer" aria-hidden="true"></div>
+            ${logosRowHtml}
+          </div>
+          <div class="timeline__track-row">
+            <div class="timeline__start" aria-hidden="true"><span class="timeline__dot"></span></div>
+            ${trackHtml}
           </div>
         </div>
         <div class="stat-cards">${statsHtml}</div>

@@ -1,0 +1,11 @@
+<div class="{{milestoneClass}}">
+  {{#if url}}
+  <a class="timeline__logo" href="{{url}}" title="{{name}}" target="_blank" rel="noopener noreferrer">
+    {{iconHtml}}
+    <span class="visually-hidden">{{name}}</span>
+  </a>
+  {{else}}
+  <span class="timeline__logo">{{iconHtml}}</span>
+  {{/if}}
+  <span class="timeline__dot"></span>
+</div>

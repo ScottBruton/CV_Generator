@@ -5,6 +5,7 @@
     {
       "start": "2011",
       "end": "2011",
+      "label": "Diploma Information Systems",
       "name": "CTI Education Group",
       "url": "https://www.eduvos.com/",
       "icon": "assets/logos/education/CTI.svg"
@@ -12,6 +13,7 @@
     {
       "start": "2011",
       "end": "2015",
+      "label": "Mechatronics (Honours) — Distinction",
       "name": "Nelson Mandela University",
       "url": "https://www.mandela.ac.za/",
       "icon": "assets/logos/education/nmu.jpg"
@@ -19,6 +21,7 @@
     {
       "start": "2016",
       "end": "2018",
+      "label": "MSc Biomedical Engineering — Cum Laude",
       "name": "University of Cape Town",
       "url": "https://www.uct.ac.za/",
       "icon": "assets/logos/education/uct.jpg"
@@ -26,6 +29,7 @@
     {
       "start": "2018",
       "end": "2020",
+      "label": "Biomedical Engineer",
       "name": "DISA Vascular",
       "url": "https://disavascular.com/",
       "icon": "assets/logos/companies/disa.jpg"
@@ -34,6 +38,7 @@
       "start": "2020",
       "end": "2020",
       "dateLabel": "Apr–Aug 2020",
+      "label": "Biomedical Engineer",
       "name": "Medical Diagnostech",
       "url": "https://www.medi-tech.co.za/",
       "icon": "assets/logos/companies/medtech.jpg"
@@ -41,6 +46,7 @@
     {
       "start": "2020",
       "end": "2023",
+      "label": "Biomedical Engineer",
       "name": "Signature Orthopaedics",
       "url": "https://www.signatureortho.com.au/",
       "icon": "assets/logos/companies/signature-ortho.jpg"
@@ -49,6 +55,7 @@
       "start": "2023",
       "end": "Present",
       "isPresent": true,
+      "label": "Senior Med-Tech Product Developer",
       "name": "IDE Group",
       "url": "https://ide.group/",
       "icon": "assets/logos/companies/ide.jpg"
