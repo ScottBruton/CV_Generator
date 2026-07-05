@@ -1,4 +1,15 @@
-<li{{#if isPresent}} class="timeline__present"{{/if}}>
-  {{#if isPresent}}<span class="timeline__arrow" aria-hidden="true">&#9654;</span>{{/if}}
-  <span class="timeline__year">{{year}}</span>
+<li class="{{className}}">
+  <div class="timeline__marker">
+    <span class="timeline__dot"></span>
+  </div>
+  <span class="timeline__dates">
+    {{#if isPresent}}<span class="timeline__arrow" aria-hidden="true">&#9654;</span>{{/if}}
+    {{dateRange}}
+  </span>
+  {{#if url}}
+  <a class="timeline__link" href="{{url}}" title="{{name}}" target="_blank" rel="noopener noreferrer">
+    {{iconHtml}}
+    <span class="visually-hidden">{{name}}</span>
+  </a>
+  {{/if}}
 </li>

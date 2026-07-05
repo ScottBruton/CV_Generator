@@ -15,7 +15,15 @@ const OUTPUT_FILE = path.join(ROOT, 'index.html');
  */
 function loadJson(...segments) {
   const filePath = path.join(CONTENT_DIR, ...segments);
-  return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  try {
+    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  } catch (error) {
+    const label = segments.join('/');
+    if (error instanceof SyntaxError) {
+      throw new Error(`Invalid JSON in content/${label} — check for missing commas or brackets`);
+    }
+    throw error;
+  }
 }
 
 /**
@@ -68,9 +76,37 @@ function renderComponent(name, data) {
 
 /**
  * Renders a component for each item in an array.
+ * Returns empty string if items is missing (e.g. mid-save while editing JSON).
  */
 function renderEach(name, items, mapFn = (item) => item) {
+  if (!Array.isArray(items)) {
+    return '';
+  }
   return items.map((item) => renderComponent(name, mapFn(item))).join('\n');
+}
+
+/**
+ * Formats a timeline date range for display.
+ * Supports optional dateLabel override for short stints (e.g. "Apr–Aug 2020").
+ */
+function formatDateRange(point) {
+  if (point.dateLabel) {
+    return point.dateLabel;
+  }
+
+  const start = point.start || point.year || '';
+  const end = point.end || start;
+
+  if (point.isPresent || end === 'Present') {
+    return `${start}\u2013Present`;
+  }
+  if (!start) {
+    return '';
+  }
+  if (start === end) {
+    return start;
+  }
+  return `${start}\u2013${end}`;
 }
 
 class CVBuilder {
@@ -113,12 +149,22 @@ class CVBuilder {
       href: item.href || ''
     }));
 
-    const timelineHtml = renderEach('timeline-point', journey.timeline);
+    const timelineHtml = renderEach('timeline-point', journey.timeline, (point) => {
+      const name = point.name || '';
+      const hasIcon = point.icon && fs.existsSync(path.join(this.root, point.icon));
+      const iconHtml = hasIcon
+        ? `<img class="timeline__icon" src="${escapeHtml(point.icon)}" alt="${escapeHtml(name)}">`
+        : `<span class="timeline__icon-fallback" aria-hidden="true">${escapeHtml((name || point.start || point.year || '?').charAt(0).toUpperCase())}</span>`;
 
-    const logosHtml = renderEach('logo', journey.logos, (logo) => ({
-      name: logo.name,
-      src: logo.src && fs.existsSync(path.join(this.root, logo.src)) ? logo.src : ''
-    }));
+      return {
+        className: point.isPresent ? 'timeline__point timeline__point--present' : 'timeline__point',
+        dateRange: formatDateRange(point),
+        name,
+        url: point.url || '',
+        iconHtml,
+        isPresent: point.isPresent || false
+      };
+    });
 
     const statsHtml = renderEach('stat-card', journey.stats, (stat) => ({
       variant: stat.variant,
@@ -153,7 +199,6 @@ class CVBuilder {
             <ul class="timeline__points">${timelineHtml}</ul>
           </div>
         </div>
-        <div class="journey__logos" aria-label="Education and company logos">${logosHtml}</div>
         <div class="stat-cards">${statsHtml}</div>
       </section>
     </header>`;
@@ -161,13 +206,13 @@ class CVBuilder {
 
   /** Build a single impact pillar from JSON. */
   buildPillar(pillar) {
-    const bulletsHtml = renderEach('pillar-bullet', pillar.bullets, (bullet) => ({
+    const bulletsHtml = renderEach('pillar-bullet', pillar.bullets || [], (bullet) => ({
       icon: icons[bullet.icon] || '',
       heading: bullet.heading,
       description: bullet.description
     }));
 
-    const kpiStatsHtml = renderEach('kpi-stat', pillar.kpi.stats);
+    const kpiStatsHtml = renderEach('kpi-stat', pillar.kpi?.stats || []);
 
     return renderComponent('pillar', {
       variant: pillar.variant,
@@ -176,8 +221,8 @@ class CVBuilder {
       title: pillar.title,
       subtitle: pillar.subtitle,
       bullets: bulletsHtml,
-      kpiCategory: pillar.kpi.category,
-      kpiLabel: pillar.kpi.label,
+      kpiCategory: pillar.kpi?.category || '',
+      kpiLabel: pillar.kpi?.label || '',
       kpiStats: kpiStatsHtml
     });
   }
@@ -211,7 +256,7 @@ class CVBuilder {
   buildBottomGrid(content) {
     const { skills, tools, references } = content;
 
-    const skillsListHtml = skills.skills
+    const skillsListHtml = (skills.skills || [])
       .map((skill) => `<li>${escapeHtml(skill)}</li>`)
       .join('\n');
 
@@ -297,7 +342,7 @@ class CVBuilder {
   }
 }
 
-module.exports = { CVBuilder, loadJson, loadComponent, render, renderComponent, renderEach };
+module.exports = { CVBuilder, loadJson, loadComponent, render, renderComponent, renderEach, formatDateRange };
 
 if (require.main === module) {
   const output = new CVBuilder().build();

@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node scripts/build.js",
     "watch": "node scripts/watch.js",
-    "dev": "concurrently -n watch,serve -c blue,green \"npm run watch\" \"live-server --port=3000 --watch=index.html,style.css,assets\"",
+    "dev": "concurrently -n watch,serve -c blue,green \"npm run watch\" \"live-server --port=3000 --watch=content,components,templates,index.html,style.css,assets --wait=500\"",
     "start": "npm run build && npm run dev",
     "run": "npm run start"
   },

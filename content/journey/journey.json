@@ -2,21 +2,57 @@
   "sectionNumber": "01",
   "sectionTitle": "Journey",
   "timeline": [
-    { "year": "2011" },
-    { "year": "2015" },
-    { "year": "2018" },
-    { "year": "2020" },
-    { "year": "2023" },
-    { "year": "2025" },
-    { "year": "Present", "isPresent": true }
-  ],
-  "logos": [
-    { "name": "Nelson Mandela University", "src": "assets/logos/nmu.png" },
-    { "name": "University of Cape Town", "src": "assets/logos/uct.png" },
-    { "name": "IDE Group", "src": "assets/logos/ide-group.png" },
-    { "name": "Signature Orthopaedics", "src": "assets/logos/signature-ortho.png" },
-    { "name": "DISA Vascular", "src": "assets/logos/disa.png" },
-    { "name": "Medical Diagnostech", "src": "assets/logos/medi-tech.png" }
+    {
+      "start": "2011",
+      "end": "2011",
+      "name": "CTI Education Group",
+      "url": "https://www.eduvos.com/",
+      "icon": "assets/logos/education/CTI.svg"
+    },
+    {
+      "start": "2011",
+      "end": "2015",
+      "name": "Nelson Mandela University",
+      "url": "https://www.mandela.ac.za/",
+      "icon": "assets/logos/education/nmu.jpg"
+    },
+    {
+      "start": "2016",
+      "end": "2018",
+      "name": "University of Cape Town",
+      "url": "https://www.uct.ac.za/",
+      "icon": "assets/logos/education/uct.jpg"
+    },
+    {
+      "start": "2018",
+      "end": "2020",
+      "name": "DISA Vascular",
+      "url": "https://disavascular.com/",
+      "icon": "assets/logos/companies/disa.jpg"
+    },
+    {
+      "start": "2020",
+      "end": "2020",
+      "dateLabel": "Apr–Aug 2020",
+      "name": "Medical Diagnostech",
+      "url": "https://www.medi-tech.co.za/",
+      "icon": "assets/logos/companies/medtech.jpg"
+    },
+    {
+      "start": "2020",
+      "end": "2023",
+      "name": "Signature Orthopaedics",
+      "url": "https://www.signatureortho.com.au/",
+      "icon": "assets/logos/companies/signature-ortho.jpg"
+    },
+    {
+      "start": "2023",
+      "end": "Present",
+      "isPresent": true,
+      "name": "IDE Group",
+      "url": "https://ide.group/",
+      "icon": "assets/logos/companies/ide.jpg"
+    }
   ],
   "stats": [
     {

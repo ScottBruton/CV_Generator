@@ -21,9 +21,9 @@ function rebuild() {
       const output = new CVBuilder().build();
       console.log(`[${new Date().toLocaleTimeString()}] Rebuilt ${output}`);
     } catch (error) {
-      console.error(`[${new Date().toLocaleTimeString()}] Build failed:`, error.message);
+      console.error(`[${new Date().toLocaleTimeString()}] Build failed: ${error.message}`);
     }
-  }, 150);
+  }, 400);
 }
 
 function watchDir(dir) {
