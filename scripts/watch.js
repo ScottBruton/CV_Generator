@@ -9,6 +9,7 @@ const WATCH_DIRS = [
   path.join(ROOT, 'content'),
   path.join(ROOT, 'components'),
   path.join(ROOT, 'templates'),
+  path.join(ROOT, 'scripts'),
   path.join(ROOT, 'assets')
 ];
 

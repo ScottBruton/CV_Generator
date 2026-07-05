@@ -218,12 +218,16 @@ hr {
   grid-column: 2;
   grid-row: 1;
   flex-shrink: 0;
-  align-items: flex-end;
-  text-align: right;
+  align-items: flex-start;
+  text-align: left;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--s1);
 }
 
 .contact--stacked .contact__item {
-  flex-direction: row-reverse;
+  flex-direction: row;
   font-size: 0.72rem;
   white-space: nowrap;
 }
