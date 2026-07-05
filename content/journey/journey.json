@@ -1,0 +1,41 @@
+{
+  "sectionNumber": "01",
+  "sectionTitle": "Journey",
+  "timeline": [
+    { "year": "2011" },
+    { "year": "2015" },
+    { "year": "2018" },
+    { "year": "2020" },
+    { "year": "2023" },
+    { "year": "2025" },
+    { "year": "Present", "isPresent": true }
+  ],
+  "logos": [
+    { "name": "Nelson Mandela University", "src": "assets/logos/nmu.png" },
+    { "name": "University of Cape Town", "src": "assets/logos/uct.png" },
+    { "name": "IDE Group", "src": "assets/logos/ide-group.png" },
+    { "name": "Signature Orthopaedics", "src": "assets/logos/signature-ortho.png" },
+    { "name": "DISA Vascular", "src": "assets/logos/disa.png" },
+    { "name": "Medical Diagnostech", "src": "assets/logos/medi-tech.png" }
+  ],
+  "stats": [
+    {
+      "variant": "blue",
+      "icon": "trend",
+      "title": "10+ Years",
+      "description": "Combined academic and industry engineering experience."
+    },
+    {
+      "variant": "green",
+      "icon": "target",
+      "title": "One Focus",
+      "description": "MedTech product development from concept to market."
+    },
+    {
+      "variant": "purple",
+      "icon": "people",
+      "title": "Multiple Lenses",
+      "description": "Technical, commercial, and leadership depth."
+    }
+  ]
+}

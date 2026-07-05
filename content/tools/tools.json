@@ -1,0 +1,16 @@
+{
+  "sectionNumber": "04",
+  "sectionTitle": "Tools & Technologies",
+  "tools": [
+    { "name": "SolidWorks", "icon": "assets/icons/solidworks.png" },
+    { "name": "Inventor", "icon": "assets/icons/inventor.png" },
+    { "name": "MATLAB", "icon": "assets/icons/matlab.png" },
+    { "name": "Python", "icon": "assets/icons/python.png" },
+    { "name": "React", "icon": "assets/icons/react.png" },
+    { "name": "GitHub", "icon": "assets/icons/github.png" },
+    { "name": "Eagle PCB", "icon": "assets/icons/eagle.png" },
+    { "name": "Java", "icon": "assets/icons/java.png" },
+    { "name": "C#", "icon": "assets/icons/csharp.png" },
+    { "name": "Electron", "icon": "assets/icons/electron.png" }
+  ]
+}
