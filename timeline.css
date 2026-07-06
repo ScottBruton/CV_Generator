@@ -3,10 +3,10 @@
    ============================================================ */
 
 :root {
-  --timeline-dot-w: 28px;
   --timeline-dot-size: 10px;
   --timeline-start-w: 10px;
   --timeline-steps: 7;
+  --timeline-details-pad-x: 10px;
   /* Base logo box — change scale to resize while keeping aspect ratio */
   --timeline-logo-w: 10mm;
   --timeline-logo-h: 6.5mm;
@@ -53,7 +53,7 @@
 
 .timeline__grid {
   display: grid;
-  grid-template-columns: var(--timeline-start-w) repeat(var(--timeline-steps), minmax(0, 1fr)) var(--timeline-dot-w);
+  grid-template-columns: var(--timeline-start-w) repeat(var(--timeline-steps), minmax(0, 1fr));
   width: 100%;
   max-width: var(--content-width);
   position: relative;
@@ -63,7 +63,7 @@
   content: '';
   position: absolute;
   left: calc(var(--timeline-start-w) / 2);
-  right: calc(var(--timeline-dot-w) / 2);
+  right: calc(var(--timeline-dot-size) / 2);
   top: calc(var(--timeline-logo-block-h) + 11px);
   height: 2px;
   background: linear-gradient(to right, var(--blue), var(--purple));
@@ -73,7 +73,6 @@
 }
 
 .timeline__start,
-.timeline__present-end,
 .timeline__step {
   display: flex;
   flex-direction: column;
@@ -117,8 +116,7 @@
   z-index: 1;
 }
 
-.timeline__start .timeline__step-rail,
-.timeline__present-end .timeline__step-rail {
+.timeline__start .timeline__step-rail {
   justify-content: center;
 }
 
@@ -136,13 +134,9 @@
   border-color: var(--purple);
 }
 
-.timeline__dot--present-end {
-  border-color: var(--purple);
-}
-
 .timeline__step-details {
   position: relative;
-  padding: 6px 4px 4px;
+  padding: 6px var(--timeline-details-pad-x) 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -162,8 +156,7 @@
   background: var(--border);
 }
 
-.timeline__start .timeline__step-details,
-.timeline__present-end .timeline__step-details {
+.timeline__start .timeline__step-details {
   min-height: 0;
   padding: 0;
 }
@@ -222,6 +215,8 @@
   white-space: normal;
   text-align: center;
   max-width: 100%;
+  padding-inline: 4px;
+  box-sizing: border-box;
 }
 
 .timeline__honor {
@@ -275,7 +270,6 @@
 
 @media screen {
   :root {
-    --timeline-dot-w: 28px;
     --timeline-logo-w: 38px;
     --timeline-logo-h: 24px;
   }
@@ -283,7 +277,6 @@
 
 @media print {
   :root {
-    --timeline-dot-w: 28px;
     --timeline-start-w: 10px;
     --timeline-logo-w: 10mm;
     --timeline-logo-h: 6.5mm;
