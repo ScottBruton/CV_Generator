@@ -76,25 +76,5 @@
       "education": false,
       "company": true
     }
-  ],
-  "stats": [
-    {
-      "variant": "blue",
-      "icon": "trend",
-      "title": "10+ Years",
-      "description": "Combined academic and industry engineering experience."
-    },
-    {
-      "variant": "green",
-      "icon": "target",
-      "title": "One Focus",
-      "description": "MedTech product development from concept to market."
-    },
-    {
-      "variant": "purple",
-      "icon": "people",
-      "title": "Multiple Lenses",
-      "description": "Technical, commercial, and leadership depth."
-    }
   ]
 }

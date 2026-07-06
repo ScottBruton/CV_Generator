@@ -200,6 +200,7 @@ class CVBuilder {
   loadContent() {
     return {
       profile: loadJson('header', 'profile.json'),
+      stats: loadJson('stats', 'stat.json'),
       journey: loadJson('journey', 'journey.json'),
       pillars: [
         loadJson('impact', 'technical.json'),
@@ -215,7 +216,7 @@ class CVBuilder {
 
   /** Build the header block (photo, identity, journey). */
   buildHeader(content) {
-    const { profile, journey } = content;
+    const { profile, journey, stats } = content;
 
     const photoHtml = profile.photo?.src && fs.existsSync(path.join(this.root, profile.photo.src))
       ? `<img src="${escapeHtml(profile.photo.src)}" alt="${escapeHtml(profile.photo.alt)}" class="header__photo-img">`
@@ -232,7 +233,7 @@ class CVBuilder {
 
     const timeline = buildTimeline(journey.timeline, this.root);
 
-    const statsHtml = renderEach('stat-card', journey.stats, (stat) => ({
+    const statsHtml = renderEach('stat-card', stats.stats, (stat) => ({
       variant: stat.variant,
       icon: icons[stat.icon] || '',
       title: stat.title,
