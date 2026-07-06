@@ -75,6 +75,40 @@ function renderComponent(name, data) {
 }
 
 /**
+ * Indents each line by depth × 2 spaces, preserving relative indentation.
+ */
+function indentLines(html, depth = 0) {
+  if (!html || !String(html).trim()) return '';
+  const base = '  '.repeat(depth);
+  return String(html)
+    .trimEnd()
+    .split('\n')
+    .map((line) => {
+      if (!line.trim()) return '';
+      const relative = line.match(/^(\s*)/)[1];
+      return base + relative + line.trim();
+    })
+    .join('\n');
+}
+
+/**
+ * Indents unformatted component output to a fixed depth.
+ */
+function indentBlock(html, depth = 0) {
+  if (!html || !String(html).trim()) return '';
+  const base = '  '.repeat(depth);
+  return String(html)
+    .trim()
+    .split('\n')
+    .map((line) => {
+      if (!line.trim()) return '';
+      const relative = line.match(/^(\s*)/)[1];
+      return base + relative + line.trim();
+    })
+    .join('\n');
+}
+
+/**
  * Renders a component for each item in an array.
  * Returns empty string if items is missing (e.g. mid-save while editing JSON).
  */
@@ -82,7 +116,7 @@ function renderEach(name, items, mapFn = (item) => item) {
   if (!Array.isArray(items)) {
     return '';
   }
-  return items.map((item) => renderComponent(name, mapFn(item))).join('\n');
+  return items.map((item) => renderComponent(name, mapFn(item))).join('\n\n');
 }
 
 /**
@@ -147,8 +181,8 @@ function buildTimeline(timelineItems, root) {
   const steps = (timelineItems || []).map((entry) => normalizeTimelineStep(entry, root));
 
   const stepsHtml = steps
-    .map((step) => renderComponent('timeline-segment', step))
-    .join('\n');
+    .map((step) => indentBlock(renderComponent('timeline-segment', step), 4))
+    .join('\n\n');
 
   return {
     stepCount: steps.length,
@@ -205,24 +239,33 @@ class CVBuilder {
       description: stat.description
     }));
 
-    return `<header class="header">
-      <div class="header__photo">${photoHtml}</div>
-      <div class="header__right">
-        <div class="header__main">
-          <div class="header__intro">
-            <h1 class="name">
-              <span class="name__first">${escapeHtml(profile.firstName)}</span>
-              <span class="name__last">${escapeHtml(profile.lastName)}</span>
-            </h1>
-            <p class="title">${escapeHtml(profile.title)}</p>
-          </div>
-          <p class="summary summary--intro">${escapeHtml(profile.summary)}</p>
-          <div class="stat-cards stat-cards--header">${statsHtml}</div>
-        </div>
-        <ul class="contact contact--stacked" aria-label="Contact information">${contactHtml}</ul>
+    const timelineHtml = renderComponent('timeline', {
+      stepCount: timeline.stepCount,
+      stepsHtml: `\n${timeline.stepsHtml}`
+    });
+
+    return indentLines(`<header class="header">
+  <div class="header__photo">${photoHtml}</div>
+  <div class="header__right">
+    <div class="header__main">
+      <div class="header__intro">
+        <h1 class="name">
+          <span class="name__first">${escapeHtml(profile.firstName)}</span>
+          <span class="name__last">${escapeHtml(profile.lastName)}</span>
+        </h1>
+        <p class="title">${escapeHtml(profile.title)}</p>
       </div>
-      ${renderComponent('timeline', { stepCount: timeline.stepCount, stepsHtml: timeline.stepsHtml })}
-    </header>`;
+      <p class="summary summary--intro">${escapeHtml(profile.summary)}</p>
+      <div class="stat-cards stat-cards--header">
+${indentBlock(statsHtml, 4)}
+      </div>
+    </div>
+    <ul class="contact contact--stacked" aria-label="Contact information">
+${indentBlock(contactHtml, 3)}
+    </ul>
+  </div>
+${timelineHtml}
+</header>`, 2);
   }
 
   /** Build a single impact pillar from JSON. */
@@ -233,7 +276,7 @@ class CVBuilder {
       description: bullet.description
     }));
 
-    const kpiStatsHtml = renderEach('kpi-stat', pillar.kpi?.stats || []);
+    const kpiStatsHtml = renderEach('kpi-stat', pillar.kpi?.stats || [], (stat) => stat);
 
     return renderComponent('pillar', {
       variant: pillar.variant,
@@ -250,27 +293,29 @@ class CVBuilder {
 
   /** Build the full impact section with framework diagram. */
   buildImpact(content) {
-    const pillarsHtml = content.pillars.map((pillar) => this.buildPillar(pillar)).join('\n');
+    const pillarsHtml = content.pillars.map((pillar) => this.buildPillar(pillar)).join('\n\n');
 
-    return `<section class="impact" aria-labelledby="impact-heading">
-      ${renderComponent('section-label', {
-        modifierClass: 'section-label section-label--impact',
-        id: 'impact-heading',
-        sectionNumber: '02',
-        sectionTitle: 'How I Create Impact'
-      })}
-      <div class="framework">
-        <div class="framework__box">The Impact Framework</div>
-        <svg class="framework__wiring" viewBox="0 0 600 48" preserveAspectRatio="none" aria-hidden="true">
-          <line x1="300" y1="0" x2="300" y2="16" stroke="#222" stroke-width="1"/>
-          <line x1="100" y1="16" x2="500" y2="16" stroke="#222" stroke-width="1"/>
-          <line x1="100" y1="16" x2="100" y2="48" stroke="#222" stroke-width="1"/>
-          <line x1="300" y1="16" x2="300" y2="48" stroke="#222" stroke-width="1"/>
-          <line x1="500" y1="16" x2="500" y2="48" stroke="#222" stroke-width="1"/>
-        </svg>
-      </div>
-      <div class="pillars">${pillarsHtml}</div>
-    </section>`;
+    return indentLines(`<section class="impact" aria-labelledby="impact-heading">
+  ${renderComponent('section-label', {
+      modifierClass: 'section-label section-label--impact',
+      id: 'impact-heading',
+      sectionNumber: '02',
+      sectionTitle: 'How I Create Impact'
+    })}
+  <div class="framework">
+    <div class="framework__box">The Impact Framework</div>
+    <svg class="framework__wiring" viewBox="0 0 600 48" preserveAspectRatio="none" aria-hidden="true">
+      <line x1="300" y1="0" x2="300" y2="16" stroke="#222" stroke-width="1"/>
+      <line x1="100" y1="16" x2="500" y2="16" stroke="#222" stroke-width="1"/>
+      <line x1="100" y1="16" x2="100" y2="48" stroke="#222" stroke-width="1"/>
+      <line x1="300" y1="16" x2="300" y2="48" stroke="#222" stroke-width="1"/>
+      <line x1="500" y1="16" x2="500" y2="48" stroke="#222" stroke-width="1"/>
+    </svg>
+  </div>
+  <div class="pillars">
+${indentBlock(pillarsHtml, 2)}
+  </div>
+</section>`, 2);
   }
 
   /** Build skills, tools, and references cards. */
@@ -287,38 +332,42 @@ class CVBuilder {
       initial: tool.name.charAt(0)
     }));
 
-    return `<section class="bottom-grid" aria-label="Skills, tools, and references">
-      <div class="bottom-card">
-        ${renderComponent('section-label', {
-          modifierClass: 'section-label section-label--small',
-          id: '',
-          sectionNumber: skills.sectionNumber,
-          sectionTitle: skills.sectionTitle
-        })}
-        <ul class="skills-list">${skillsListHtml}</ul>
-      </div>
-      <div class="bottom-card">
-        ${renderComponent('section-label', {
-          modifierClass: 'section-label section-label--small',
-          id: '',
-          sectionNumber: tools.sectionNumber,
-          sectionTitle: tools.sectionTitle
-        })}
-        <div class="tools-grid">${toolsHtml}</div>
-      </div>
-      <div class="bottom-card bottom-card--references">
-        ${renderComponent('section-label', {
-          modifierClass: 'section-label section-label--small',
-          id: '',
-          sectionNumber: references.sectionNumber,
-          sectionTitle: references.sectionTitle
-        })}
-        <div class="references">
-          ${icons.referencesUser}
-          <p class="references__text">${escapeHtml(references.statement)}</p>
-        </div>
-      </div>
-    </section>`;
+    return indentLines(`<section class="bottom-grid" aria-label="Skills, tools, and references">
+  <div class="bottom-card">
+    ${renderComponent('section-label', {
+      modifierClass: 'section-label section-label--small',
+      id: '',
+      sectionNumber: skills.sectionNumber,
+      sectionTitle: skills.sectionTitle
+    })}
+    <ul class="skills-list">
+${indentBlock(skillsListHtml, 3)}
+    </ul>
+  </div>
+  <div class="bottom-card">
+    ${renderComponent('section-label', {
+      modifierClass: 'section-label section-label--small',
+      id: '',
+      sectionNumber: tools.sectionNumber,
+      sectionTitle: tools.sectionTitle
+    })}
+    <div class="tools-grid">
+${indentBlock(toolsHtml, 3)}
+    </div>
+  </div>
+  <div class="bottom-card bottom-card--references">
+    ${renderComponent('section-label', {
+      modifierClass: 'section-label section-label--small',
+      id: '',
+      sectionNumber: references.sectionNumber,
+      sectionTitle: references.sectionTitle
+    })}
+    <div class="references">
+      ${icons.referencesUser}
+      <p class="references__text">${escapeHtml(references.statement)}</p>
+    </div>
+  </div>
+</section>`, 2);
   }
 
   /** Build the footer quote and QR block. */
@@ -330,19 +379,19 @@ class CVBuilder {
       ? `<img src="${escapeHtml(footer.qr.src)}" alt="${escapeHtml(footer.qr.alt)}" class="qr-code">`
       : `<div class="qr-placeholder" aria-label="QR code placeholder"><span class="placeholder-label">QR</span></div>`;
 
-    return `<footer class="page-footer">
-      <div class="page-footer__quote">
-        <span class="page-footer__mark" aria-hidden="true">&ldquo;</span>
-        <blockquote class="page-footer__text">${escapeHtml(footer.quote)}</blockquote>
-      </div>
-      <div class="page-footer__connect">
-        <p class="page-footer__cta">
-          <strong>${escapeHtml(footer.ctaHeading)}</strong>
-          <span>${escapeHtml(footer.ctaText)}</span>
-        </p>
-        ${qrHtml}
-      </div>
-    </footer>`;
+    return indentLines(`<footer class="page-footer">
+  <div class="page-footer__quote">
+    <span class="page-footer__mark" aria-hidden="true">&ldquo;</span>
+    <blockquote class="page-footer__text">${escapeHtml(footer.quote)}</blockquote>
+  </div>
+  <div class="page-footer__connect">
+    <p class="page-footer__cta">
+      <strong>${escapeHtml(footer.ctaHeading)}</strong>
+      <span>${escapeHtml(footer.ctaText)}</span>
+    </p>
+    ${qrHtml}
+  </div>
+</footer>`, 2);
   }
 
   /** Assemble the full page and write index.html. */
@@ -370,6 +419,8 @@ module.exports = {
   render,
   renderComponent,
   renderEach,
+  indentLines,
+  indentBlock,
   formatTimelineDateRange,
   normalizeTimelineStep,
   buildTimeline
