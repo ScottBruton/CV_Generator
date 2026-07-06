@@ -9,7 +9,7 @@
   },
   "contact": [
     { "type": "location", "value": "Sydney, Australia" },
-    { "type": "linkedin", "value": "linkedin.com/in/scottbruton", "href": "https://linkedin.com/in/scottbruton" },
+    { "type": "linkedin", "value": "linkedin.com/in/scottpbruton", "href": "https://linkedin.com/in/scottpbruton" },
     { "type": "email", "value": "scottpbruton@gmail.com", "href": "mailto:scottpbruton@gmail.com" },
     { "type": "phone", "value": "+61 (40) 6755 034", "href": "tel:+61406755034" }
   ]

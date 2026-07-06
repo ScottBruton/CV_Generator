@@ -2,6 +2,18 @@
  * Outline SVG icons used across CV components.
  * Each method returns an HTML string for inline SVG.
  */
+const fs = require('fs');
+const path = require('path');
+
+function loadSvgIcon(relativePath, className) {
+  const filePath = path.join(__dirname, '..', relativePath);
+  return fs.readFileSync(filePath, 'utf8')
+    .replace(/\swidth="[^"]*"/, '')
+    .replace(/\sheight="[^"]*"/, '')
+    .replace(/fill="[^"]*"/g, 'fill="currentColor"')
+    .replace('<svg ', `<svg class="${className}" aria-hidden="true" `);
+}
+
 const icons = {
   location: `<svg class="contact__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
     <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"/>
@@ -39,6 +51,8 @@ const icons = {
     <path d="M3 19c0-3 3-5 6-5s6 2 6 5"/>
     <path d="M14 14c2 0 4 1.5 4 4"/>
   </svg>`,
+
+  multi: loadSvgIcon('assets/icons/multi.svg', 'stat-card__icon'),
 
   gear: `<svg class="pillar__hex-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
     <circle cx="12" cy="12" r="3"/>

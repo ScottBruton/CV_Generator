@@ -28,6 +28,8 @@
 .stat-card__icon {
   width: 22px;
   height: 22px;
+  display: block;
+  flex-shrink: 0;
 }
 
 .stat-card--blue .stat-card__icon { color: var(--blue); }
