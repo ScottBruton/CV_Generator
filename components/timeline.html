@@ -1,0 +1,22 @@
+<section class="journey" aria-label="Career journey">
+  <h2 class="timeline__heading">Career Path</h2>
+  <div class="timeline" style="--timeline-steps: {{stepCount}}" aria-label="Career timeline">
+    <div class="timeline__grid">
+      <div class="timeline__start">
+        <div class="timeline__step-logo" aria-hidden="true"></div>
+        <div class="timeline__step-rail">
+          <span class="timeline__dot"></span>
+        </div>
+        <div class="timeline__step-details" aria-hidden="true"></div>
+      </div>
+      {{stepsHtml}}
+      <div class="timeline__present-end">
+        <div class="timeline__step-logo" aria-hidden="true"></div>
+        <div class="timeline__step-rail">
+          <span class="timeline__dot timeline__dot--present-end"></span>
+        </div>
+        <div class="timeline__step-details" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+</section>

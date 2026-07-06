@@ -1,10 +1,16 @@
-<div class="timeline__segment">
-  <div class="timeline__segment-line" aria-hidden="true"></div>
-  <div class="timeline__details">
-    <span class="timeline__dates">
-      {{#if isPresent}}<span class="timeline__arrow" aria-hidden="true">&#9654;</span>{{/if}}
-      {{dateRange}}
-    </span>
-    <span class="timeline__label">{{label}}</span>
+<div class="{{stepClass}}">
+  <div class="timeline__step-logo">
+    {{logoLinkHtml}}
+    <span class="timeline__org-name">{{organization}}</span>
+  </div>
+  <div class="timeline__step-rail">
+    <span class="timeline__step-line" aria-hidden="true"></span>
+    <span class="timeline__dot"></span>
+  </div>
+  <div class="timeline__step-details">
+    <span class="timeline__divider" aria-hidden="true"></span>
+    <span class="timeline__dates">{{presentArrowHtml}}{{dateRange}}</span>
+    <span class="timeline__label">{{role}}</span>
+    {{honorHtml}}
   </div>
 </div>

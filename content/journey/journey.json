@@ -3,62 +3,77 @@
   "sectionTitle": "Journey",
   "timeline": [
     {
-      "start": "2011",
-      "end": "2011",
-      "label": "Diploma Information Systems",
-      "name": "CTI Education Group",
+      "organization": "CTI Education Group",
+      "image": "assets/logos/education/CTI.svg",
       "url": "https://www.eduvos.com/",
-      "icon": "assets/logos/education/CTI.svg"
+      "startDate": "2011",
+      "endDate": "2011",
+      "role": "Diploma Information Systems",
+      "education": true,
+      "company": false
     },
     {
-      "start": "2011",
-      "end": "2015",
-      "label": "Mechatronics (Honours) — Distinction",
-      "name": "Nelson Mandela University",
+      "organization": "Nelson Mandela University",
+      "image": "assets/logos/education/nmu.jpg",
       "url": "https://www.mandela.ac.za/",
-      "icon": "assets/logos/education/nmu.jpg"
+      "startDate": "2011",
+      "endDate": "2015",
+      "role": "Mechatronics (Honours)",
+      "honor": "Distinction",
+      "education": true,
+      "company": false
     },
     {
-      "start": "2016",
-      "end": "2018",
-      "label": "MSc Biomedical Engineering — Cum Laude",
-      "name": "University of Cape Town",
+      "organization": "University of Cape Town",
+      "image": "assets/logos/education/uct.jpg",
       "url": "https://www.uct.ac.za/",
-      "icon": "assets/logos/education/uct.jpg"
+      "startDate": "2016",
+      "endDate": "2018",
+      "role": "MSc Biomedical Engineering",
+      "honor": "Cum Laude",
+      "education": true,
+      "company": false
     },
     {
-      "start": "2018",
-      "end": "2020",
-      "label": "Biomedical Engineer",
-      "name": "DISA Vascular",
+      "organization": "DISA Vascular",
+      "image": "assets/logos/companies/disa.jpg",
       "url": "https://disavascular.com/",
-      "icon": "assets/logos/companies/disa.jpg"
+      "startDate": "2018",
+      "endDate": "2020",
+      "role": "Biomedical Engineer",
+      "education": false,
+      "company": true
     },
     {
-      "start": "2020",
-      "end": "2020",
-      "dateLabel": "Apr–Aug 2020",
-      "label": "Biomedical Engineer",
-      "name": "Medical Diagnostech",
+      "organization": "Medical Diagnostech",
+      "image": "assets/logos/companies/medtech.jpg",
       "url": "https://www.medi-tech.co.za/",
-      "icon": "assets/logos/companies/medtech.jpg"
+      "startDate": "2020",
+      "endDate": "2020",
+      "dateLabel": "Apr–Aug 2020",
+      "role": "Biomedical Engineer",
+      "education": false,
+      "company": true
     },
     {
-      "start": "2020",
-      "end": "2023",
-      "label": "Biomedical Engineer",
-      "name": "Signature Orthopaedics",
+      "organization": "Signature Orthopaedics",
+      "image": "assets/logos/companies/signature-ortho.jpg",
       "url": "https://www.signatureortho.com.au/",
-      "icon": "assets/logos/companies/signature-ortho.jpg"
+      "startDate": "2020",
+      "endDate": "2023",
+      "role": "Biomedical Engineer",
+      "education": false,
+      "company": true
     },
     {
-      "start": "2023",
-      "end": "Present",
-      "isPresent": true,
-      "label": "Senior Med-Tech Product Developer",
-      "name": "IDE Group",
+      "organization": "IDE Group",
+      "image": "assets/logos/companies/ide.jpg",
       "url": "https://ide.group/",
-      "icon": "assets/logos/companies/ide.jpg"
+      "startDate": "2023",
+      "endDate": null,
+      "role": "Senior Med-Tech Product Developer",
+      "education": false,
+      "company": true
     }
   ],
   "stats": [

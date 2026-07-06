@@ -86,19 +86,19 @@ function renderEach(name, items, mapFn = (item) => item) {
 }
 
 /**
- * Formats a timeline date range for display.
- * Supports optional dateLabel override for short stints (e.g. "Apr–Aug 2020").
+ * Formats a timeline date range from startDate / endDate.
+ * endDate null means Present. Optional dateLabel for short stints.
  */
-function formatDateRange(point) {
-  if (point.dateLabel) {
-    return point.dateLabel;
+function formatTimelineDateRange(entry) {
+  if (entry.dateLabel) {
+    return entry.dateLabel;
   }
 
-  const start = point.start || point.year || '';
-  const end = point.end || start;
+  const start = entry.startDate || entry.start || entry.year || '';
+  const end = entry.endDate !== undefined ? entry.endDate : entry.end;
 
-  if (point.isPresent || end === 'Present') {
-    return `${start}\u2013Present`;
+  if (end === null || end === undefined || end === 'Present' || entry.isPresent) {
+    return start ? `${start}\u2013Present` : 'Present';
   }
   if (!start) {
     return '';
@@ -107,6 +107,53 @@ function formatDateRange(point) {
     return start;
   }
   return `${start}\u2013${end}`;
+}
+
+/**
+ * Normalises one timeline JSON entry into template data.
+ */
+function normalizeTimelineStep(entry, root) {
+  const organization = entry.organization || entry.name || '';
+  const image = entry.image || entry.icon || '';
+  const hasIcon = image && fs.existsSync(path.join(root, image));
+  const present = entry.endDate === null || entry.end === 'Present' || entry.isPresent === true;
+  const honor = entry.honor || '';
+  const url = entry.url || '';
+
+  const iconHtml = hasIcon
+    ? `<img class="timeline__icon" src="${escapeHtml(image)}" alt="">`
+    : `<span class="timeline__icon-fallback" aria-hidden="true">${escapeHtml((organization || entry.startDate || '?').charAt(0).toUpperCase())}</span>`;
+
+  const logoLinkHtml = url
+    ? `<a class="timeline__logo" href="${escapeHtml(url)}" title="${escapeHtml(organization)}" target="_blank" rel="noopener noreferrer">${iconHtml}<span class="visually-hidden">${escapeHtml(organization)}</span></a>`
+    : `<span class="timeline__logo">${iconHtml}</span>`;
+
+  return {
+    stepClass: entry.company ? 'timeline__step timeline__step--company' : 'timeline__step',
+    organization: escapeHtml(organization),
+    role: escapeHtml(entry.role || entry.label || ''),
+    honorHtml: honor ? `<span class="timeline__honor">${escapeHtml(honor)}</span>` : '',
+    dateRange: formatTimelineDateRange(entry),
+    presentArrowHtml: present ? '<span class="timeline__arrow" aria-hidden="true">&#9654;</span>' : '',
+    logoLinkHtml
+  };
+}
+
+/**
+ * Builds timeline grid HTML from JSON entries.
+ * Each step = one column: logo centred on line segment, rail ends with milestone dot.
+ */
+function buildTimeline(timelineItems, root) {
+  const steps = (timelineItems || []).map((entry) => normalizeTimelineStep(entry, root));
+
+  const stepsHtml = steps
+    .map((step) => renderComponent('timeline-segment', step))
+    .join('\n');
+
+  return {
+    stepCount: steps.length,
+    stepsHtml
+  };
 }
 
 class CVBuilder {
@@ -149,39 +196,7 @@ class CVBuilder {
       href: item.href || ''
     }));
 
-    const mapTimelinePoint = (point) => {
-      const name = point.name || '';
-      const hasIcon = point.icon && fs.existsSync(path.join(this.root, point.icon));
-      const iconHtml = hasIcon
-        ? `<img class="timeline__icon" src="${escapeHtml(point.icon)}" alt="">`
-        : `<span class="timeline__icon-fallback" aria-hidden="true">${escapeHtml((name || point.start || point.year || '?').charAt(0).toUpperCase())}</span>`;
-
-      return {
-        dateRange: formatDateRange(point),
-        label: point.label || name,
-        name,
-        url: point.url || '',
-        iconHtml,
-        isPresent: point.isPresent || false
-      };
-    };
-
-    const timelineItems = journey.timeline || [];
-
-    const logosRowHtml = timelineItems
-      .map((point) => {
-        const mapped = mapTimelinePoint(point);
-        const gapClass = point.isPresent ? 'timeline__logo-gap timeline__logo-gap--present' : 'timeline__logo-gap';
-        return `<div class="timeline__logo-bridge">${renderComponent('timeline-logo-cell', mapped)}</div><div class="${gapClass}" aria-hidden="true"></div>`;
-      })
-      .join('\n');
-
-    const trackHtml = timelineItems
-      .map((point) => {
-        const mapped = mapTimelinePoint(point);
-        return renderComponent('timeline-segment', mapped) + renderComponent('timeline-dot-cell', mapped);
-      })
-      .join('\n');
+    const timeline = buildTimeline(journey.timeline, this.root);
 
     const statsHtml = renderEach('stat-card', journey.stats, (stat) => ({
       variant: stat.variant,
@@ -206,18 +221,7 @@ class CVBuilder {
         </div>
         <ul class="contact contact--stacked" aria-label="Contact information">${contactHtml}</ul>
       </div>
-      <section class="journey" aria-label="Career journey">
-        <div class="timeline" aria-label="Career timeline">
-          <div class="timeline__logos-row">
-            <div class="timeline__logo-spacer" aria-hidden="true"></div>
-            ${logosRowHtml}
-          </div>
-          <div class="timeline__track-row">
-            <div class="timeline__start" aria-hidden="true"><span class="timeline__dot"></span></div>
-            ${trackHtml}
-          </div>
-        </div>
-      </section>
+      ${renderComponent('timeline', { stepCount: timeline.stepCount, stepsHtml: timeline.stepsHtml })}
     </header>`;
   }
 
@@ -359,7 +363,17 @@ class CVBuilder {
   }
 }
 
-module.exports = { CVBuilder, loadJson, loadComponent, render, renderComponent, renderEach, formatDateRange };
+module.exports = {
+  CVBuilder,
+  loadJson,
+  loadComponent,
+  render,
+  renderComponent,
+  renderEach,
+  formatTimelineDateRange,
+  normalizeTimelineStep,
+  buildTimeline
+};
 
 if (require.main === module) {
   const output = new CVBuilder().build();

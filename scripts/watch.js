@@ -27,6 +27,15 @@ function rebuild() {
   }, 400);
 }
 
+function watchCssFiles() {
+  for (const file of ['style.css', 'timeline.css']) {
+    const filePath = path.join(ROOT, file);
+    if (!fs.existsSync(filePath)) continue;
+    fs.watch(filePath, () => rebuild());
+    console.log(`Watching ${file}`);
+  }
+}
+
 function watchDir(dir) {
   fs.watch(dir, { recursive: true }, (_event, filename) => {
     if (!filename) return;
@@ -41,6 +50,7 @@ function watchDir(dir) {
 
 console.log('CV watch mode — edit JSON/components and save to rebuild\n');
 rebuild();
+watchCssFiles();
 
 for (const dir of WATCH_DIRS) {
   watchDir(dir);
