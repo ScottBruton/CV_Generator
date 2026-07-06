@@ -34,16 +34,62 @@
   margin-top: 0;
 }
 
+/* ------------------------------------------------------------
+   Career Path title — centered uppercase label with faint
+   progression chevrons (pale blue left, pale purple right)
+   ------------------------------------------------------------ */
 .timeline__heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.5rem, 2vw, 1rem);
   width: var(--content-width);
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--blue);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  max-width: 100%;
   margin: 0 0 4px;
   flex-shrink: 0;
+  font-family: inherit;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.timeline__heading-text {
+  position: relative;
+  z-index: 1;
+  color: var(--blue);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  white-space: nowrap;
+}
+
+.timeline__heading-chevrons {
+  display: flex;
+  align-items: center;
+  gap: 0.1em;
+  font-size: 4rem;
+  font-weight: 300;
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Left group: pale blue, slightly stronger toward the title */
+.timeline__heading-chevrons--left span:nth-child(1) { color: var(--blue); opacity: 0.12; }
+.timeline__heading-chevrons--left span:nth-child(2) { color: var(--blue); opacity: 0.16; }
+.timeline__heading-chevrons--left span:nth-child(3) { color: var(--blue); opacity: 0.20; }
+.timeline__heading-chevrons--left span:nth-child(4) { color: var(--blue); opacity: 0.24; }
+
+/* Right group: pale purple, slightly stronger toward the timeline */
+.timeline__heading-chevrons--right span:nth-child(1) { color: var(--purple); opacity: 0.14; }
+.timeline__heading-chevrons--right span:nth-child(2) { color: var(--purple); opacity: 0.17; }
+.timeline__heading-chevrons--right span:nth-child(3) { color: var(--purple); opacity: 0.21; }
+.timeline__heading-chevrons--right span:nth-child(4) { color: var(--purple); opacity: 0.25; }
+
+@media print {
+  .timeline__heading-text {
+    letter-spacing: 0.12em;
+  }
 }
 
 .timeline {
