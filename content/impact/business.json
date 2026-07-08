@@ -1,6 +1,6 @@
 {
   "variant": "business",
-  "title": "Business & Strategy",
+  "title": "Regulatory & Product Delivery",
   "subtitle": "Engineer the outcome.",
   "hexIcon": "target",
   "bullets": [
@@ -26,8 +26,7 @@
     }
   ],
   "kpi": {
-    "category": "Business",
-    "label": "I Achieved",
+    "label": "Product Impact",
     "stats": [
       { "number": "2", "label": "CE-Marked Devices" },
       { "number": "13+", "label": "R&D Projects" },

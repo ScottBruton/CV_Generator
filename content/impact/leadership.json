@@ -26,8 +26,7 @@
     }
   ],
   "kpi": {
-    "category": "People",
-    "label": "I Enabled",
+    "label": "Leadership Impact",
     "stats": [
       { "number": "10+", "label": "Engineers Mentored" },
       { "number": "4", "label": "Teams Led" },

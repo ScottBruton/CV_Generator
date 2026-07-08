@@ -314,11 +314,11 @@ ${timelineHtml}
       modifierClass: 'section-label section-label--impact',
       id: 'impact-heading',
       sectionNumber: '02',
-      sectionTitle: 'How I Create Impact'
+      sectionTitle: 'Professional Achievements'
     });
 
     const frameworkHtml = renderComponent('framework', {
-      title: 'The Impact Framework'
+      title: 'Professional Achievements'
     });
 
     return indentBlock(renderComponent('impact', {

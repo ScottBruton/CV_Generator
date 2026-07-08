@@ -1,6 +1,6 @@
 {
   "variant": "technical",
-  "title": "Technical Excellence",
+  "title": "Technical Highlights",
   "subtitle": "Engineer the solution.",
   "hexIcon": "gear",
   "bullets": [
@@ -26,8 +26,7 @@
     }
   ],
   "kpi": {
-    "category": "Technical",
-    "label": "I Delivered",
+    "label": "Technical Impact",
     "stats": [
       { "number": "13+", "label": "Medical Devices" },
       { "number": "200+", "label": "Surgical Tools" },
