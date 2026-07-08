@@ -310,19 +310,11 @@ ${timelineHtml}
   buildImpact(content) {
     const pillarsHtml = content.pillars.map((pillar) => this.buildPillar(pillar)).join('\n\n');
 
-    const sectionLabelHtml = renderComponent('section-label', {
-      modifierClass: 'section-label section-label--impact',
-      id: 'impact-heading',
-      sectionNumber: '02',
-      sectionTitle: 'Professional Achievements'
-    });
-
     const frameworkHtml = renderComponent('framework', {
       title: 'Professional Achievements'
     });
 
     return indentBlock(renderComponent('impact', {
-      sectionLabel: sectionLabelHtml,
       framework: frameworkHtml,
       pillars: pillarsHtml
     }), 2);
