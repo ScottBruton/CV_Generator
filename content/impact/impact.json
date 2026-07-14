@@ -4,30 +4,7 @@
     {
       "variant": "technical",
       "title": "Technical Highlights",
-      "subtitle": "Engineer the solution.",
       "hexIcon": "gear",
-      "bullets": [
-        {
-          "icon": "shield",
-          "heading": "End-to-end device development",
-          "description": "13+ medical devices from ideation through prototyping, design, testing, and refinement."
-        },
-        {
-          "icon": "check",
-          "heading": "Verification & validation",
-          "description": "Bench test rigs, IQ/DQ/OQ/PQ protocols, and hands-on V&V across Class I–III devices."
-        },
-        {
-          "icon": "plus",
-          "heading": "Production engineering",
-          "description": "Sole developer of 4 production machines; 200+ surgical tools used in theatre settings."
-        },
-        {
-          "icon": "list",
-          "heading": "Materials & CAD mastery",
-          "description": "Biocompatible polymers database, SolidWorks macros, and complex mechanical assemblies."
-        }
-      ],
       "kpi": {
         "label": "Technical Impact",
         "stats": [
@@ -35,35 +12,87 @@
           { "number": "200+", "label": "Surgical Tools" },
           { "number": "4", "label": "Production Machines" }
         ]
-      }
+      },
+      "body": [
+        { "heading": "MedTech devices designed and developed" },
+        { "subheading": "Mechanical" },
+        {
+          "bullets": [
+            { "text": "Nitinol arterial stent", "class": "III", "endToEnd": true },
+            { "text": "Tracheal stent", "class": "IIa", "endToEnd": true },
+            { "text": "Canine femoral implant system", "class": "II", "endToEnd": true },
+            { "text": "Constrained liner and femoral head combination", "class": "II" },
+            { "text": "Sinuplasty balloon dilation system", "class": "II", "endToEnd": true },
+            "200+ orthopaedic surgical tools",
+            { "text": "Cannulated drills", "href": "#" },
+            { "text": "Femoral head retractor", "href": "#" },
+            { "text": "Knee replacement instrumentation and tray set", "endToEnd": true },
+            { "text": "Reverse shoulder arthroplasty instrument set", "endToEnd": true },
+            { "text": "Self-orienting femoral stem broach system (patent in progress)", "endToEnd": true }
+          ]
+        },
+        { "subheading": "Electro-mechanical" },
+        {
+          "text": "Next-generation flagship medical system chassis (system integration) (Mechanical Lead)",
+          "plain": true
+        },
+        {
+          "text": "Cardiac monitoring and ultrasound integrated display system (Mechanical Lead)",
+          "endToEnd": true,
+          "bulletsInline": true,
+          "bullets": [
+            "~50 unique components",
+            "IP22 rated",
+            "IEC 60601-1 aligned mechanical design"
+          ]
+        },
+        {
+          "text": "Stillborn Ultrasound Prevention System (Mechanical Lead)",
+          "endToEnd": true,
+          "bulletsInline": true,
+          "bullets": [
+            "Portable ultrasound enclosure and mounting",
+            "Mechanical integration of display and transducer module",
+            "Concept to submission"
+          ]
+        },
+        {
+          "text": "OculusID (Biomedical Junior Engineer)",
+          "bulletsInline": true,
+          "bullets": [
+            "React, Electron, JavaScript, TypeScript front-end",
+            "Python backend",
+            "Pupil-tracking and diagnostic functionality"
+          ]
+        },
+        { "subheading": "Software applications" },
+        {
+          "text": "3D medical imaging iOS application",
+          "href": "#"
+        },
+        { "heading": "Jigs & machinery" },
+        {
+          "bullets": [
+            "Two 3-axis precision micro-gluing machines",
+            "UV adhesive-curing station",
+            { "text": "SignaStretch ligament preparation jig", "href": "#" }
+          ]
+        },
+        { "heading": "Engineering & academic" },
+        {
+          "bullets": [
+            "Biocompatible and high-temperature polymer database for medical devices",
+            "SolidWorks macros and design automation tools",
+            { "text": "Honours: accelerated weathering system", "href": "#" },
+            { "text": "Master's: tactile prosthetic fitment system", "href": "#" }
+          ]
+        }
+      ]
     },
     {
       "variant": "business",
       "title": "Regulatory & Product Delivery",
-      "subtitle": "Engineer the outcome.",
       "hexIcon": "target",
-      "bullets": [
-        {
-          "icon": "growth",
-          "heading": "Regulatory & commercial readiness",
-          "description": "CE marking on 2 devices with 1 in submission; ISO 13485 design and documentation."
-        },
-        {
-          "icon": "lock",
-          "heading": "Client engagement",
-          "description": "Product lead on AI-integrated flagship systems securing ongoing multinational work."
-        },
-        {
-          "icon": "clock",
-          "heading": "Market expansion",
-          "description": "New implant systems, reverse shoulder sets, and constrained liner combos for broader markets."
-        },
-        {
-          "icon": "sun",
-          "heading": "Process efficiency",
-          "description": "SolidWorks automation and QMS tracking interfaces reducing repetitive design work."
-        }
-      ],
       "kpi": {
         "label": "Product Impact",
         "stats": [
@@ -71,35 +100,68 @@
           { "number": "13+", "label": "R&D Projects" },
           { "number": "2", "label": "Implant Systems" }
         ]
-      }
+      },
+      "body": [
+        { "heading": "PRODUCT & REGULATORY DELIVERY" },
+        {
+          "text": "Supported regulatory, verification and pre-certification activities across multiple medical devices:",
+          "bullets": [
+            "Supported the CE marking and regulatory submission of three Class II and Class III medical devices.",
+            "Designed and executed pre-validation protocols for the OculusID pupillometer.",
+            "Conducted verification and validation testing.",
+            "Evaluated pupil-tracking performance.",
+            "Supported regulatory-readiness activities.",
+            "Conducted internal regulatory audits across multiple medical devices before certification and submission activities."
+          ]
+        },
+        {
+          "text": "Led mechanical development of a cardiac monitoring and ultrasound system from early concept through submission:",
+          "bullets": [
+            "Generated and managed mechanical requirements.",
+            "Managed detailed mechanical design within budget and timeline, with 2.5 years from conception to submission.",
+            "Supported system integration.",
+            "Addressed IEC 60601-1 design requirements.",
+            "Developed V&V protocol."
+          ]
+        },
+        {
+          "text": "Led early-stage development of multiple medical-device concepts:",
+          "bullets": [
+            "Included a high-temperature reprocessable Class II device for a global client."
+          ]
+        },
+        {
+          "text": "Developed multiple implantable and surgical systems intended to expand the company's clinical and commercial portfolio:",
+          "bullets": [
+            "Reverse shoulder arthroplasty instrumentation.",
+            "Canine femoral implant system.",
+            "Constrained liner and femoral head combination.",
+            "Nitinol arterial and tracheal stent systems."
+          ]
+        },
+        {
+          "text": "Improved supply-chain and quality-management processes at Signature Orthopaedics:",
+          "bullets": [
+            "Restructured elements of the supply chain at Signature Orthopaedics.",
+            "Designed a product-tracking interface integrated into the QMS.",
+            "Improved product visibility.",
+            "Increased transparency across departments.",
+            "Supported communication between engineering, quality and operations."
+          ]
+        },
+        {
+          "text": "Contributed across the complete medical-device development lifecycle:",
+          "bullets": [
+            "Contributed across more than 13 product-development projects involving mechanical, software, firmware and manufacturing responsibilities.",
+            "Supported products from concept development through design, prototyping, testing, integration and regulatory readiness."
+          ]
+        }
+      ]
     },
     {
       "variant": "leadership",
       "title": "People & Leadership",
-      "subtitle": "Engineer the team.",
       "hexIcon": "people",
-      "bullets": [
-        {
-          "icon": "team",
-          "heading": "Cross-functional leadership",
-          "description": "Product lead bridging mechanical, electrical, firmware, and software disciplines."
-        },
-        {
-          "icon": "book",
-          "heading": "Mentorship & training",
-          "description": "Manager and mentor for new starters; regular SolidWorks training for junior developers."
-        },
-        {
-          "icon": "award",
-          "heading": "Stakeholder alignment",
-          "description": "Weekly client meetings presenting outcomes and aligning priorities across teams."
-        },
-        {
-          "icon": "globe",
-          "heading": "Collaborative culture",
-          "description": "Known for approachability, trust-building, and open cross-disciplinary collaboration."
-        }
-      ],
       "kpi": {
         "label": "Leadership Impact",
         "stats": [
@@ -107,7 +169,72 @@
           { "number": "4", "label": "Teams Led" },
           { "number": "5+", "label": "Cross-Functional Projects" }
         ]
-      }
+      },
+      "body": [
+        { "heading": "LEADERSHIP & COLLABORATION" },
+        {
+          "text": "Held product and mechanical leadership roles across multiple medical-device projects:",
+          "bullets": [
+            "Product lead on:",
+            "An AI-based medical-device program, receiving positive feedback for communication, organisation and delivery.",
+            "Management of stakeholders and junior members.",
+            "The OculusID handheld pupillometer.",
+            "Mechanical lead for a cardiac monitoring and ultrasound platform.",
+            "Coordinated with the cross-functional team.",
+            "Managed junior product developers throughout the project lifetime.",
+            "Coordinated between stakeholders and cross-functional team members on timeline and budget.",
+            "Worked with electrical, firmware, software and systems teams.",
+            "Supported integration through to submission."
+          ]
+        },
+        {
+          "text": "Contributed technical leadership across more than 13 projects, ranging from early concept development to commercial and regulatory delivery."
+        },
+        {
+          "text": "Led multidisciplinary product-development activities across:",
+          "bullets": [
+            "Mechanical engineering.",
+            "Electrical engineering.",
+            "Firmware.",
+            "Software.",
+            "Manufacturing.",
+            "Quality and regulatory functions."
+          ]
+        },
+        {
+          "text": "Developed and supported engineering capability within the company:",
+          "bullets": [
+            "Delivered regular SolidWorks training sessions for junior product developers.",
+            "Mechanical external reviewer on other projects within the company.",
+            "Provided day-to-day technical guidance in:",
+            "Mechanical design.",
+            "CAD modelling.",
+            "Design for manufacture.",
+            "Material selection.",
+            "Medical-device development."
+          ]
+        },
+        {
+          "text": "Led regular client and stakeholder communication:",
+          "bullets": [
+            "Weekly client meetings.",
+            "Presented technical outcomes, risks, solutions and decisions."
+          ]
+        },
+        {
+          "text": "Built and supported cross-functional collaboration:",
+          "bullets": [
+            "Built trusted working relationships through clear communication, reliability and technical support.",
+            "Acted as a bridge between disciplines through professional experience in:",
+            "Biomedical engineering.",
+            "Mechanical engineering.",
+            "Electrical systems.",
+            "Firmware.",
+            "Software development.",
+            "Supported open cross-functional collaboration between engineering, quality, manufacturing, regulatory and commercial teams."
+          ]
+        }
+      ]
     }
   ]
 }

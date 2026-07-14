@@ -1,0 +1,9 @@
+<div class="pillar__body-item{{#if bulleted}} pillar__body-item--bulleted{{/if}}">
+  {{#if itemContent}}<p class="pillar__body-text{{plainClass}}">{{itemContent}}</p>{{/if}}
+  {{#if inlineBullets}}<p class="pillar__body-inline">{{inlineBullets}}</p>{{/if}}
+  {{#if bullets}}
+  <ul class="pillar__body-list">
+    {{bullets}}
+  </ul>
+  {{/if}}
+</div>

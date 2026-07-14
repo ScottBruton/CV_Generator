@@ -2,13 +2,14 @@
   "sectionNumber": "03",
   "sectionTitle": "Core Skills",
   "skills": [
-    "Product Development",
-    "Biomedical Engineering",
-    "Design for Manufacturability",
-    "Verification & Validation",
-    "Risk Management",
-    "Regulatory Compliance",
-    "Systems Engineering",
-    "Cross-Functional Leadership"
+    { "name": "Mechanical Design", "level": 75 },
+    { "name": "DFM & Tolerance Analysis", "level": 85 },
+    { "name": "Test & Verification", "level": 85 },
+    { "name": "Materials & Processes", "level": 85 },
+    { "name": "Failure Analysis", "level": 75 },
+    { "name": "Project Management", "level": 85 },
+    { "name": "Risk & Compliance", "level": 85 },
+    { "name": "Systems Thinking", "level": 75 },
+    { "name": "Leadership & Mentoring", "level": 85 }
   ]
 }

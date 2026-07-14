@@ -205,8 +205,7 @@ class CVBuilder {
       impact: loadJson('impact', 'impact.json'),
       skills: loadJson('skills', 'skills.json'),
       tools: loadJson('tools', 'tools.json'),
-      references: loadJson('references', 'references.json'),
-      footer: loadJson('footer', 'footer.json')
+      references: loadJson('references', 'references.json')
     };
   }
 
@@ -271,21 +270,115 @@ ${timelineHtml}
     return icon.replace(/class="[^"]*"/, 'class="pillar__hex-icon"');
   }
 
+  /** Whether a body entry or bullet marks end-to-end design. */
+  entryHasEndToEnd(entry) {
+    if (!entry || typeof entry === 'string') {
+      return false;
+    }
+    if (entry.endToEnd) {
+      return true;
+    }
+    return (entry.bullets || []).some((bullet) => this.entryHasEndToEnd(bullet));
+  }
+
+  /** Whether any entry in a pillar body uses end-to-end marking. */
+  bodyHasEndToEnd(body) {
+    return Array.isArray(body) && body.some((entry) => this.entryHasEndToEnd(entry));
+  }
+
+  /** Format one pillar body line with optional class, link, and end-to-end mark. */
+  formatPillarLine(entry) {
+    const data = typeof entry === 'string' ? { text: entry } : entry;
+    const text = escapeHtml(data.text || '');
+    const classSuffix = data.class
+      ? ` <span class="pillar__body-class">(Class ${escapeHtml(data.class)})</span>`
+      : '';
+    const label = `${text}${classSuffix}`;
+
+    let inner = label;
+    if (data.href) {
+      inner = `<a href="${escapeHtml(data.href)}" class="pillar__body-link">${label}</a>`;
+    }
+    if (data.endToEnd) {
+      inner += '<span class="pillar__body-mark" aria-hidden="true">*</span>';
+    }
+    return inner;
+  }
+
+  /** Build bullet list HTML for a body entry. */
+  buildPillarBullets(bullets) {
+    return (bullets || [])
+      .map((bullet) => renderComponent('pillar-body-bullet', {
+        bulletContent: this.formatPillarLine(bullet)
+      }))
+      .join('\n');
+  }
+
+  /** Build one pillar body entry (heading, subheading, or item with sub-bullets). */
+  buildPillarBodyEntry(entry) {
+    if (entry.heading) {
+      return renderComponent('pillar-body-heading', { heading: entry.heading });
+    }
+
+    if (entry.subheading) {
+      return renderComponent('pillar-body-subheading', {
+        subheading: entry.subheading,
+        tier: String(entry.tier || 1)
+      });
+    }
+
+    const hasText = Boolean(entry.text && String(entry.text).trim());
+
+    if (entry.bulletsInline && Array.isArray(entry.bullets) && entry.bullets.length) {
+      const inlineBullets = entry.bullets
+        .map((bullet) => this.formatPillarLine(bullet))
+        .join(' · ');
+
+      return renderComponent('pillar-body-item', {
+        itemContent: hasText ? this.formatPillarLine(entry) : '',
+        inlineBullets,
+        bulleted: true,
+        plainClass: entry.plain ? ' pillar__body-text--plain' : ''
+      });
+    }
+
+    const bulletsHtml = this.buildPillarBullets(entry.bullets);
+
+    if (!hasText && bulletsHtml) {
+      return `<ul class="pillar__body-list pillar__body-list--standalone">\n${bulletsHtml}\n</ul>`;
+    }
+
+    return renderComponent('pillar-body-item', {
+      itemContent: hasText ? this.formatPillarLine(entry) : '',
+      bullets: bulletsHtml,
+      bulleted: hasText && !bulletsHtml,
+      plainClass: entry.plain ? ' pillar__body-text--plain' : ''
+    });
+  }
+
+  /** Build the full pillar body from JSON entries. */
+  buildPillarBody(body) {
+    if (!Array.isArray(body)) {
+      return '';
+    }
+
+    const contentHtml = body.map((entry) => this.buildPillarBodyEntry(entry)).join('\n\n');
+    const footnoteHtml = this.bodyHasEndToEnd(body)
+      ? renderComponent('pillar-body-footnote', { text: 'Sole designer & developer' })
+      : '';
+
+    return footnoteHtml ? `${contentHtml}\n\n${footnoteHtml}` : contentHtml;
+  }
+
   /** Build a single impact pillar from JSON. */
   buildPillar(pillar) {
-    const bulletsHtml = renderEach('pillar-bullet', pillar.bullets || [], (bullet) => ({
-      icon: icons[bullet.icon] || '',
-      heading: bullet.heading,
-      description: bullet.description
-    }));
-
+    const bodyHtml = this.buildPillarBody(pillar.body || []);
     const kpiStatsHtml = renderEach('kpi-stat', pillar.kpi?.stats || [], (stat) => stat);
 
     const headerHtml = renderComponent('pillar-header', {
       hexShape: icons.hexShape,
       hexIcon: this.resolvePillarHexIcon(pillar.hexIcon),
-      title: pillar.title,
-      subtitle: pillar.subtitle
+      title: pillar.title
     });
 
     const kpiHtml = renderComponent('pillar-kpi', {
@@ -297,7 +390,7 @@ ${timelineHtml}
     return renderComponent('pillar', {
       variant: pillar.variant,
       header: headerHtml,
-      bullets: bulletsHtml,
+      body: bodyHtml,
       kpi: kpiHtml
     });
   }
@@ -317,13 +410,16 @@ ${timelineHtml}
     }), 2);
   }
 
-  /** Build skills, tools, and references cards. */
+  /** Build skills and tools cards. */
   buildBottomGrid(content) {
-    const { skills, tools, references } = content;
+    const { skills, tools } = content;
 
-    const skillsListHtml = (skills.skills || [])
-      .map((skill) => `<li>${escapeHtml(skill)}</li>`)
-      .join('\n');
+    const skillsListHtml = renderEach('skill-item', skills.skills || [], (skill) => {
+      if (typeof skill === 'string') {
+        return { name: skill, level: 80 };
+      }
+      return { name: skill.name, level: skill.level ?? 80 };
+    });
 
     const toolsHtml = renderEach('tool-item', tools.tools, (tool) => ({
       name: tool.name,
@@ -331,7 +427,7 @@ ${timelineHtml}
       initial: tool.name.charAt(0)
     }));
 
-    return indentLines(`<section class="bottom-grid" aria-label="Skills, tools, and references">
+    return indentLines(`<section class="bottom-grid" aria-label="Skills and tools">
   <div class="bottom-card">
     ${renderComponent('section-label', {
       modifierClass: 'section-label section-label--small',
@@ -354,43 +450,18 @@ ${indentBlock(skillsListHtml, 3)}
 ${indentBlock(toolsHtml, 3)}
     </div>
   </div>
-  <div class="bottom-card bottom-card--references">
-    ${renderComponent('section-label', {
-      modifierClass: 'section-label section-label--small',
-      id: '',
-      sectionNumber: references.sectionNumber,
-      sectionTitle: references.sectionTitle
-    })}
-    <div class="references">
-      ${icons.referencesUser}
-      <p class="references__text">${escapeHtml(references.statement)}</p>
-    </div>
-  </div>
 </section>`, 2);
   }
 
-  /** Build the footer quote and QR block. */
-  buildFooter(content) {
-    const { footer } = content;
-    const qrExists = footer.qr?.src && fs.existsSync(path.join(this.root, footer.qr.src));
+  /** Build the references block tucked at the bottom-right of the page. */
+  buildReferences(content) {
+    const { references } = content;
 
-    const qrHtml = qrExists
-      ? `<img src="${escapeHtml(footer.qr.src)}" alt="${escapeHtml(footer.qr.alt)}" class="qr-code">`
-      : `<div class="qr-placeholder" aria-label="QR code placeholder"><span class="placeholder-label">QR</span></div>`;
-
-    return indentLines(`<footer class="page-footer">
-  <div class="page-footer__quote">
-    <span class="page-footer__mark" aria-hidden="true">&ldquo;</span>
-    <blockquote class="page-footer__text">${escapeHtml(footer.quote)}</blockquote>
-  </div>
-  <div class="page-footer__connect">
-    <p class="page-footer__cta">
-      <strong>${escapeHtml(footer.ctaHeading)}</strong>
-      <span>${escapeHtml(footer.ctaText)}</span>
-    </p>
-    ${qrHtml}
-  </div>
-</footer>`, 2);
+    return indentBlock(renderComponent('page-references', {
+      icon: icons.referencesUser,
+      title: references.sectionTitle || 'References',
+      statement: references.statement
+    }), 2);
   }
 
   /** Assemble the full page and write index.html. */
@@ -403,7 +474,7 @@ ${indentBlock(toolsHtml, 3)}
       header: this.buildHeader(content),
       impact: this.buildImpact(content),
       bottomGrid: this.buildBottomGrid(content),
-      footer: this.buildFooter(content)
+      references: this.buildReferences(content)
     });
 
     fs.writeFileSync(this.outputFile, html, 'utf8');

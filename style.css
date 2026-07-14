@@ -127,6 +127,7 @@ hr {
   overflow: hidden;
   flex-shrink: 0;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  position: relative;
 }
 
 /* ------------------------------------------------------------
@@ -193,7 +194,7 @@ hr {
    ============================================================ */
 .bottom-grid {
   display: grid;
-  grid-template-columns: 1fr 1.4fr 0.9fr;
+  grid-template-columns: 1fr 1.4fr;
   gap: var(--s1);
 }
 
@@ -208,20 +209,37 @@ hr {
 .skills-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+  list-style: none;
 }
 
-.skills-list li {
-  font-size: 0.75rem;
+.skill-item__row {
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.skill-item__name {
+  font-size: 0.72rem;
   font-weight: 500;
   color: var(--text);
-  padding-bottom: 4px;
-  border-bottom: 1px solid var(--border);
+  line-height: var(--lh-tight);
 }
 
-.skills-list li:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
+.skill-item__bar {
+  height: 2px;
+  background: #e5e7eb;
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.skill-item__fill {
+  display: block;
+  height: 100%;
+  width: calc(var(--skill-level) * 1%);
+  background: var(--blue);
+  border-radius: 1px;
 }
 
 /* Tools grid */
@@ -267,39 +285,52 @@ hr {
   line-height: 1.2;
 }
 
-/* References */
-.bottom-card--references {
-  display: flex;
-  flex-direction: column;
+/* References — tucked bottom-right of page */
+.page-references {
+  position: absolute;
+  right: var(--page-margin);
+  bottom: var(--page-margin);
+  width: 32%;
+  max-width: 68mm;
+  z-index: 2;
 }
 
-.references {
-  flex: 1;
+.page-references__inner {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: var(--s1);
-  padding: var(--s1) 0;
+  align-items: flex-end;
+  text-align: right;
+  gap: 6px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
 }
 
-.references__icon {
-  width: 48px;
-  height: 48px;
+.page-references__label {
+  font-size: 0.55rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--blue);
+}
+
+.page-references .references__icon {
+  width: 28px;
+  height: 28px;
   color: var(--text-secondary);
   opacity: 0.35;
 }
 
-.references__text {
-  font-size: 0.75rem;
+.page-references__text {
+  font-size: 0.65rem;
   color: var(--text-secondary);
-  line-height: var(--lh-body);
-  max-width: 20ch;
+  line-height: 1.4;
+  max-width: 24ch;
 }
 
 /* ============================================================
-   FOOTER
+   FOOTER (legacy — removed from layout)
    ============================================================ */
 .page-footer {
   display: grid;
