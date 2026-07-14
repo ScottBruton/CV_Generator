@@ -185,6 +185,28 @@
 .pillar--business .pillar__title { color: var(--impact-green); }
 .pillar--leadership .pillar__title { color: var(--impact-purple); }
 
+.pillar__header-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.pillar__header-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.55rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-align: center;
+  color: var(--impact-blue);
+  background: rgba(36, 89, 195, 0.12);
+  border: 1px solid rgba(36, 89, 195, 0.28);
+}
+
 .pillar__divider {
   margin: 6px var(--s1);
   border-color: rgba(17, 23, 47, 0.08);
@@ -355,67 +377,6 @@
 .pillar__body-footnote-mark {
   font-style: normal;
   font-weight: 700;
-}
-
-/* KPI footer */
-.pillar__kpi {
-  padding: 10px var(--s1) 12px;
-  background: rgba(17, 23, 47, 0.03);
-  border-top: 1px solid rgba(17, 23, 47, 0.06);
-}
-
-.pillar__kpi-label {
-  display: block;
-  font-size: 0.55rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 8px;
-  text-align: center;
-}
-
-.pillar--technical .pillar__kpi-label { color: var(--impact-blue); }
-.pillar--business .pillar__kpi-label { color: var(--impact-green); }
-.pillar--leadership .pillar__kpi-label { color: var(--impact-purple); }
-
-.pillar__kpi-category {
-  display: block;
-  font-size: 0.5rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 2px;
-}
-
-.pillar__kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  align-items: start;
-}
-
-.kpi-stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 2px;
-}
-
-.kpi-stat__number {
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: var(--impact-navy);
-  line-height: var(--lh-tight);
-}
-
-.kpi-stat__label {
-  font-size: 0.48rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  line-height: 1.25;
 }
 
 @media print {

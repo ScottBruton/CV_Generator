@@ -370,28 +370,32 @@ ${timelineHtml}
     return footnoteHtml ? `${contentHtml}\n\n${footnoteHtml}` : contentHtml;
   }
 
+  /** Build header stat pills for the technical pillar. */
+  buildHeaderPills(pillar) {
+    if (pillar.variant !== 'technical' || !Array.isArray(pillar.kpi?.stats)) {
+      return '';
+    }
+
+    return renderEach('pillar-header-pill', pillar.kpi.stats, (stat) => ({
+      text: `${stat.number} ${stat.label}`
+    }));
+  }
+
   /** Build a single impact pillar from JSON. */
   buildPillar(pillar) {
     const bodyHtml = this.buildPillarBody(pillar.body || []);
-    const kpiStatsHtml = renderEach('kpi-stat', pillar.kpi?.stats || [], (stat) => stat);
 
     const headerHtml = renderComponent('pillar-header', {
       hexShape: icons.hexShape,
       hexIcon: this.resolvePillarHexIcon(pillar.hexIcon),
-      title: pillar.title
-    });
-
-    const kpiHtml = renderComponent('pillar-kpi', {
-      kpiCategory: pillar.kpi?.category || '',
-      kpiLabel: pillar.kpi?.label || '',
-      kpiStats: kpiStatsHtml
+      title: pillar.title,
+      pills: this.buildHeaderPills(pillar)
     });
 
     return renderComponent('pillar', {
       variant: pillar.variant,
       header: headerHtml,
-      body: bodyHtml,
-      kpi: kpiHtml
+      body: bodyHtml
     });
   }
 
