@@ -1,0 +1,113 @@
+{
+  "frameworkTitle": "Professional Achievements",
+  "pillars": [
+    {
+      "variant": "technical",
+      "title": "Technical Highlights",
+      "subtitle": "Engineer the solution.",
+      "hexIcon": "gear",
+      "bullets": [
+        {
+          "icon": "shield",
+          "heading": "End-to-end device development",
+          "description": "13+ medical devices from ideation through prototyping, design, testing, and refinement."
+        },
+        {
+          "icon": "check",
+          "heading": "Verification & validation",
+          "description": "Bench test rigs, IQ/DQ/OQ/PQ protocols, and hands-on V&V across Class I–III devices."
+        },
+        {
+          "icon": "plus",
+          "heading": "Production engineering",
+          "description": "Sole developer of 4 production machines; 200+ surgical tools used in theatre settings."
+        },
+        {
+          "icon": "list",
+          "heading": "Materials & CAD mastery",
+          "description": "Biocompatible polymers database, SolidWorks macros, and complex mechanical assemblies."
+        }
+      ],
+      "kpi": {
+        "label": "Technical Impact",
+        "stats": [
+          { "number": "13+", "label": "Medical Devices" },
+          { "number": "200+", "label": "Surgical Tools" },
+          { "number": "4", "label": "Production Machines" }
+        ]
+      }
+    },
+    {
+      "variant": "business",
+      "title": "Regulatory & Product Delivery",
+      "subtitle": "Engineer the outcome.",
+      "hexIcon": "target",
+      "bullets": [
+        {
+          "icon": "growth",
+          "heading": "Regulatory & commercial readiness",
+          "description": "CE marking on 2 devices with 1 in submission; ISO 13485 design and documentation."
+        },
+        {
+          "icon": "lock",
+          "heading": "Client engagement",
+          "description": "Product lead on AI-integrated flagship systems securing ongoing multinational work."
+        },
+        {
+          "icon": "clock",
+          "heading": "Market expansion",
+          "description": "New implant systems, reverse shoulder sets, and constrained liner combos for broader markets."
+        },
+        {
+          "icon": "sun",
+          "heading": "Process efficiency",
+          "description": "SolidWorks automation and QMS tracking interfaces reducing repetitive design work."
+        }
+      ],
+      "kpi": {
+        "label": "Product Impact",
+        "stats": [
+          { "number": "2", "label": "CE-Marked Devices" },
+          { "number": "13+", "label": "R&D Projects" },
+          { "number": "2", "label": "Implant Systems" }
+        ]
+      }
+    },
+    {
+      "variant": "leadership",
+      "title": "People & Leadership",
+      "subtitle": "Engineer the team.",
+      "hexIcon": "people",
+      "bullets": [
+        {
+          "icon": "team",
+          "heading": "Cross-functional leadership",
+          "description": "Product lead bridging mechanical, electrical, firmware, and software disciplines."
+        },
+        {
+          "icon": "book",
+          "heading": "Mentorship & training",
+          "description": "Manager and mentor for new starters; regular SolidWorks training for junior developers."
+        },
+        {
+          "icon": "award",
+          "heading": "Stakeholder alignment",
+          "description": "Weekly client meetings presenting outcomes and aligning priorities across teams."
+        },
+        {
+          "icon": "globe",
+          "heading": "Collaborative culture",
+          "description": "Known for approachability, trust-building, and open cross-disciplinary collaboration."
+        }
+      ],
+      "kpi": {
+        "label": "Leadership Impact",
+        "stats": [
+          { "number": "10+", "label": "Engineers Mentored" },
+          { "number": "4", "label": "Teams Led" },
+          { "number": "5+", "label": "Cross-Functional Projects" }
+        ]
+      }
+    }
+  ]
+}

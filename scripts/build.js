@@ -202,11 +202,7 @@ class CVBuilder {
       profile: loadJson('header', 'profile.json'),
       stats: loadJson('stats', 'stat.json'),
       journey: loadJson('journey', 'journey.json'),
-      pillars: [
-        loadJson('impact', 'technical.json'),
-        loadJson('impact', 'business.json'),
-        loadJson('impact', 'leadership.json')
-      ],
+      impact: loadJson('impact', 'impact.json'),
       skills: loadJson('skills', 'skills.json'),
       tools: loadJson('tools', 'tools.json'),
       references: loadJson('references', 'references.json'),
@@ -308,10 +304,11 @@ ${timelineHtml}
 
   /** Build the full impact section with framework diagram. */
   buildImpact(content) {
-    const pillarsHtml = content.pillars.map((pillar) => this.buildPillar(pillar)).join('\n\n');
+    const { impact } = content;
+    const pillarsHtml = (impact.pillars || []).map((pillar) => this.buildPillar(pillar)).join('\n\n');
 
     const frameworkHtml = renderComponent('framework', {
-      title: 'Professional Achievements'
+      title: impact.frameworkTitle || ''
     });
 
     return indentBlock(renderComponent('impact', {
