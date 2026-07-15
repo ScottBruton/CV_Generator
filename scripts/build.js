@@ -357,17 +357,19 @@ ${timelineHtml}
       .join('\n');
   }
 
-  /** Format one inline bullet with optional company marker. */
-  formatInlineBullet(bullet) {
-    const data = typeof bullet === 'string' ? { text: bullet } : bullet;
-    const content = this.formatPillarLine(bullet);
-    const marker = data.company ? this.renderBulletMarker(data.company) : '';
+  /** Build indented sub-bullet list HTML (lighter bullets under a project title). */
+  buildPillarSubBullets(bullets) {
+    return (bullets || [])
+      .map((bullet) => {
+        const data = typeof bullet === 'string' ? { text: bullet } : bullet;
+        const marker = data.company ? this.renderBulletMarker(data.company) : '';
 
-    if (!marker) {
-      return content;
-    }
-
-    return `<span class="pillar__body-inline-part">${marker}<span>${content}</span></span>`;
+        return renderComponent('pillar-body-subbullet', {
+          bulletContent: this.formatPillarLine(bullet),
+          marker
+        });
+      })
+      .join('\n');
   }
 
   /** Props for pillar body items that support an optional company marker on the main line. */
@@ -380,8 +382,7 @@ ${timelineHtml}
       marked,
       markedClass: marked ? ' pillar__body-item--marked' : '',
       markedTextClass: marked ? ' pillar__body-text--marked' : '',
-      bulleted: options.bulleted !== undefined ? options.bulleted : true,
-      plainClass: entry.plain ? ' pillar__body-text--plain' : ''
+      bulleted: options.bulleted !== undefined ? options.bulleted : true
     };
   }
 
@@ -392,9 +393,9 @@ ${timelineHtml}
       return '';
     }
 
-    const { itemMarker, markedTextClass, plainClass } = this.pillarItemMarkerProps(entry);
+    const { itemMarker, markedTextClass } = this.pillarItemMarkerProps(entry);
 
-    return `<p class="pillar__body-text${plainClass}${markedTextClass}">${itemMarker}<span class="pillar__body-text__inner">${this.formatPillarLine(entry)}</span></p>`;
+    return `<p class="pillar__body-text${markedTextClass}">${itemMarker}<span class="pillar__body-text__inner">${this.formatPillarLine(entry)}</span></p>`;
   }
 
   /** Build one pillar body entry (heading, subheading, or item with sub-bullets). */
@@ -413,13 +414,9 @@ ${timelineHtml}
     const hasText = Boolean(entry.text && String(entry.text).trim());
 
     if (entry.bulletsInline && Array.isArray(entry.bullets) && entry.bullets.length) {
-      const inlineBullets = entry.bullets
-        .map((bullet) => this.formatInlineBullet(bullet))
-        .join(' · ');
-
       return renderComponent('pillar-body-item', {
         itemContentHtml: this.buildPillarItemContentHtml(entry),
-        inlineBullets,
+        subBullets: this.buildPillarSubBullets(entry.bullets),
         ...this.pillarItemMarkerProps(entry)
       });
     }

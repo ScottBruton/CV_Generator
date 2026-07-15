@@ -64,8 +64,7 @@
           "bulletsInline": true,
           "company": "",
           "bullets": [
-            { "text": "React, Electron, JavaScript, TypeScript front-end", "company": "" },
-            { "text": "Python backend", "company": "" },
+            { "text": "React, Electron, JavaScript, TypeScript front-end, Python backend", "company": "" },
             { "text": "Pupil-tracking and diagnostic functionality", "company": "" }
           ]
         },

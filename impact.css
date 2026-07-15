@@ -290,16 +290,11 @@
 .pillar--leadership .pillar__body-subheading--tier-1 { color: var(--impact-purple); }
 
 .pillar__body-text {
-  font-size: 0.65rem;
-  font-weight: 500;
-  color: var(--text);
-  line-height: 1.4;
-}
-
-.pillar__body-text.pillar__body-text--plain {
+  margin: 0;
   font-size: 0.62rem;
   font-weight: 400;
   color: var(--text-secondary);
+  line-height: 1.38;
 }
 
 .pillar__body-item {
@@ -334,8 +329,59 @@
 .pillar--business .pillar__body-item--bulleted .pillar__body-text::before { background: var(--impact-green); }
 .pillar--leadership .pillar__body-item--bulleted .pillar__body-text::before { background: var(--impact-purple); }
 
-.pillar__body-item--bulleted .pillar__body-inline {
+.pillar__body-sublist {
+  list-style: none;
+  margin: 2px 0 0;
+  padding: 0 0 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pillar__body-subbullet {
+  font-size: 0.62rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.38;
+  position: relative;
   padding-left: 8px;
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.pillar__body-subbullet::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  opacity: 0.35;
+}
+
+.pillar--technical .pillar__body-subbullet::before { background: var(--impact-blue); }
+.pillar--business .pillar__body-subbullet::before { background: var(--impact-green); }
+.pillar--leadership .pillar__body-subbullet::before { background: var(--impact-purple); }
+
+.pillar__body-subbullet--marked {
+  padding-left: calc(var(--pillar-marker-size) + 5px);
+}
+
+.pillar__body-subbullet--marked::before {
+  display: none;
+}
+
+.pillar__body-subbullet--marked .company-marker-wrap--pillar {
+  position: absolute;
+  left: 0;
+  top: calc(0.55em + 1.5px - (var(--pillar-marker-size) / 2) + var(--pillar-marker-y-nudge, 0px));
+}
+
+.pillar__body-subbullet__text {
+  flex: 1;
+  min-width: 0;
 }
 
 .pillar__body-item--marked.pillar__body-item--bulleted .pillar__body-text {
@@ -352,25 +398,6 @@
 .pillar__body-text__inner {
   flex: 1;
   min-width: 0;
-}
-
-.pillar__body-inline-part {
-  display: inline-flex;
-  align-items: flex-start;
-  gap: 3px;
-  vertical-align: baseline;
-}
-
-.pillar__body-inline-part .company-marker-wrap--pillar {
-  top: calc(0.2em + 1.5px - (var(--pillar-marker-size) / 2) + var(--pillar-marker-y-nudge, 0px));
-}
-
-.pillar__body-inline {
-  margin: 0.1rem 0 0;
-  padding-left: 0.75rem;
-  font-size: 0.58rem;
-  line-height: 1.35;
-  color: var(--text-muted);
 }
 
 .pillar__body-class {
