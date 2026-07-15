@@ -530,13 +530,24 @@ ${timelineHtml}
     });
   }
 
+  /** Build one skills column (scale header + skill groups). */
+  buildSkillsColumn(groups) {
+    const groupsHtml = groups.map((group) => this.buildSkillGroup(group)).join('\n\n');
+
+    return renderComponent('skills-column', { groups: groupsHtml });
+  }
+
   /** Build the core skills card. */
   buildSkillsCard(content) {
     const { skills } = content;
     const groups = skills.groups || skills.skills || [];
-    const groupsHtml = groups.map((group) => this.buildSkillGroup(group)).join('\n\n');
+    const leftGroups = groups.filter((_, index) => index % 2 === 0);
+    const rightGroups = groups.filter((_, index) => index % 2 === 1);
 
-    return renderComponent('skills-card', { groups: groupsHtml });
+    return renderComponent('skills-card', {
+      leftColumn: this.buildSkillsColumn(leftGroups),
+      rightColumn: this.buildSkillsColumn(rightGroups)
+    });
   }
 
   /** Build the full impact section with framework diagram. */
@@ -554,10 +565,15 @@ ${timelineHtml}
       framework: frameworkHtml,
       technicalPillar: pillarByVariant.technical || '',
       businessPillar: pillarByVariant.business || '',
-      leadershipPillar: pillarByVariant.leadership || '',
-      references: this.buildReferences(content),
-      skills: this.buildSkillsCard(content)
+      leadershipPillar: pillarByVariant.leadership || ''
     }), 2);
+  }
+
+  /** Build the core skills section (aligned under business + leadership columns). */
+  buildSkillsSection(content) {
+    return indentBlock(renderComponent('skills-section', {
+      card: this.buildSkillsCard(content)
+    }), 1);
   }
 
   /** Build the full-width tools strip at the bottom of the page. */
@@ -594,6 +610,7 @@ ${indentBlock(toolsHtml, 3)}
       pageTitle: `${content.profile.firstName} ${content.profile.lastName} — CV`,
       header: this.buildHeader(content),
       impact: this.buildImpact(content),
+      skills: this.buildSkillsSection(content),
       toolsFooter: this.buildToolsFooter(content)
     });
 

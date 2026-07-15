@@ -130,6 +130,10 @@ hr {
   position: relative;
 }
 
+.page > .tools-footer {
+  margin-top: auto;
+}
+
 /* ------------------------------------------------------------
    Section labels (01 Journey, 02 Impact, etc.)
    ------------------------------------------------------------ */
@@ -239,11 +243,12 @@ hr {
 
 /* Tools footer — full-width strip at page bottom */
 .tools-footer {
-  margin-top: auto;
   flex-shrink: 0;
   border-top: 1px solid var(--border);
   background: var(--bg-white);
   padding: 6px 0 0;
+  position: relative;
+  z-index: 2;
 }
 
 .tools-footer__inner {
