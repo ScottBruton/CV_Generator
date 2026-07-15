@@ -190,14 +190,8 @@ hr {
 }
 
 /* ============================================================
-   BOTTOM GRID (Skills · Tools · References)
+   LOWER PAGE (References · Core Skills · Tools footer)
    ============================================================ */
-.bottom-grid {
-  display: grid;
-  grid-template-columns: 1fr 1.4fr;
-  gap: var(--s1);
-}
-
 .bottom-card {
   background: var(--bg-white);
   border: 1px solid var(--border);
@@ -242,7 +236,110 @@ hr {
   border-radius: 1px;
 }
 
-/* Tools grid */
+/* References — tucked under business pillar column */
+.page-references {
+  flex-shrink: 0;
+}
+
+.page-references__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 6px;
+  padding: 8px 10px;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.page-references__label {
+  font-size: 0.55rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--blue);
+}
+
+.page-references .references__icon {
+  width: 24px;
+  height: 24px;
+  color: var(--text-secondary);
+  opacity: 0.35;
+}
+
+.page-references__text {
+  font-size: 0.62rem;
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+.page-lower__skills {
+  flex-shrink: 0;
+}
+
+/* Tools footer — full-width strip at page bottom */
+.tools-footer {
+  margin-top: auto;
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
+  background: var(--bg-white);
+  padding: 6px 0 0;
+}
+
+.tools-footer__inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-label--compact {
+  margin-bottom: 0;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.section-label--compact .section-label__num {
+  font-size: 1rem;
+}
+
+.section-label--compact .section-label__text {
+  font-size: 0.85rem;
+}
+
+.tools-footer .tools-grid {
+  flex: 1;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+
+.tools-footer .tool-item {
+  flex: 1 1 0;
+  min-width: 0;
+  gap: 2px;
+}
+
+.tools-footer .tool-item__icon {
+  width: 18px;
+  height: 18px;
+  font-size: 0.55rem;
+}
+
+.tools-footer .tool-item__icon img {
+  width: 12px;
+  height: 12px;
+}
+
+.tools-footer .tool-item__name {
+  font-size: 0.48rem;
+  line-height: 1.1;
+}
+
+/* Legacy tools grid (unused in footer layout) */
 .tools-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -283,50 +380,6 @@ hr {
   font-weight: 500;
   color: var(--text);
   line-height: 1.2;
-}
-
-/* References — tucked bottom-right of page */
-.page-references {
-  position: absolute;
-  right: var(--page-margin);
-  bottom: var(--page-margin);
-  width: 32%;
-  max-width: 68mm;
-  z-index: 2;
-}
-
-.page-references__inner {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  text-align: right;
-  gap: 6px;
-  padding: 8px 10px;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-}
-
-.page-references__label {
-  font-size: 0.55rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--blue);
-}
-
-.page-references .references__icon {
-  width: 28px;
-  height: 28px;
-  color: var(--text-secondary);
-  opacity: 0.35;
-}
-
-.page-references__text {
-  font-size: 0.65rem;
-  color: var(--text-secondary);
-  line-height: 1.4;
-  max-width: 24ch;
 }
 
 /* ============================================================

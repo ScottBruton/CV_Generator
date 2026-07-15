@@ -102,7 +102,21 @@
   background: var(--impact-purple);
 }
 
-/* Three pillars */
+/* Three pillars — per-column layout so side cards tuck under shorter pillars */
+.pillars-layout {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s1);
+  align-items: start;
+}
+
+.pillar-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  min-width: 0;
+}
+
 .pillars {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -205,9 +219,24 @@
   text-align: center;
   flex: 0 1 auto;
   min-width: 0;
+}
+
+.pillar--technical .pillar__header-pill {
   color: var(--impact-blue);
   background: rgba(36, 89, 195, 0.12);
   border: 1px solid rgba(36, 89, 195, 0.28);
+}
+
+.pillar--business .pillar__header-pill {
+  color: var(--impact-green);
+  background: rgba(5, 150, 105, 0.12);
+  border: 1px solid rgba(5, 150, 105, 0.28);
+}
+
+.pillar--leadership .pillar__header-pill {
+  color: var(--impact-purple);
+  background: rgba(109, 63, 201, 0.12);
+  border: 1px solid rgba(109, 63, 201, 0.28);
 }
 
 .pillar__divider {

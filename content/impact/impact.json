@@ -102,58 +102,36 @@
         ]
       },
       "body": [
-        { "heading": "PRODUCT & REGULATORY DELIVERY" },
+        { "heading": "Product & regulatory delivery" },
+        { "subheading": "Regulatory & certification" },
         {
-          "text": "Supported regulatory, verification and pre-certification activities across multiple medical devices:",
           "bullets": [
-            "Supported the CE marking and regulatory submission of three Class II and Class III medical devices.",
-            "Designed and executed pre-validation protocols for the OculusID pupillometer.",
-            "Conducted verification and validation testing.",
-            "Evaluated pupil-tracking performance.",
-            "Supported regulatory-readiness activities.",
-            "Conducted internal regulatory audits across multiple medical devices before certification and submission activities."
+            "CE marking and regulatory submission — Class II and Class III medical devices",
+            "Designed and executed pre-validation protocols for OculusID pupillometer",
+            "Verification, validation and pupil-tracking performance evaluation",
+            "Internal regulatory audits across multiple devices pre-certification and submission"
           ]
         },
+        { "subheading": "Project delivery" },
         {
-          "text": "Led mechanical development of a cardiac monitoring and ultrasound system from early concept through submission:",
           "bullets": [
-            "Generated and managed mechanical requirements.",
-            "Managed detailed mechanical design within budget and timeline, with 2.5 years from conception to submission.",
-            "Supported system integration.",
-            "Addressed IEC 60601-1 design requirements.",
-            "Developed V&V protocol."
+            "Cardiac monitoring and ultrasound system — concept through submission (2.5 years)",
+            "IEC 60601-1 design requirements and V&V protocol development",
+            "Early-stage medical device concepts incl. high-temperature reprocessable Class II device (global client)"
           ]
         },
+        { "subheading": "Portfolio & lifecycle" },
         {
-          "text": "Led early-stage development of multiple medical-device concepts:",
           "bullets": [
-            "Included a high-temperature reprocessable Class II device for a global client."
+            "13+ product-development projects — concept through prototyping, testing, integration and regulatory readiness",
+            "Implantable and surgical portfolio expansion to support clinical and commercial growth"
           ]
         },
+        { "subheading": "Operations & QMS" },
         {
-          "text": "Developed multiple implantable and surgical systems intended to expand the company's clinical and commercial portfolio:",
           "bullets": [
-            "Reverse shoulder arthroplasty instrumentation.",
-            "Canine femoral implant system.",
-            "Constrained liner and femoral head combination.",
-            "Nitinol arterial and tracheal stent systems."
-          ]
-        },
-        {
-          "text": "Improved supply-chain and quality-management processes at Signature Orthopaedics:",
-          "bullets": [
-            "Restructured elements of the supply chain at Signature Orthopaedics.",
-            "Designed a product-tracking interface integrated into the QMS.",
-            "Improved product visibility.",
-            "Increased transparency across departments.",
-            "Supported communication between engineering, quality and operations."
-          ]
-        },
-        {
-          "text": "Contributed across the complete medical-device development lifecycle:",
-          "bullets": [
-            "Contributed across more than 13 product-development projects involving mechanical, software, firmware and manufacturing responsibilities.",
-            "Supported products from concept development through design, prototyping, testing, integration and regulatory readiness."
+            "Supply chain restructure at Signature Orthopaedics",
+            "Product-tracking interface integrated into QMS — improved visibility and cross-department transparency"
           ]
         }
       ]
@@ -171,68 +149,36 @@
         ]
       },
       "body": [
-        { "heading": "LEADERSHIP & COLLABORATION" },
+        { "heading": "Leadership & collaboration" },
+        { "subheading": "Product & project leadership" },
         {
-          "text": "Held product and mechanical leadership roles across multiple medical-device projects:",
           "bullets": [
-            "Product lead on:",
-            "An AI-based medical-device program, receiving positive feedback for communication, organisation and delivery.",
-            "Management of stakeholders and junior members.",
-            "The OculusID handheld pupillometer.",
-            "Mechanical lead for a cardiac monitoring and ultrasound platform.",
-            "Coordinated with the cross-functional team.",
-            "Managed junior product developers throughout the project lifetime.",
-            "Coordinated between stakeholders and cross-functional team members on timeline and budget.",
-            "Worked with electrical, firmware, software and systems teams.",
-            "Supported integration through to submission."
+            "Product lead — AI-based medical device program",
+            "Product lead — OculusID handheld pupillometer",
+            "Mechanical lead — cardiac monitoring and ultrasound platform; coordinated cross-functional team through submission",
+            "Managed junior product developers, stakeholders, timeline and budget"
+          ]
+        },
+        { "subheading": "Technical mentorship" },
+        {
+          "bullets": [
+            "SolidWorks training sessions for junior product developers",
+            "Mechanical external reviewer on company projects",
+            "Day-to-day technical guidance — CAD, DfM, material selection, medical-device development"
+          ]
+        },
+        { "subheading": "Cross-functional collaboration" },
+        {
+          "bullets": [
+            "Led multidisciplinary activities across mechanical, electrical, firmware, software, manufacturing and QA/regulatory",
+            "Bridge between disciplines through biomed, mechanical, electrical, firmware and software experience",
+            "Weekly client meetings — presented technical outcomes, risks, solutions and decisions",
+            "Trusted working relationships across engineering, quality, manufacturing, regulatory and commercial teams"
           ]
         },
         {
-          "text": "Contributed technical leadership across more than 13 projects, ranging from early concept development to commercial and regulatory delivery."
-        },
-        {
-          "text": "Led multidisciplinary product-development activities across:",
-          "bullets": [
-            "Mechanical engineering.",
-            "Electrical engineering.",
-            "Firmware.",
-            "Software.",
-            "Manufacturing.",
-            "Quality and regulatory functions."
-          ]
-        },
-        {
-          "text": "Developed and supported engineering capability within the company:",
-          "bullets": [
-            "Delivered regular SolidWorks training sessions for junior product developers.",
-            "Mechanical external reviewer on other projects within the company.",
-            "Provided day-to-day technical guidance in:",
-            "Mechanical design.",
-            "CAD modelling.",
-            "Design for manufacture.",
-            "Material selection.",
-            "Medical-device development."
-          ]
-        },
-        {
-          "text": "Led regular client and stakeholder communication:",
-          "bullets": [
-            "Weekly client meetings.",
-            "Presented technical outcomes, risks, solutions and decisions."
-          ]
-        },
-        {
-          "text": "Built and supported cross-functional collaboration:",
-          "bullets": [
-            "Built trusted working relationships through clear communication, reliability and technical support.",
-            "Acted as a bridge between disciplines through professional experience in:",
-            "Biomedical engineering.",
-            "Mechanical engineering.",
-            "Electrical systems.",
-            "Firmware.",
-            "Software development.",
-            "Supported open cross-functional collaboration between engineering, quality, manufacturing, regulatory and commercial teams."
-          ]
+          "text": "13+ projects — early concept development through commercial and regulatory delivery",
+          "plain": true
         }
       ]
     }

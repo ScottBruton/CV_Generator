@@ -370,9 +370,9 @@ ${timelineHtml}
     return footnoteHtml ? `${contentHtml}\n\n${footnoteHtml}` : contentHtml;
   }
 
-  /** Build header stat pills for the technical pillar. */
+  /** Build header stat pills from pillar KPI stats. */
   buildHeaderPills(pillar) {
-    if (pillar.variant !== 'technical' || !Array.isArray(pillar.kpi?.stats)) {
+    if (!Array.isArray(pillar.kpi?.stats)) {
       return '';
     }
 
@@ -399,24 +399,20 @@ ${timelineHtml}
     });
   }
 
-  /** Build the full impact section with framework diagram. */
-  buildImpact(content) {
-    const { impact } = content;
-    const pillarsHtml = (impact.pillars || []).map((pillar) => this.buildPillar(pillar)).join('\n\n');
+  /** Build the references card. */
+  buildReferences(content) {
+    const { references } = content;
 
-    const frameworkHtml = renderComponent('framework', {
-      title: impact.frameworkTitle || ''
+    return renderComponent('page-references', {
+      icon: icons.referencesUser,
+      title: references.sectionTitle || 'References',
+      statement: references.statement
     });
-
-    return indentBlock(renderComponent('impact', {
-      framework: frameworkHtml,
-      pillars: pillarsHtml
-    }), 2);
   }
 
-  /** Build skills and tools cards. */
-  buildBottomGrid(content) {
-    const { skills, tools } = content;
+  /** Build the core skills card. */
+  buildSkillsCard(content) {
+    const { skills } = content;
 
     const skillsListHtml = renderEach('skill-item', skills.skills || [], (skill) => {
       if (typeof skill === 'string') {
@@ -425,27 +421,54 @@ ${timelineHtml}
       return { name: skill.name, level: skill.level ?? 80 };
     });
 
+    return `<div class="bottom-card page-lower__skills">
+      ${renderComponent('section-label', {
+        modifierClass: 'section-label section-label--small',
+        id: '',
+        sectionNumber: skills.sectionNumber,
+        sectionTitle: skills.sectionTitle
+      })}
+      <ul class="skills-list">
+${skillsListHtml}
+      </ul>
+    </div>`;
+  }
+
+  /** Build the full impact section with framework diagram. */
+  buildImpact(content) {
+    const { impact } = content;
+    const pillarByVariant = Object.fromEntries(
+      (impact.pillars || []).map((pillar) => [pillar.variant, this.buildPillar(pillar)])
+    );
+
+    const frameworkHtml = renderComponent('framework', {
+      title: impact.frameworkTitle || ''
+    });
+
+    return indentBlock(renderComponent('impact', {
+      framework: frameworkHtml,
+      technicalPillar: pillarByVariant.technical || '',
+      businessPillar: pillarByVariant.business || '',
+      leadershipPillar: pillarByVariant.leadership || '',
+      references: this.buildReferences(content),
+      skills: this.buildSkillsCard(content)
+    }), 2);
+  }
+
+  /** Build the full-width tools strip at the bottom of the page. */
+  buildToolsFooter(content) {
+    const { tools } = content;
+
     const toolsHtml = renderEach('tool-item', tools.tools, (tool) => ({
       name: tool.name,
       icon: tool.icon && fs.existsSync(path.join(this.root, tool.icon)) ? tool.icon : '',
       initial: tool.name.charAt(0)
     }));
 
-    return indentLines(`<section class="bottom-grid" aria-label="Skills and tools">
-  <div class="bottom-card">
+    return indentLines(`<section class="tools-footer" aria-label="Tools and technologies">
+  <div class="tools-footer__inner">
     ${renderComponent('section-label', {
-      modifierClass: 'section-label section-label--small',
-      id: '',
-      sectionNumber: skills.sectionNumber,
-      sectionTitle: skills.sectionTitle
-    })}
-    <ul class="skills-list">
-${indentBlock(skillsListHtml, 3)}
-    </ul>
-  </div>
-  <div class="bottom-card">
-    ${renderComponent('section-label', {
-      modifierClass: 'section-label section-label--small',
+      modifierClass: 'section-label section-label--small section-label--compact',
       id: '',
       sectionNumber: tools.sectionNumber,
       sectionTitle: tools.sectionTitle
@@ -457,17 +480,6 @@ ${indentBlock(toolsHtml, 3)}
 </section>`, 2);
   }
 
-  /** Build the references block tucked at the bottom-right of the page. */
-  buildReferences(content) {
-    const { references } = content;
-
-    return indentBlock(renderComponent('page-references', {
-      icon: icons.referencesUser,
-      title: references.sectionTitle || 'References',
-      statement: references.statement
-    }), 2);
-  }
-
   /** Assemble the full page and write index.html. */
   build() {
     const content = this.loadContent();
@@ -477,8 +489,7 @@ ${indentBlock(toolsHtml, 3)}
       pageTitle: `${content.profile.firstName} ${content.profile.lastName} — CV`,
       header: this.buildHeader(content),
       impact: this.buildImpact(content),
-      bottomGrid: this.buildBottomGrid(content),
-      references: this.buildReferences(content)
+      toolsFooter: this.buildToolsFooter(content)
     });
 
     fs.writeFileSync(this.outputFile, html, 'utf8');
