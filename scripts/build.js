@@ -530,7 +530,7 @@ ${timelineHtml}
     });
   }
 
-  /** Build one skills column (scale header + skill groups). */
+  /** Build one skills column (skill groups). */
   buildSkillsColumn(groups) {
     const groupsHtml = groups.map((group) => this.buildSkillGroup(group)).join('\n\n');
 
@@ -545,6 +545,7 @@ ${timelineHtml}
     const rightGroups = groups.filter((_, index) => index % 2 === 1);
 
     return renderComponent('skills-card', {
+      legend: loadComponent('skills-legend'),
       leftColumn: this.buildSkillsColumn(leftGroups),
       rightColumn: this.buildSkillsColumn(rightGroups)
     });
@@ -565,7 +566,8 @@ ${timelineHtml}
       framework: frameworkHtml,
       technicalPillar: pillarByVariant.technical || '',
       businessPillar: pillarByVariant.business || '',
-      leadershipPillar: pillarByVariant.leadership || ''
+      leadershipPillar: pillarByVariant.leadership || '',
+      skillsSpan: this.buildSkillsSection(content)
     }), 2);
   }
 
@@ -610,7 +612,6 @@ ${indentBlock(toolsHtml, 3)}
       pageTitle: `${content.profile.firstName} ${content.profile.lastName} — CV`,
       header: this.buildHeader(content),
       impact: this.buildImpact(content),
-      skills: this.buildSkillsSection(content),
       toolsFooter: this.buildToolsFooter(content)
     });
 

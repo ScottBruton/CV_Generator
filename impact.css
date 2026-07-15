@@ -110,6 +110,7 @@
 .pillars-layout {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
   gap: var(--s1);
   align-items: start;
 }
@@ -118,6 +119,16 @@
   display: flex;
   flex-direction: column;
   gap: var(--s1);
+  min-width: 0;
+}
+
+.pillar-col--technical {
+  grid-row: 1 / -1;
+}
+
+.pillars-layout__skills {
+  grid-column: 2 / -1;
+  grid-row: 2;
   min-width: 0;
 }
 
