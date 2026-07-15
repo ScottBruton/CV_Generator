@@ -170,7 +170,8 @@ function normalizeTimelineStep(entry, root, companyMarkers, getInstanceId) {
   const markerHtml = companyId
     ? renderCompanyMarker(companyId, companyMarkers, {
       instanceId: getInstanceId(),
-      contextClass: 'company-marker-wrap--timeline'
+      contextClass: 'company-marker-wrap--timeline',
+      shape: companyMarkers.timelineMarkerShape || companyMarkers.markerShape || 'diamond'
     })
     : '';
 
@@ -221,7 +222,8 @@ class CVBuilder {
   renderBulletMarker(companyRef) {
     return renderCompanyMarker(companyRef, this.companyMarkers, {
       instanceId: this.nextMarkerInstanceId(),
-      contextClass: 'company-marker-wrap--pillar'
+      contextClass: 'company-marker-wrap--pillar',
+      shape: this.companyMarkers.pillarMarkerShape || this.companyMarkers.markerShape || 'circle'
     });
   }
 
@@ -355,6 +357,46 @@ ${timelineHtml}
       .join('\n');
   }
 
+  /** Format one inline bullet with optional company marker. */
+  formatInlineBullet(bullet) {
+    const data = typeof bullet === 'string' ? { text: bullet } : bullet;
+    const content = this.formatPillarLine(bullet);
+    const marker = data.company ? this.renderBulletMarker(data.company) : '';
+
+    if (!marker) {
+      return content;
+    }
+
+    return `<span class="pillar__body-inline-part">${marker}<span>${content}</span></span>`;
+  }
+
+  /** Props for pillar body items that support an optional company marker on the main line. */
+  pillarItemMarkerProps(entry, options = {}) {
+    const itemMarker = entry.company ? this.renderBulletMarker(entry.company) : '';
+    const marked = Boolean(itemMarker);
+
+    return {
+      itemMarker,
+      marked,
+      markedClass: marked ? ' pillar__body-item--marked' : '',
+      markedTextClass: marked ? ' pillar__body-text--marked' : '',
+      bulleted: options.bulleted !== undefined ? options.bulleted : true,
+      plainClass: entry.plain ? ' pillar__body-text--plain' : ''
+    };
+  }
+
+  /** Build the main paragraph HTML for a pillar body item. */
+  buildPillarItemContentHtml(entry) {
+    const hasText = Boolean(entry.text && String(entry.text).trim());
+    if (!hasText) {
+      return '';
+    }
+
+    const { itemMarker, markedTextClass, plainClass } = this.pillarItemMarkerProps(entry);
+
+    return `<p class="pillar__body-text${plainClass}${markedTextClass}">${itemMarker}<span class="pillar__body-text__inner">${this.formatPillarLine(entry)}</span></p>`;
+  }
+
   /** Build one pillar body entry (heading, subheading, or item with sub-bullets). */
   buildPillarBodyEntry(entry) {
     if (entry.heading) {
@@ -372,14 +414,13 @@ ${timelineHtml}
 
     if (entry.bulletsInline && Array.isArray(entry.bullets) && entry.bullets.length) {
       const inlineBullets = entry.bullets
-        .map((bullet) => this.formatPillarLine(bullet))
+        .map((bullet) => this.formatInlineBullet(bullet))
         .join(' · ');
 
       return renderComponent('pillar-body-item', {
-        itemContent: hasText ? this.formatPillarLine(entry) : '',
+        itemContentHtml: this.buildPillarItemContentHtml(entry),
         inlineBullets,
-        bulleted: true,
-        plainClass: entry.plain ? ' pillar__body-text--plain' : ''
+        ...this.pillarItemMarkerProps(entry)
       });
     }
 
@@ -390,10 +431,10 @@ ${timelineHtml}
     }
 
     return renderComponent('pillar-body-item', {
-      itemContent: hasText ? this.formatPillarLine(entry) : '',
+      itemContentHtml: this.buildPillarItemContentHtml(entry),
       bullets: bulletsHtml,
       bulleted: hasText && !bulletsHtml,
-      plainClass: entry.plain ? ' pillar__body-text--plain' : ''
+      ...this.pillarItemMarkerProps(entry, { bulleted: hasText && !bulletsHtml })
     });
   }
 

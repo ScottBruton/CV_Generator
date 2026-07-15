@@ -1,5 +1,7 @@
 {
-  "markerShape": "diamond",
+  "showCompanyMarkers": false,
+  "timelineMarkerShape": "diamond",
+  "pillarMarkerShape": "circle",
   "companies": {
     "cti": {
       "label": "CTI Education Group",

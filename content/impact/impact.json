@@ -21,70 +21,75 @@
             { "text": "Nitinol arterial stent", "class": "III", "endToEnd": true, "company": "disa" },
             { "text": "Tracheal stent", "class": "IIa", "endToEnd": true, "company": "disa" },
             { "text": "Canine femoral implant system", "class": "II", "endToEnd": true, "company": "signature" },
-            { "text": "Constrained liner and femoral head combination", "class": "II" },
-            { "text": "Sinuplasty balloon dilation system", "class": "II", "endToEnd": true },
-            "200+ orthopaedic surgical tools",
-            { "text": "Cannulated drills", "href": "#" },
-            { "text": "Femoral head retractor", "href": "#" },
-            { "text": "Knee replacement instrumentation and tray set", "endToEnd": true },
-            { "text": "Reverse shoulder arthroplasty instrument set", "endToEnd": true },
-            { "text": "Self-orienting femoral stem broach system (patent in progress)", "endToEnd": true }
+            { "text": "Constrained liner and femoral head combination", "class": "II", "company": "" },
+            { "text": "Sinuplasty balloon dilation system", "class": "II", "endToEnd": true, "company": "" },
+            { "text": "200+ orthopaedic surgical tools", "company": "" },
+            { "text": "Cannulated drills", "href": "#", "company": "" },
+            { "text": "Femoral head retractor", "href": "#", "company": "" },
+            { "text": "Knee replacement instrumentation and tray set", "endToEnd": true, "company": "" },
+            { "text": "Reverse shoulder arthroplasty instrument set", "endToEnd": true, "company": "" },
+            { "text": "Self-orienting femoral stem broach system (patent in progress)", "endToEnd": true, "company": "" }
           ]
         },
         { "subheading": "Electro-mechanical" },
         {
           "text": "Next-generation flagship medical system chassis (system integration) (Mechanical Lead)",
-          "plain": true
+          "plain": true,
+          "company": ""
         },
         {
           "text": "Cardiac monitoring and ultrasound integrated display system (Mechanical Lead)",
           "endToEnd": true,
           "bulletsInline": true,
+          "company": "",
           "bullets": [
-            "~50 unique components",
-            "IP22 rated",
-            "IEC 60601-1 aligned mechanical design"
+            { "text": "~50 unique components", "company": "" },
+            { "text": "IP22 rated", "company": "" },
+            { "text": "IEC 60601-1 aligned mechanical design", "company": "" }
           ]
         },
         {
           "text": "Stillborn Ultrasound Prevention System (Mechanical Lead)",
           "endToEnd": true,
           "bulletsInline": true,
+          "company": "",
           "bullets": [
-            "Portable ultrasound enclosure and mounting",
-            "Mechanical integration of display and transducer module",
-            "Concept to submission"
+            { "text": "Portable ultrasound enclosure and mounting", "company": "" },
+            { "text": "Mechanical integration of display and transducer module", "company": "" },
+            { "text": "Concept to submission", "company": "" }
           ]
         },
         {
           "text": "OculusID (Biomedical Junior Engineer)",
           "bulletsInline": true,
+          "company": "",
           "bullets": [
-            "React, Electron, JavaScript, TypeScript front-end",
-            "Python backend",
-            "Pupil-tracking and diagnostic functionality"
+            { "text": "React, Electron, JavaScript, TypeScript front-end", "company": "" },
+            { "text": "Python backend", "company": "" },
+            { "text": "Pupil-tracking and diagnostic functionality", "company": "" }
           ]
         },
         { "subheading": "Software applications" },
         {
           "text": "3D medical imaging iOS application",
-          "href": "#"
+          "href": "#",
+          "company": ""
         },
         { "heading": "Jigs & machinery" },
         {
           "bullets": [
-            "Two 3-axis precision micro-gluing machines",
-            "UV adhesive-curing station",
-            { "text": "SignaStretch ligament preparation jig", "href": "#" }
+            { "text": "Two 3-axis precision micro-gluing machines", "company": "" },
+            { "text": "UV adhesive-curing station", "company": "" },
+            { "text": "SignaStretch ligament preparation jig", "href": "#", "company": "" }
           ]
         },
         { "heading": "Engineering & academic" },
         {
           "bullets": [
-            "Biocompatible and high-temperature polymer database for medical devices",
-            "SolidWorks macros and design automation tools",
-            { "text": "Honours: accelerated weathering system", "href": "#" },
-            { "text": "Master's: tactile prosthetic fitment system", "href": "#" }
+            { "text": "Biocompatible and high-temperature polymer database for medical devices", "company": "" },
+            { "text": "SolidWorks macros and design automation tools", "company": "" },
+            { "text": "Honours: accelerated weathering system", "href": "#", "company": "" },
+            { "text": "Master's: tactile prosthetic fitment system", "href": "#", "company": "" }
           ]
         }
       ]
@@ -106,32 +111,32 @@
         { "subheading": "Regulatory & certification" },
         {
           "bullets": [
-            "CE marking and regulatory submission — Class II and Class III medical devices",
-            "Designed and executed pre-validation protocols for OculusID pupillometer",
-            "Verification, validation and pupil-tracking performance evaluation",
-            "Internal regulatory audits across multiple devices pre-certification and submission"
+            { "text": "CE marking and regulatory submission — Class II and Class III medical devices", "company": "" },
+            { "text": "Designed and executed pre-validation protocols for OculusID pupillometer", "company": "" },
+            { "text": "Verification, validation and pupil-tracking performance evaluation", "company": "" },
+            { "text": "Internal regulatory audits across multiple devices pre-certification and submission", "company": "" }
           ]
         },
         { "subheading": "Project delivery" },
         {
           "bullets": [
-            "Cardiac monitoring and ultrasound system — concept through submission (2.5 years)",
-            "IEC 60601-1 design requirements and V&V protocol development",
-            "Early-stage medical device concepts incl. high-temperature reprocessable Class II device (global client)"
+            { "text": "Cardiac monitoring and ultrasound system — concept through submission (2.5 years)", "company": "" },
+            { "text": "IEC 60601-1 design requirements and V&V protocol development", "company": "" },
+            { "text": "Early-stage medical device concepts incl. high-temperature reprocessable Class II device (global client)", "company": "" }
           ]
         },
         { "subheading": "Portfolio & lifecycle" },
         {
           "bullets": [
-            "13+ product-development projects — concept through prototyping, testing, integration and regulatory readiness",
-            "Implantable and surgical portfolio expansion to support clinical and commercial growth"
+            { "text": "13+ product-development projects — concept through prototyping, testing, integration and regulatory readiness", "company": "" },
+            { "text": "Implantable and surgical portfolio expansion to support clinical and commercial growth", "company": "" }
           ]
         },
         { "subheading": "Operations & QMS" },
         {
           "bullets": [
-            "Supply chain restructure at Signature Orthopaedics",
-            "Product-tracking interface integrated into QMS — improved visibility and cross-department transparency"
+            { "text": "Supply chain restructure at Signature Orthopaedics", "company": "" },
+            { "text": "Product-tracking interface integrated into QMS — improved visibility and cross-department transparency", "company": "" }
           ]
         }
       ]
@@ -153,32 +158,33 @@
         { "subheading": "Product & project leadership" },
         {
           "bullets": [
-            "Product lead — AI-based medical device program",
-            "Product lead — OculusID handheld pupillometer",
-            "Mechanical lead — cardiac monitoring and ultrasound platform; coordinated cross-functional team through submission",
-            "Managed junior product developers, stakeholders, timeline and budget"
+            { "text": "Product lead — AI-based medical device program", "company": "" },
+            { "text": "Product lead — OculusID handheld pupillometer", "company": "" },
+            { "text": "Mechanical lead — cardiac monitoring and ultrasound platform; coordinated cross-functional team through submission", "company": "" },
+            { "text": "Managed junior product developers, stakeholders, timeline and budget", "company": "" }
           ]
         },
         { "subheading": "Technical mentorship" },
         {
           "bullets": [
-            "SolidWorks training sessions for junior product developers",
-            "Mechanical external reviewer on company projects",
-            "Day-to-day technical guidance — CAD, DfM, material selection, medical-device development"
+            { "text": "SolidWorks training sessions for junior product developers", "company": "" },
+            { "text": "Mechanical external reviewer on company projects", "company": "" },
+            { "text": "Day-to-day technical guidance — CAD, DfM, material selection, medical-device development", "company": "" }
           ]
         },
         { "subheading": "Cross-functional collaboration" },
         {
           "bullets": [
-            "Led multidisciplinary activities across mechanical, electrical, firmware, software, manufacturing and QA/regulatory",
-            "Bridge between disciplines through biomed, mechanical, electrical, firmware and software experience",
-            "Weekly client meetings — presented technical outcomes, risks, solutions and decisions",
-            "Trusted working relationships across engineering, quality, manufacturing, regulatory and commercial teams"
+            { "text": "Led multidisciplinary activities across mechanical, electrical, firmware, software, manufacturing and QA/regulatory", "company": "" },
+            { "text": "Bridge between disciplines through biomed, mechanical, electrical, firmware and software experience", "company": "" },
+            { "text": "Weekly client meetings — presented technical outcomes, risks, solutions and decisions", "company": "" },
+            { "text": "Trusted working relationships across engineering, quality, manufacturing, regulatory and commercial teams", "company": "" }
           ]
         },
         {
           "text": "13+ projects — early concept development through commercial and regulatory delivery",
-          "plain": true
+          "plain": true,
+          "company": ""
         }
       ]
     }

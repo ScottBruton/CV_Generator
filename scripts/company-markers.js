@@ -94,13 +94,21 @@ function resolveCompanyId(companyRef, config) {
 }
 
 function renderCompanyMarker(companyRef, config, options = {}) {
+  if (config.showCompanyMarkers === false) {
+    return '';
+  }
+
   const companyId = resolveCompanyId(companyRef, config);
   if (!companyId) {
     return '';
   }
 
   const company = config.companies[companyId];
-  const shape = options.shape || config.markerShape || 'diamond';
+  const shape = options.shape
+    || (options.contextClass?.includes('pillar') ? config.pillarMarkerShape : null)
+    || (options.contextClass?.includes('timeline') ? config.timelineMarkerShape : null)
+    || config.markerShape
+    || 'diamond';
   const clipId = `clip-${companyId}-${shape}-${options.instanceId || '0'}`;
   const svg = buildMarkerSvg(company, shape, clipId);
 
