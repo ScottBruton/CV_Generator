@@ -489,28 +489,54 @@ ${timelineHtml}
     });
   }
 
+  /** Build one skill row. */
+  buildSkillRow(subskill) {
+    return renderComponent('skill-row', {
+      name: subskill.name,
+      level: subskill.level ?? 0,
+      note: subskill.note || ''
+    });
+  }
+
+  /** Build a skill group (heading + subskills, or a single flat row). */
+  buildSkillGroup(group) {
+    if (group.name && !group.subskills) {
+      return renderComponent('skill-group', {
+        single: true,
+        rows: this.buildSkillRow(group)
+      });
+    }
+
+    const subskills = group.subskills || [];
+
+    if (subskills.length === 1) {
+      const sub = subskills[0];
+      return renderComponent('skill-group', {
+        single: true,
+        rows: this.buildSkillRow({
+          name: group.heading || sub.name,
+          level: sub.level,
+          note: sub.note
+        })
+      });
+    }
+
+    const rows = subskills.map((sub) => this.buildSkillRow(sub)).join('\n');
+
+    return renderComponent('skill-group', {
+      single: false,
+      heading: group.heading || '',
+      rows
+    });
+  }
+
   /** Build the core skills card. */
   buildSkillsCard(content) {
     const { skills } = content;
+    const groups = skills.groups || skills.skills || [];
+    const groupsHtml = groups.map((group) => this.buildSkillGroup(group)).join('\n\n');
 
-    const skillsListHtml = renderEach('skill-item', skills.skills || [], (skill) => {
-      if (typeof skill === 'string') {
-        return { name: skill, level: 80 };
-      }
-      return { name: skill.name, level: skill.level ?? 80 };
-    });
-
-    return `<div class="bottom-card page-lower__skills">
-      ${renderComponent('section-label', {
-        modifierClass: 'section-label section-label--small',
-        id: '',
-        sectionNumber: skills.sectionNumber,
-        sectionTitle: skills.sectionTitle
-      })}
-      <ul class="skills-list">
-${skillsListHtml}
-      </ul>
-    </div>`;
+    return renderComponent('skills-card', { groups: groupsHtml });
   }
 
   /** Build the full impact section with framework diagram. */

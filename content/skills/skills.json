@@ -1,15 +1,50 @@
 {
-  "sectionNumber": "03",
-  "sectionTitle": "Core Skills",
-  "skills": [
-    { "name": "Mechanical Design", "level": 75 },
-    { "name": "DFM & Tolerance Analysis", "level": 85 },
-    { "name": "Test & Verification", "level": 85 },
-    { "name": "Materials & Processes", "level": 85 },
-    { "name": "Failure Analysis", "level": 75 },
-    { "name": "Project Management", "level": 85 },
-    { "name": "Risk & Compliance", "level": 85 },
-    { "name": "Systems Thinking", "level": 75 },
-    { "name": "Leadership & Mentoring", "level": 85 }
+  "groups": [
+    {
+      "heading": "Mechanical Engineering",
+      "subskills": [
+        { "name": "Fundamental Principles", "level": 84, "note": "" },
+        { "name": "Tolerance & FEA analysis", "level": 67, "note": "" },
+        { "name": "Manufacturing Materials", "level": 79, "note": "" },
+        { "name": "Design for Manufacturing", "level": 73, "note": "" }
+      ]
+    },
+    {
+      "heading": "Solidworks CAD",
+      "subskills": [
+        { "name": "CAD Modeling (Solids and Surfaces)", "level": 91, "note": "" },
+        { "name": "CAD Drawings", "level": 76, "note": "" }
+      ]
+    },
+    {
+      "heading": "Technical Writing",
+      "subskills": [
+        { "name": "Protocols & Reports", "level": 71, "note": "" },
+        { "name": "Design & Client Presentations", "level": 64, "note": "" }
+      ]
+    },
+    {
+      "heading": "Product Development",
+      "subskills": [
+        { "name": "Product Strategy and Requirements", "level": 69, "note": "" },
+        { "name": "Concept Development", "level": 77, "note": "" },
+        { "name": "Prototyping and Iteration", "level": 82, "note": "" },
+        { "name": "Verification, Validation and Launch", "level": 74, "note": "" }
+      ]
+    },
+    {
+      "heading": "Automation",
+      "subskills": [
+        { "name": "VBA", "level": 52, "note": "" },
+        { "name": "AI Integration", "level": 41, "note": "" }
+      ]
+    },
+    {
+      "heading": "Software Development",
+      "subskills": [
+        { "name": "Front-End", "level": 48, "note": "" },
+        { "name": "Back-End", "level": 44, "note": "" }
+      ]
+    }
   ]
 }

@@ -199,43 +199,6 @@ hr {
   padding: var(--s1);
 }
 
-/* Core skills list */
-.skills-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  list-style: none;
-}
-
-.skill-item__row {
-  display: grid;
-  grid-template-columns: 1fr 0.9fr;
-  align-items: center;
-  gap: 10px;
-}
-
-.skill-item__name {
-  font-size: 0.72rem;
-  font-weight: 500;
-  color: var(--text);
-  line-height: var(--lh-tight);
-}
-
-.skill-item__bar {
-  height: 2px;
-  background: #e5e7eb;
-  border-radius: 1px;
-  overflow: hidden;
-}
-
-.skill-item__fill {
-  display: block;
-  height: 100%;
-  width: calc(var(--skill-level) * 1%);
-  background: var(--blue);
-  border-radius: 1px;
-}
-
 /* References — tucked under business pillar column */
 .page-references {
   flex-shrink: 0;
@@ -272,10 +235,6 @@ hr {
   font-size: 0.62rem;
   color: var(--text-secondary);
   line-height: 1.35;
-}
-
-.page-lower__skills {
-  flex-shrink: 0;
 }
 
 /* Tools footer — full-width strip at page bottom */
