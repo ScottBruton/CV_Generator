@@ -372,6 +372,38 @@
   line-height: 1.38;
   position: relative;
   padding-left: 8px;
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.pillar__body-bullet--marked {
+  padding-left: 0;
+}
+
+.pillar__body-bullet--marked::before {
+  display: none;
+}
+
+.company-marker-wrap {
+  display: inline-flex;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.company-marker-wrap--pillar .company-marker {
+  width: 8px;
+  height: 8px;
+  margin-top: 0.28em;
+}
+
+.pillar--technical .company-marker-wrap--pillar { color: var(--impact-blue); }
+.pillar--business .company-marker-wrap--pillar { color: var(--impact-green); }
+.pillar--leadership .company-marker-wrap--pillar { color: var(--impact-purple); }
+
+.pillar__body-bullet__text {
+  flex: 1;
+  min-width: 0;
 }
 
 .pillar__body-bullet::before {

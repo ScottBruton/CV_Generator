@@ -18,9 +18,9 @@
         { "subheading": "Mechanical" },
         {
           "bullets": [
-            { "text": "Nitinol arterial stent", "class": "III", "endToEnd": true },
-            { "text": "Tracheal stent", "class": "IIa", "endToEnd": true },
-            { "text": "Canine femoral implant system", "class": "II", "endToEnd": true },
+            { "text": "Nitinol arterial stent", "class": "III", "endToEnd": true, "company": "disa" },
+            { "text": "Tracheal stent", "class": "IIa", "endToEnd": true, "company": "disa" },
+            { "text": "Canine femoral implant system", "class": "II", "endToEnd": true, "company": "signature" },
             { "text": "Constrained liner and femoral head combination", "class": "II" },
             { "text": "Sinuplasty balloon dilation system", "class": "II", "endToEnd": true },
             "200+ orthopaedic surgical tools",

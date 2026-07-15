@@ -4,6 +4,9 @@
 
 :root {
   --timeline-dot-size: 10px;
+  --timeline-marker-size: 11px;
+  /* Tweak marker left/right on the timeline (negative = left, positive = right). */
+  --timeline-marker-x-nudge: -2px;
   --timeline-start-w: 10px;
   --timeline-steps: 7;
   --timeline-details-pad-x: 10px;
@@ -124,6 +127,7 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  position: relative;
 }
 
 .timeline__step-logo {
@@ -161,10 +165,43 @@
   flex-shrink: 0;
   position: relative;
   z-index: 1;
+  min-height: var(--timeline-dot-size);
 }
 
 .timeline__start .timeline__step-rail {
   justify-content: center;
+}
+
+/* Centred on the segment between dot centres (see --timeline-marker-x-nudge to fine-tune). */
+.timeline__marker {
+  position: absolute;
+  top: calc(var(--timeline-logo-block-h) + 11px);
+  left: calc(50% - var(--timeline-start-w) / 2 + var(--timeline-marker-x-nudge));
+  width: var(--timeline-marker-size);
+  height: var(--timeline-marker-size);
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.timeline__grid > .timeline__step:first-of-type .timeline__marker {
+  left: calc(50% - var(--timeline-start-w) * 0.75 + var(--timeline-marker-x-nudge));
+}
+
+.company-marker-wrap--timeline .company-marker {
+  width: var(--timeline-marker-size);
+  height: var(--timeline-marker-size);
+}
+
+.timeline__step .company-marker-wrap--timeline {
+  color: var(--blue);
+}
+
+.timeline__step--company .company-marker-wrap--timeline {
+  color: var(--purple);
 }
 
 .timeline__step-line {

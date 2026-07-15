@@ -7,6 +7,7 @@
     <span class="timeline__step-line" aria-hidden="true"></span>
     <span class="timeline__dot"></span>
   </div>
+  {{#if markerHtml}}<span class="timeline__marker">{{markerHtml}}</span>{{/if}}
   <div class="timeline__step-details">
     <span class="timeline__divider" aria-hidden="true"></span>
     <span class="timeline__dates">{{presentArrowHtml}}{{dateRange}}</span>

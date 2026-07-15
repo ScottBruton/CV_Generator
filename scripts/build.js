@@ -3,6 +3,10 @@
 const fs = require('fs');
 const path = require('path');
 const icons = require('../components/icons');
+const {
+  resolveCompanyId,
+  renderCompanyMarker
+} = require('./company-markers');
 
 const ROOT = path.resolve(__dirname, '..');
 const CONTENT_DIR = path.join(ROOT, 'content');
@@ -146,13 +150,14 @@ function formatTimelineDateRange(entry) {
 /**
  * Normalises one timeline JSON entry into template data.
  */
-function normalizeTimelineStep(entry, root) {
+function normalizeTimelineStep(entry, root, companyMarkers, getInstanceId) {
   const organization = entry.organization || entry.name || '';
   const image = entry.image || entry.icon || '';
   const hasIcon = image && fs.existsSync(path.join(root, image));
   const present = entry.endDate === null || entry.end === 'Present' || entry.isPresent === true;
   const honor = entry.honor || '';
   const url = entry.url || '';
+  const companyId = entry.companyId || resolveCompanyId(organization, companyMarkers);
 
   const iconHtml = hasIcon
     ? `<img class="timeline__icon" src="${escapeHtml(image)}" alt="">`
@@ -162,6 +167,13 @@ function normalizeTimelineStep(entry, root) {
     ? `<a class="timeline__logo" href="${escapeHtml(url)}" title="${escapeHtml(organization)}" target="_blank" rel="noopener noreferrer">${iconHtml}<span class="visually-hidden">${escapeHtml(organization)}</span></a>`
     : `<span class="timeline__logo">${iconHtml}</span>`;
 
+  const markerHtml = companyId
+    ? renderCompanyMarker(companyId, companyMarkers, {
+      instanceId: getInstanceId(),
+      contextClass: 'company-marker-wrap--timeline'
+    })
+    : '';
+
   return {
     stepClass: entry.company ? 'timeline__step timeline__step--company' : 'timeline__step',
     organization: escapeHtml(organization),
@@ -169,7 +181,8 @@ function normalizeTimelineStep(entry, root) {
     honorHtml: honor ? `<span class="timeline__honor">${escapeHtml(honor)}</span>` : '',
     dateRange: formatTimelineDateRange(entry),
     presentArrowHtml: present ? '<span class="timeline__arrow" aria-hidden="true">&#9654;</span>' : '',
-    logoLinkHtml
+    logoLinkHtml,
+    markerHtml
   };
 }
 
@@ -177,8 +190,8 @@ function normalizeTimelineStep(entry, root) {
  * Builds timeline grid HTML from JSON entries.
  * Each step = one column: logo centred on line segment, rail ends with milestone dot.
  */
-function buildTimeline(timelineItems, root) {
-  const steps = (timelineItems || []).map((entry) => normalizeTimelineStep(entry, root));
+function buildTimeline(timelineItems, root, companyMarkers, getInstanceId) {
+  const steps = (timelineItems || []).map((entry) => normalizeTimelineStep(entry, root, companyMarkers, getInstanceId));
 
   const stepsHtml = steps
     .map((step) => indentBlock(renderComponent('timeline-segment', step), 4))
@@ -194,6 +207,22 @@ class CVBuilder {
   constructor(options = {}) {
     this.root = options.root || ROOT;
     this.outputFile = options.outputFile || OUTPUT_FILE;
+    this.markerInstance = 0;
+    this.companyMarkers = loadJson('companies', 'company-markers.json');
+  }
+
+  /** Unique id for inline SVG clip paths. */
+  nextMarkerInstanceId() {
+    this.markerInstance += 1;
+    return String(this.markerInstance);
+  }
+
+  /** Render a company marker for pillar bullets. */
+  renderBulletMarker(companyRef) {
+    return renderCompanyMarker(companyRef, this.companyMarkers, {
+      instanceId: this.nextMarkerInstanceId(),
+      contextClass: 'company-marker-wrap--pillar'
+    });
   }
 
   /** Load all section JSON into a single content object. */
@@ -205,7 +234,8 @@ class CVBuilder {
       impact: loadJson('impact', 'impact.json'),
       skills: loadJson('skills', 'skills.json'),
       tools: loadJson('tools', 'tools.json'),
-      references: loadJson('references', 'references.json')
+      references: loadJson('references', 'references.json'),
+      companyMarkers: this.companyMarkers
     };
   }
 
@@ -226,7 +256,12 @@ class CVBuilder {
       href: item.href || ''
     }));
 
-    const timeline = buildTimeline(journey.timeline, this.root);
+    const timeline = buildTimeline(
+      journey.timeline,
+      this.root,
+      this.companyMarkers,
+      () => this.nextMarkerInstanceId()
+    );
 
     const statsHtml = renderEach('stat-card', stats.stats, (stat) => ({
       variant: stat.variant,
@@ -308,9 +343,15 @@ ${timelineHtml}
   /** Build bullet list HTML for a body entry. */
   buildPillarBullets(bullets) {
     return (bullets || [])
-      .map((bullet) => renderComponent('pillar-body-bullet', {
-        bulletContent: this.formatPillarLine(bullet)
-      }))
+      .map((bullet) => {
+        const data = typeof bullet === 'string' ? { text: bullet } : bullet;
+        const marker = data.company ? this.renderBulletMarker(data.company) : '';
+
+        return renderComponent('pillar-body-bullet', {
+          bulletContent: this.formatPillarLine(bullet),
+          marker
+        });
+      })
       .join('\n');
   }
 

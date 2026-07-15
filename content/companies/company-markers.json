@@ -1,0 +1,55 @@
+{
+  "markerShape": "diamond",
+  "companies": {
+    "cti": {
+      "label": "CTI Education Group",
+      "pattern": "split",
+      "top": "#E30613",
+      "bottom": "#FFFFFF",
+      "line": "#111111"
+    },
+    "nmu": {
+      "label": "Nelson Mandela University",
+      "pattern": "split",
+      "top": "#F5B800",
+      "bottom": "#FFFFFF",
+      "line": "#111111"
+    },
+    "uct": {
+      "label": "University of Cape Town",
+      "pattern": "split",
+      "top": "#2563EB",
+      "bottom": "#FFFFFF",
+      "line": "#111111"
+    },
+    "disa": {
+      "label": "DISA Vascular",
+      "pattern": "bands",
+      "colors": ["#00AEEF", "#FFD100", "#ED1C24"]
+    },
+    "medtech": {
+      "label": "Medical Diagnostech",
+      "pattern": "bands",
+      "colors": ["#FFFFFF", "#111111", "#ED1C24"]
+    },
+    "signature": {
+      "label": "Signature Orthopaedics",
+      "pattern": "bands",
+      "colors": ["#C5E86C", "#1B7F3A", "#FFFFFF"]
+    },
+    "ide": {
+      "label": "IDE Group",
+      "pattern": "bands",
+      "colors": ["#FFFFFF", "#9E9E9E", "#F5B800"]
+    }
+  },
+  "organizationMap": {
+    "CTI Education Group": "cti",
+    "Nelson Mandela University": "nmu",
+    "University of Cape Town": "uct",
+    "DISA Vascular": "disa",
+    "Medical Diagnostech": "medtech",
+    "Signature Orthopaedics": "signature",
+    "IDE Group": "ide"
+  }
+}
