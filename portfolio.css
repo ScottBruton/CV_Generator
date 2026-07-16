@@ -5,6 +5,7 @@
 .page--portfolio {
   --portfolio-blue: #2563eb;
   --portfolio-navy: #11172f;
+  --portfolio-header-bg: #eef4ff;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -101,8 +102,9 @@
 .portfolio-item__header {
   flex-shrink: 0;
   padding: 7px 10px 6px;
-  border-bottom: 1px solid var(--border);
-  background: linear-gradient(180deg, #fafbfd 0%, var(--bg-white) 100%);
+  border-bottom: 1px solid rgba(37, 99, 235, 0.12);
+  background: linear-gradient(180deg, #f3f7ff 0%, var(--portfolio-header-bg) 100%);
+  text-align: center;
 }
 
 .portfolio-item__title {
@@ -113,6 +115,7 @@
   letter-spacing: 0.04em;
   color: var(--portfolio-blue);
   line-height: 1.25;
+  text-align: center;
 }
 
 .portfolio-item__subtitle {
@@ -122,6 +125,7 @@
   color: var(--portfolio-navy);
   line-height: 1.2;
   opacity: 0.78;
+  text-align: center;
 }
 
 .portfolio-item__media {
@@ -129,7 +133,7 @@
   display: flex;
   align-items: stretch;
   justify-content: stretch;
-  background: #f4f6f8;
+  background: #f3f4f6;
   padding: 4px;
   min-height: 0;
   overflow: hidden;
