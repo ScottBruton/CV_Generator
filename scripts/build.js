@@ -636,7 +636,7 @@ ${indentBlock(toolsHtml, 3)}
 
   /** Build sheet 2 — portfolio section for the combined document. */
   buildPortfolio(content) {
-    const { portfolio, profile } = content;
+    const { portfolio } = content;
     const itemsHtml = (portfolio.items || [])
       .map((item) => this.buildPortfolioItem(item))
       .filter(Boolean)
@@ -645,8 +645,6 @@ ${indentBlock(toolsHtml, 3)}
     if (!itemsHtml) return '';
 
     return indentBlock(renderComponent('portfolio-sheet', {
-      title: portfolio.title || 'Portfolio',
-      ownerName: `${profile.firstName} ${profile.lastName}`,
       items: indentBlock(itemsHtml, 2)
     }), 1);
   }
