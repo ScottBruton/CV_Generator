@@ -18,15 +18,15 @@
         { "subheading": "Mechanical" },
         {
           "bullets": [
-            { "text": "Nitinol arterial stent", "class": "III", "endToEnd": true, "company": "disa" },
+            { "text": "Nitinol arterial stent", "class": "III", "endToEnd": true, "company": "disa", "href": "#nitinol-stent" },
             { "text": "Tracheal stent", "class": "IIa", "endToEnd": true, "company": "disa" },
             { "text": "Canine femoral implant system", "class": "II", "endToEnd": true, "company": "signature" },
-            { "text": "Constrained liner and femoral head combination", "class": "II", "company": "" },
+            { "text": "Constrained liner and femoral head combination", "class": "II", "company": "", "href": "#constrained-liner" },
             { "text": "Sinuplasty balloon dilation system", "class": "II", "endToEnd": true, "company": "" },
             { "text": "200+ orthopaedic surgical tools", "company": "" },
             { "text": "Cannulated drills", "href": "#", "company": "" },
-            { "text": "Femoral head retractor", "href": "#", "company": "" },
-            { "text": "Knee replacement instrumentation and tray set", "endToEnd": true, "company": "" },
+            { "text": "Femoral head retractor", "href": "#femoral-head-retractor", "company": "" },
+            { "text": "Knee replacement instrumentation and tray set", "endToEnd": true, "company": "", "href": "#knee-replacement-tray" },
             { "text": "Reverse shoulder arthroplasty instrument set", "endToEnd": true, "company": "" },
             { "text": "Self-orienting femoral stem broach system (patent in progress)", "endToEnd": true, "company": "" }
           ]
@@ -42,6 +42,7 @@
           "endToEnd": true,
           "bulletsInline": true,
           "company": "",
+          "href": "#cardiac-monitor-v1",
           "bullets": [
             { "text": "~50 unique components", "company": "" },
             { "text": "IP22 rated", "company": "" },
@@ -53,6 +54,7 @@
           "endToEnd": true,
           "bulletsInline": true,
           "company": "",
+          "href": "#stillbirth-prevention",
           "bullets": [
             { "text": "Portable ultrasound enclosure and mounting", "company": "" },
             { "text": "Mechanical integration of display and transducer module", "company": "" },

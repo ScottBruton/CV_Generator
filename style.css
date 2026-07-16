@@ -72,11 +72,13 @@ body {
   color: var(--text);
   background: #E8E8E8;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   min-height: 100vh;
   min-width: calc(var(--page-width) + 2 * var(--s3));
   padding: var(--s3);
+  gap: var(--s3);
 }
 
 ul {
@@ -475,9 +477,13 @@ hr {
     width: var(--page-width);
     height: var(--page-height);
     box-shadow: none;
-    page-break-after: avoid;
+    page-break-after: always;
     page-break-inside: avoid;
     overflow: hidden;
+  }
+
+  .page:last-child {
+    page-break-after: auto;
   }
 
   .bottom-card,

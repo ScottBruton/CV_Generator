@@ -1,0 +1,11 @@
+<article class="portfolio-item portfolio-item--{{layout}}" id="{{id}}">
+  <div class="portfolio-item__inner">
+    <header class="portfolio-item__header">
+      <h2 class="portfolio-item__title">{{title}}</h2>
+      {{#if subtitle}}<p class="portfolio-item__subtitle">{{subtitle}}</p>{{/if}}
+    </header>
+    <div class="portfolio-item__media{{#if multiImage}} portfolio-item__media--multi{{/if}}">
+      {{images}}
+    </div>
+  </div>
+</article>

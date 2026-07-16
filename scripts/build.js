@@ -236,6 +236,7 @@ class CVBuilder {
       impact: loadJson('impact', 'impact.json'),
       skills: loadJson('skills', 'skills.json'),
       tools: loadJson('tools', 'tools.json'),
+      portfolio: loadJson('portfolio', 'portfolio.json'),
       references: loadJson('references', 'references.json'),
       companyMarkers: this.companyMarkers
     };
@@ -603,7 +604,54 @@ ${indentBlock(toolsHtml, 3)}
 </section>`, 2);
   }
 
-  /** Assemble the full page and write index.html. */
+  /** Build one portfolio image if the asset exists. */
+  buildPortfolioImage(src, alt) {
+    if (!src || !fs.existsSync(path.join(this.root, src))) return '';
+    return renderComponent('portfolio-image', {
+      src: escapeHtml(src),
+      alt: escapeHtml(alt)
+    });
+  }
+
+  /** Build a single portfolio grid item. */
+  buildPortfolioItem(item) {
+    const images = (item.images || [])
+      .map((src, index) => this.buildPortfolioImage(src, `${item.title} — image ${index + 1}`))
+      .filter(Boolean)
+      .join('\n');
+
+    if (!images) return '';
+
+    const layout = item.layout === 'full' ? 'full' : 'half';
+
+    return renderComponent('portfolio-item', {
+      id: item.id || '',
+      title: item.title || '',
+      subtitle: item.subtitle || '',
+      layout,
+      multiImage: (item.images || []).length > 1,
+      images
+    });
+  }
+
+  /** Build sheet 2 — portfolio section for the combined document. */
+  buildPortfolio(content) {
+    const { portfolio, profile } = content;
+    const itemsHtml = (portfolio.items || [])
+      .map((item) => this.buildPortfolioItem(item))
+      .filter(Boolean)
+      .join('\n\n');
+
+    if (!itemsHtml) return '';
+
+    return indentBlock(renderComponent('portfolio-sheet', {
+      title: portfolio.title || 'Portfolio',
+      ownerName: `${profile.firstName} ${profile.lastName}`,
+      items: indentBlock(itemsHtml, 2)
+    }), 1);
+  }
+
+  /** Assemble the full document and write index.html. */
   build() {
     const content = this.loadContent();
     const pageTemplate = fs.readFileSync(path.join(TEMPLATE_DIR, 'page.html'), 'utf8');
@@ -612,7 +660,8 @@ ${indentBlock(toolsHtml, 3)}
       pageTitle: `${content.profile.firstName} ${content.profile.lastName} — CV`,
       header: this.buildHeader(content),
       impact: this.buildImpact(content),
-      toolsFooter: this.buildToolsFooter(content)
+      toolsFooter: this.buildToolsFooter(content),
+      portfolio: this.buildPortfolio(content)
     });
 
     fs.writeFileSync(this.outputFile, html, 'utf8');

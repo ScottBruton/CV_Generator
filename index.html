@@ -14,9 +14,10 @@
   <link rel="stylesheet" href="timeline.css">
   <link rel="stylesheet" href="impact.css">
   <link rel="stylesheet" href="skills.css">
+  <link rel="stylesheet" href="portfolio.css">
 </head>
 <body>
-  <article class="page" aria-label="CV document">
+  <article class="page" id="cv" aria-label="CV document">
     <header class="header">
       <div class="header__photo"><img src="assets/profilePic.jpg" alt="Scott Bruton" class="header__photo-img"></div>
       <div class="header__right">
@@ -296,13 +297,13 @@
 
 
     <ul class="pillar__body-list pillar__body-list--standalone">
-    <li class="pillar__body-bullet"><span class="pillar__body-bullet__text">Nitinol arterial stent <span class="pillar__body-class">(Class III)</span><span class="pillar__body-mark" aria-hidden="true">*</span></span></li>
+    <li class="pillar__body-bullet"><span class="pillar__body-bullet__text"><a href="#nitinol-stent" class="pillar__body-link">Nitinol arterial stent <span class="pillar__body-class">(Class III)</span></a><span class="pillar__body-mark" aria-hidden="true">*</span></span></li>
 
     <li class="pillar__body-bullet"><span class="pillar__body-bullet__text">Tracheal stent <span class="pillar__body-class">(Class IIa)</span><span class="pillar__body-mark" aria-hidden="true">*</span></span></li>
 
     <li class="pillar__body-bullet"><span class="pillar__body-bullet__text">Canine femoral implant system <span class="pillar__body-class">(Class II)</span><span class="pillar__body-mark" aria-hidden="true">*</span></span></li>
 
-    <li class="pillar__body-bullet"><span class="pillar__body-bullet__text">Constrained liner and femoral head combination <span class="pillar__body-class">(Class II)</span></span></li>
+    <li class="pillar__body-bullet"><span class="pillar__body-bullet__text"><a href="#constrained-liner" class="pillar__body-link">Constrained liner and femoral head combination <span class="pillar__body-class">(Class II)</span></a></span></li>
 
     <li class="pillar__body-bullet"><span class="pillar__body-bullet__text">Sinuplasty balloon dilation system <span class="pillar__body-class">(Class II)</span><span class="pillar__body-mark" aria-hidden="true">*</span></span></li>
 
@@ -310,9 +311,9 @@
 
     <li class="pillar__body-bullet"><span class="pillar__body-bullet__text"><a href="#" class="pillar__body-link">Cannulated drills</a></span></li>
 
-    <li class="pillar__body-bullet"><span class="pillar__body-bullet__text"><a href="#" class="pillar__body-link">Femoral head retractor</a></span></li>
+    <li class="pillar__body-bullet"><span class="pillar__body-bullet__text"><a href="#femoral-head-retractor" class="pillar__body-link">Femoral head retractor</a></span></li>
 
-    <li class="pillar__body-bullet"><span class="pillar__body-bullet__text">Knee replacement instrumentation and tray set<span class="pillar__body-mark" aria-hidden="true">*</span></span></li>
+    <li class="pillar__body-bullet"><span class="pillar__body-bullet__text"><a href="#knee-replacement-tray" class="pillar__body-link">Knee replacement instrumentation and tray set</a><span class="pillar__body-mark" aria-hidden="true">*</span></span></li>
 
     <li class="pillar__body-bullet"><span class="pillar__body-bullet__text">Reverse shoulder arthroplasty instrument set<span class="pillar__body-mark" aria-hidden="true">*</span></span></li>
 
@@ -331,7 +332,7 @@
 
 
     <div class="pillar__body-item pillar__body-item--bulleted">
-      <p class="pillar__body-text"><span class="pillar__body-text__inner">Cardiac monitoring and ultrasound integrated display system (Mechanical Lead)<span class="pillar__body-mark" aria-hidden="true">*</span></span></p>
+      <p class="pillar__body-text"><span class="pillar__body-text__inner"><a href="#cardiac-monitor-v1" class="pillar__body-link">Cardiac monitoring and ultrasound integrated display system (Mechanical Lead)</a><span class="pillar__body-mark" aria-hidden="true">*</span></span></p>
 
       <ul class="pillar__body-sublist">
         <li class="pillar__body-subbullet"><span class="pillar__body-subbullet__text">~50 unique components</span></li>
@@ -347,7 +348,7 @@
 
 
     <div class="pillar__body-item pillar__body-item--bulleted">
-      <p class="pillar__body-text"><span class="pillar__body-text__inner">Stillborn Ultrasound Prevention System (Mechanical Lead)<span class="pillar__body-mark" aria-hidden="true">*</span></span></p>
+      <p class="pillar__body-text"><span class="pillar__body-text__inner"><a href="#stillbirth-prevention" class="pillar__body-link">Stillborn Ultrasound Prevention System (Mechanical Lead)</a><span class="pillar__body-mark" aria-hidden="true">*</span></span></p>
 
       <ul class="pillar__body-sublist">
         <li class="pillar__body-subbullet"><span class="pillar__body-subbullet__text">Portable ultrasound enclosure and mounting</span></li>
@@ -897,6 +898,117 @@
         </div>
       </div>
     </section>
+  </article>
+  <article class="page page--portfolio" id="portfolio" aria-label="Portfolio">
+    <header class="portfolio-header">
+      <a href="#cv" class="portfolio-header__back">↑ CV</a>
+      <div class="portfolio-header__title-wrap">
+        <h1 class="portfolio-header__title">Portfolio</h1>
+        <p class="portfolio-header__name">Scott Bruton</p>
+      </div>
+    </header>
+    <div class="portfolio-grid">
+          <article class="portfolio-item portfolio-item--half" id="nitinol-stent">
+        <div class="portfolio-item__inner">
+          <header class="portfolio-item__header">
+            <h2 class="portfolio-item__title">Nitinol Arterial Stent</h2>
+            <p class="portfolio-item__subtitle">Class III</p>
+          </header>
+          <div class="portfolio-item__media">
+            <img src="assets/Portfolio/Arterial_Stent.png" alt="Nitinol Arterial Stent — image 1" class="portfolio-item__image" loading="lazy">
+
+          </div>
+        </div>
+      </article>
+
+
+      <article class="portfolio-item portfolio-item--half" id="constrained-liner">
+        <div class="portfolio-item__inner">
+          <header class="portfolio-item__header">
+            <h2 class="portfolio-item__title">Constrained Liner & Femoral Head</h2>
+            <p class="portfolio-item__subtitle">Class II</p>
+          </header>
+          <div class="portfolio-item__media">
+            <img src="assets/Portfolio/g_zero.png" alt="Constrained Liner &amp; Femoral Head — image 1" class="portfolio-item__image" loading="lazy">
+
+          </div>
+        </div>
+      </article>
+
+
+      <article class="portfolio-item portfolio-item--half" id="femoral-head-retractor">
+        <div class="portfolio-item__inner">
+          <header class="portfolio-item__header">
+            <h2 class="portfolio-item__title">Femoral Head Retractor</h2>
+
+          </header>
+          <div class="portfolio-item__media">
+            <img src="assets/Portfolio/Femoral_head_retractor.png" alt="Femoral Head Retractor — image 1" class="portfolio-item__image" loading="lazy">
+
+          </div>
+        </div>
+      </article>
+
+
+      <article class="portfolio-item portfolio-item--half" id="knee-replacement-tray">
+        <div class="portfolio-item__inner">
+          <header class="portfolio-item__header">
+            <h2 class="portfolio-item__title">Knee Replacement Instrumentation & Tray</h2>
+
+          </header>
+          <div class="portfolio-item__media">
+            <img src="assets/Portfolio/surgical_tray.png" alt="Knee Replacement Instrumentation &amp; Tray — image 1" class="portfolio-item__image" loading="lazy">
+
+          </div>
+        </div>
+      </article>
+
+
+      <article class="portfolio-item portfolio-item--full" id="cardiac-monitor-v1">
+        <div class="portfolio-item__inner">
+          <header class="portfolio-item__header">
+            <h2 class="portfolio-item__title">Cardiac Monitor — Version 1</h2>
+            <p class="portfolio-item__subtitle">Integrated display system</p>
+          </header>
+          <div class="portfolio-item__media portfolio-item__media--multi">
+            <img src="assets/Portfolio/cardiac_pocp1_1.png" alt="Cardiac Monitor — Version 1 — image 1" class="portfolio-item__image" loading="lazy">
+
+      <img src="assets/Portfolio/cardiac_pocp1_2.png" alt="Cardiac Monitor — Version 1 — image 2" class="portfolio-item__image" loading="lazy">
+
+          </div>
+        </div>
+      </article>
+
+
+      <article class="portfolio-item portfolio-item--full" id="cardiac-monitor-v2">
+        <div class="portfolio-item__inner">
+          <header class="portfolio-item__header">
+            <h2 class="portfolio-item__title">Cardiac Monitor — Version 2</h2>
+            <p class="portfolio-item__subtitle">Integrated display system</p>
+          </header>
+          <div class="portfolio-item__media">
+            <img src="assets/Portfolio/cardiac_pocp2.png" alt="Cardiac Monitor — Version 2 — image 1" class="portfolio-item__image" loading="lazy">
+
+          </div>
+        </div>
+      </article>
+
+
+      <article class="portfolio-item portfolio-item--full" id="stillbirth-prevention">
+        <div class="portfolio-item__inner">
+          <header class="portfolio-item__header">
+            <h2 class="portfolio-item__title">Stillbirth Ultrasound Prevention System</h2>
+
+          </header>
+          <div class="portfolio-item__media portfolio-item__media--multi">
+            <img src="assets/Portfolio/still_birth_1.png" alt="Stillbirth Ultrasound Prevention System — image 1" class="portfolio-item__image" loading="lazy">
+
+      <img src="assets/Portfolio/still_birth_2.png" alt="Stillbirth Ultrasound Prevention System — image 2" class="portfolio-item__image" loading="lazy">
+
+          </div>
+        </div>
+      </article>
+    </div>
   </article>
 </body>
 </html>
