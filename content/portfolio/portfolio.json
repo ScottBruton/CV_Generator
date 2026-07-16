@@ -29,20 +29,20 @@
     },
     {
       "id": "cardiac-monitor-v1",
-      "title": "Cardiac Monitor — Version 1",
+      "title": "Cardiac Monitor — Revision 1",
       "subtitle": "Integrated display system",
       "images": [
         "assets/Portfolio/cardiac_pocp1_1.png",
         "assets/Portfolio/cardiac_pocp1_2.png"
       ],
-      "layout": "full"
+      "layout": "half"
     },
     {
       "id": "cardiac-monitor-v2",
-      "title": "Cardiac Monitor — Version 2",
+      "title": "Cardiac Monitor — Revision 2",
       "subtitle": "Integrated display system",
       "images": ["assets/Portfolio/cardiac_pocp2.png"],
-      "layout": "full"
+      "layout": "half"
     },
     {
       "id": "stillbirth-prevention",
