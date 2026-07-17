@@ -4,7 +4,7 @@
       <h2 class="portfolio-item__title">{{title}}</h2>
       {{#if subtitle}}<p class="portfolio-item__subtitle">{{subtitle}}</p>{{/if}}
     </header>
-    <div class="portfolio-item__media{{#if multiImage}} portfolio-item__media--multi{{/if}}">
+    <div class="portfolio-item__media{{mediaClass}}">
       {{images}}
     </div>
   </div>

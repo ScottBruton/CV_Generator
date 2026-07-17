@@ -20,11 +20,11 @@
           "bullets": [
             { "text": "Nitinol arterial stent", "class": "III", "endToEnd": true, "company": "disa", "href": "#nitinol-stent" },
             { "text": "Tracheal stent", "class": "IIa", "endToEnd": true, "company": "disa" },
-            { "text": "Canine femoral implant system", "class": "II", "endToEnd": true, "company": "signature" },
+            { "text": "Canine femoral implant system", "class": "II", "endToEnd": true, "company": "signature", "href": "#canine-femoral-implant" },
             { "text": "Constrained liner and femoral head combination", "class": "II", "company": "", "href": "#constrained-liner" },
             { "text": "Sinuplasty balloon dilation system", "class": "II", "endToEnd": true, "company": "" },
-            { "text": "200+ orthopaedic surgical tools", "company": "" },
-            { "text": "Cannulated drills", "href": "#", "company": "" },
+            { "text": "200+ orthopaedic surgical tools", "company": "", "href": "#glenosphere-impactor" },
+            { "text": "Cannulated drills", "company": "" },
             { "text": "Femoral head retractor", "href": "#femoral-head-retractor", "company": "" },
             { "text": "Knee replacement instrumentation and tray set", "endToEnd": true, "company": "", "href": "#knee-replacement-tray" },
             { "text": "Reverse shoulder arthroplasty instrument set", "endToEnd": true, "company": "" },
@@ -35,7 +35,8 @@
         {
           "text": "Next-generation flagship medical system chassis (system integration) (Mechanical Lead)",
           "plain": true,
-          "company": ""
+          "company": "",
+          "href": "#flagship-chassis"
         },
         {
           "text": "Cardiac monitoring and ultrasound integrated display system (Mechanical Lead)",
@@ -73,15 +74,15 @@
         { "subheading": "Software applications" },
         {
           "text": "3D medical imaging iOS application",
-          "href": "#",
-          "company": ""
+          "company": "",
+          "href": "#dicom-ios-app"
         },
         { "heading": "Jigs & machinery" },
         {
           "bullets": [
             { "text": "Two 3-axis precision micro-gluing machines", "company": "" },
             { "text": "UV adhesive-curing station", "company": "" },
-            { "text": "SignaStretch ligament preparation jig", "href": "#", "company": "" }
+            { "text": "SignaStretch ligament preparation jig", "company": "", "href": "#signastretch-jig" }
           ]
         },
         { "heading": "Engineering & academic" },
@@ -89,8 +90,8 @@
           "bullets": [
             { "text": "Biocompatible and high-temperature polymer database for medical devices", "company": "" },
             { "text": "SolidWorks macros and design automation tools", "company": "" },
-            { "text": "Honours: accelerated weathering system", "href": "#", "company": "" },
-            { "text": "Master's: tactile prosthetic fitment system", "href": "#", "company": "" }
+            { "text": "Honours: accelerated weathering system", "company": "" },
+            { "text": "Master's: tactile prosthetic fitment system", "company": "" }
           ]
         }
       ]
@@ -159,7 +160,7 @@
         { "subheading": "Product & project leadership" },
         {
           "bullets": [
-            { "text": "Product lead — AI-based medical device program", "company": "" },
+            { "text": "Product lead — AI-based medical device program", "company": "", "href": "#ai-medical-device-program" },
             { "text": "Product lead — OculusID handheld pupillometer", "company": "" },
             { "text": "Mechanical lead — cardiac monitoring and ultrasound platform; coordinated cross-functional team through submission", "company": "" },
             { "text": "Managed junior product developers, stakeholders, timeline and budget", "company": "" }

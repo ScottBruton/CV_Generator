@@ -1,57 +1,118 @@
 {
   "title": "Portfolio",
-  "items": [
+  "sheets": [
     {
-      "id": "nitinol-stent",
-      "title": "Nitinol Arterial Stent",
-      "subtitle": "Class III",
-      "images": ["assets/Portfolio/Arterial_Stent.png"],
-      "layout": "half"
+      "items": [
+        {
+          "id": "nitinol-stent",
+          "title": "Nitinol Arterial Stent",
+          "subtitle": "Class III",
+          "images": ["assets/Portfolio/Arterial_Stent.png"],
+          "layout": "half"
+        },
+        {
+          "id": "constrained-liner",
+          "title": "Constrained Liner & Femoral Head",
+          "subtitle": "Class II",
+          "images": ["assets/Portfolio/g_zero.png"],
+          "layout": "half"
+        },
+        {
+          "id": "femoral-head-retractor",
+          "title": "Femoral Head Retractor",
+          "images": ["assets/Portfolio/Femoral_head_retractor.png"],
+          "layout": "half"
+        },
+        {
+          "id": "knee-replacement-tray",
+          "title": "Knee Replacement Instrumentation & Tray",
+          "images": [
+            "assets/Portfolio/surgical_tray.png",
+            "assets/Portfolio/surgical_tray2.png"
+          ],
+          "layout": "half"
+        },
+        {
+          "id": "cardiac-monitor-v1",
+          "title": "Cardiac Monitor — Revision 1",
+          "subtitle": "Integrated display system",
+          "images": [
+            "assets/Portfolio/cardiac_pocp1_1.png",
+            "assets/Portfolio/cardiac_pocp1_2.png"
+          ],
+          "layout": "half"
+        },
+        {
+          "id": "cardiac-monitor-v2",
+          "title": "Cardiac Monitor — Revision 2",
+          "subtitle": "Integrated display system",
+          "images": ["assets/Portfolio/cardiac_pocp2.png"],
+          "layout": "half"
+        },
+        {
+          "id": "stillbirth-prevention",
+          "title": "Stillbirth Prevention Ultrasound System",
+          "images": [
+            "assets/Portfolio/still_birth_1.png",
+            "assets/Portfolio/still_birth_2.png"
+          ],
+          "layout": "full"
+        }
+      ]
     },
     {
-      "id": "constrained-liner",
-      "title": "Constrained Liner & Femoral Head",
-      "subtitle": "Class II",
-      "images": ["assets/Portfolio/g_zero.png"],
-      "layout": "half"
-    },
-    {
-      "id": "femoral-head-retractor",
-      "title": "Femoral Head Retractor",
-      "images": ["assets/Portfolio/Femoral_head_retractor.png"],
-      "layout": "half"
-    },
-    {
-      "id": "knee-replacement-tray",
-      "title": "Knee Replacement Instrumentation & Tray",
-      "images": ["assets/Portfolio/surgical_tray.png"],
-      "layout": "half"
-    },
-    {
-      "id": "cardiac-monitor-v1",
-      "title": "Cardiac Monitor — Revision 1",
-      "subtitle": "Integrated display system",
-      "images": [
-        "assets/Portfolio/cardiac_pocp1_1.png",
-        "assets/Portfolio/cardiac_pocp1_2.png"
-      ],
-      "layout": "half"
-    },
-    {
-      "id": "cardiac-monitor-v2",
-      "title": "Cardiac Monitor — Revision 2",
-      "subtitle": "Integrated display system",
-      "images": ["assets/Portfolio/cardiac_pocp2.png"],
-      "layout": "half"
-    },
-    {
-      "id": "stillbirth-prevention",
-      "title": "Stillbirth Prevention Ultrasound System",
-      "images": [
-        "assets/Portfolio/still_birth_1.png",
-        "assets/Portfolio/still_birth_2.png"
-      ],
-      "layout": "full"
+      "items": [
+        {
+          "id": "canine-femoral-implant",
+          "title": "Canine Femoral Implant System",
+          "subtitle": "Class II",
+          "images": ["assets/Portfolio/Canine_Femoral_Implant.png"],
+          "layout": "half"
+        },
+        {
+          "id": "flagship-chassis",
+          "title": "Flagship Medical System Chassis",
+          "subtitle": "System integration",
+          "images": [
+            "assets/Portfolio/sheetMetal1.png",
+            "assets/Portfolio/sheetMetal2.png"
+          ],
+          "layout": "half"
+        },
+        {
+          "id": "dicom-ios-app",
+          "title": "3D Medical Imaging iOS Application",
+          "subtitle": "3DICOM",
+          "images": [
+            "assets/Portfolio/dicom1.png",
+            "assets/Portfolio/dicom2.jpeg",
+            "assets/Portfolio/dicom3.png",
+            "assets/Portfolio/dicom4.jpeg"
+          ],
+          "layout": "full"
+        },
+        {
+          "id": "ai-medical-device-program",
+          "title": "AI Medical Device Program",
+          "subtitle": "Machine learning",
+          "images": ["assets/Portfolio/AI1.png"],
+          "layout": "half"
+        },
+        {
+          "id": "glenosphere-impactor",
+          "title": "Glenosphere Impactor",
+          "subtitle": "Surgical Tools",
+          "images": ["assets/Portfolio/Glenosphere_Impactor.png"],
+          "layout": "half"
+        },
+        {
+          "id": "signastretch-jig",
+          "title": "SignaStretch Ligament Preparation Jig",
+          "subtitle": "Jigs & machinery",
+          "images": ["assets/Portfolio/Ligament_Tensioner.png"],
+          "layout": "half-centered"
+        }
+      ]
     }
   ]
 }

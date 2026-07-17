@@ -615,38 +615,67 @@ ${indentBlock(toolsHtml, 3)}
 
   /** Build a single portfolio grid item. */
   buildPortfolioItem(item) {
-    const images = (item.images || [])
+    const validImages = (item.images || []).filter(
+      (src) => src && fs.existsSync(path.join(this.root, src))
+    );
+
+    const images = validImages
       .map((src, index) => this.buildPortfolioImage(src, `${item.title} — image ${index + 1}`))
       .filter(Boolean)
       .join('\n');
 
     if (!images) return '';
 
-    const layout = item.layout === 'full' ? 'full' : 'half';
+    const layout = item.layout === 'full'
+      ? 'full'
+      : item.layout === 'half-centered'
+        ? 'half-centered'
+        : 'half';
+    let mediaClass = '';
+    if (validImages.length >= 4) {
+      mediaClass = ' portfolio-item__media--quad';
+    } else if (validImages.length > 1) {
+      mediaClass = ' portfolio-item__media--multi';
+    }
 
     return renderComponent('portfolio-item', {
       id: item.id || '',
       title: item.title || '',
       subtitle: item.subtitle || '',
       layout,
-      multiImage: (item.images || []).length > 1,
+      mediaClass,
       images
     });
   }
 
-  /** Build sheet 2 — portfolio section for the combined document. */
-  buildPortfolio(content) {
-    const { portfolio } = content;
-    const itemsHtml = (portfolio.items || [])
+  /** Build one portfolio sheet. */
+  buildPortfolioSheet(items, sheetIndex = 0) {
+    const itemsHtml = items
       .map((item) => this.buildPortfolioItem(item))
       .filter(Boolean)
       .join('\n\n');
 
     if (!itemsHtml) return '';
 
+    const sheetId = sheetIndex === 0 ? 'portfolio' : `portfolio-${sheetIndex + 1}`;
+
     return indentBlock(renderComponent('portfolio-sheet', {
+      sheetId,
       items: indentBlock(itemsHtml, 2)
     }), 1);
+  }
+
+  /** Build all portfolio sheets for the combined document. */
+  buildPortfolio(content) {
+    const { portfolio } = content;
+    const sheets = Array.isArray(portfolio.sheets)
+      ? portfolio.sheets
+      : [{ items: portfolio.items || [] }];
+
+    return sheets
+      .map((sheet, index) => this.buildPortfolioSheet(sheet.items || [], index))
+      .filter(Boolean)
+      .join('\n\n');
   }
 
   /** Assemble the full document and write index.html. */
