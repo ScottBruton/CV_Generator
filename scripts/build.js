@@ -579,14 +579,29 @@ ${timelineHtml}
     }), 1);
   }
 
+  /** Build one tool icon block (linked when href is set). */
+  buildToolIconHtml(tool) {
+    const iconSrc = tool.icon && fs.existsSync(path.join(this.root, tool.icon)) ? tool.icon : '';
+    const name = escapeHtml(tool.name || '');
+    const inner = iconSrc
+      ? `<img src="${escapeHtml(iconSrc)}" alt="${name}">`
+      : `<span>${escapeHtml((tool.name || '?').charAt(0))}</span>`;
+
+    const href = tool.href || tool.url || '';
+    if (href) {
+      return `<a href="${escapeHtml(href)}" class="tool-item__icon tool-item__link" target="_blank" rel="noopener noreferrer" aria-label="${name}">${inner}</a>`;
+    }
+
+    return `<div class="tool-item__icon">${inner}</div>`;
+  }
+
   /** Build the full-width tools strip at the bottom of the page. */
   buildToolsFooter(content) {
     const { tools } = content;
 
     const toolsHtml = renderEach('tool-item', tools.tools, (tool) => ({
       name: tool.name,
-      icon: tool.icon && fs.existsSync(path.join(this.root, tool.icon)) ? tool.icon : '',
-      initial: tool.name.charAt(0)
+      iconHtml: this.buildToolIconHtml(tool)
     }));
 
     return indentBlock(renderComponent('tools-footer', {

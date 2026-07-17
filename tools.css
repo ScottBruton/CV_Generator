@@ -78,6 +78,17 @@
   overflow: hidden;
 }
 
+a.tool-item__icon.tool-item__link {
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+a.tool-item__icon.tool-item__link:hover {
+  border-color: rgba(36, 89, 195, 0.35);
+  background: rgba(36, 89, 195, 0.04);
+}
+
 .tools-footer .tool-item__icon {
   width: 18px;
   height: 18px;
