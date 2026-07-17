@@ -2,9 +2,9 @@
 
 const fs = require('fs');
 const path = require('path');
-const { CVBuilder } = require('./build');
 
 const ROOT = path.resolve(__dirname, '..');
+const BUILD_MODULE = path.join(__dirname, 'build.js');
 const WATCH_DIRS = [
   path.join(ROOT, 'content'),
   path.join(ROOT, 'components'),
@@ -15,10 +15,16 @@ const WATCH_DIRS = [
 
 let debounceTimer = null;
 
+function loadBuilder() {
+  delete require.cache[require.resolve(BUILD_MODULE)];
+  return require(BUILD_MODULE).CVBuilder;
+}
+
 function rebuild() {
   clearTimeout(debounceTimer);
   debounceTimer = setTimeout(() => {
     try {
+      const CVBuilder = loadBuilder();
       const output = new CVBuilder().build();
       console.log(`[${new Date().toLocaleTimeString()}] Rebuilt ${output}`);
     } catch (error) {

@@ -600,7 +600,7 @@ ${timelineHtml}
     const { tools } = content;
 
     const toolsHtml = renderEach('tool-item', tools.tools, (tool) => ({
-      name: tool.name,
+      name: escapeHtml(tool.name || ''),
       iconHtml: this.buildToolIconHtml(tool)
     }));
 
