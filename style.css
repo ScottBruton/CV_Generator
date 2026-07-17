@@ -132,10 +132,6 @@ hr {
   position: relative;
 }
 
-.page > .tools-footer {
-  margin-top: auto;
-}
-
 /* ------------------------------------------------------------
    Section labels (01 Journey, 02 Impact, etc.)
    ------------------------------------------------------------ */
@@ -241,111 +237,6 @@ hr {
   font-size: 0.62rem;
   color: var(--text-secondary);
   line-height: 1.35;
-}
-
-/* Tools footer — full-width strip at page bottom */
-.tools-footer {
-  flex-shrink: 0;
-  border-top: 1px solid var(--border);
-  background: var(--bg-white);
-  padding: 6px 0 0;
-  position: relative;
-  z-index: 2;
-}
-
-.tools-footer__inner {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.section-label--compact {
-  margin-bottom: 0;
-  flex-shrink: 0;
-  white-space: nowrap;
-}
-
-.section-label--compact .section-label__num {
-  font-size: 1rem;
-}
-
-.section-label--compact .section-label__text {
-  font-size: 0.85rem;
-}
-
-.tools-footer .tools-grid {
-  flex: 1;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 2px;
-  min-width: 0;
-}
-
-.tools-footer .tool-item {
-  flex: 1 1 0;
-  min-width: 0;
-  gap: 2px;
-}
-
-.tools-footer .tool-item__icon {
-  width: 18px;
-  height: 18px;
-  font-size: 0.55rem;
-}
-
-.tools-footer .tool-item__icon img {
-  width: 12px;
-  height: 12px;
-}
-
-.tools-footer .tool-item__name {
-  font-size: 0.48rem;
-  line-height: 1.1;
-}
-
-/* Legacy tools grid (unused in footer layout) */
-.tools-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: var(--s1) 4px;
-}
-
-.tool-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  text-align: center;
-}
-
-.tool-item__icon {
-  width: 24px;
-  height: 24px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.65rem;
-  font-weight: 600;
-  color: var(--blue);
-  overflow: hidden;
-}
-
-.tool-item__icon img {
-  width: 16px;
-  height: 16px;
-  object-fit: contain;
-}
-
-.tool-item__name {
-  font-size: 0.6rem;
-  font-weight: 500;
-  color: var(--text);
-  line-height: 1.2;
 }
 
 /* ============================================================

@@ -1,0 +1,108 @@
+/* ============================================================
+   Tools & Technologies footer
+   ============================================================ */
+
+.page > .tools-footer {
+  margin-top: auto;
+}
+
+.tools-footer {
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
+  background: var(--bg-white);
+  padding: 6px 0 0;
+  position: relative;
+  z-index: 2;
+}
+
+.tools-footer__inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tools-footer__title {
+  margin: 0;
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--blue);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+}
+
+.tools-footer .tools-grid {
+  flex: 1;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--s1) 4px;
+}
+
+.tool-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.tools-footer .tool-item {
+  flex: 1 1 0;
+  min-width: 0;
+  gap: 2px;
+}
+
+.tool-item__icon {
+  width: 24px;
+  height: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--blue);
+  overflow: hidden;
+}
+
+.tools-footer .tool-item__icon {
+  width: 18px;
+  height: 18px;
+  font-size: 0.55rem;
+}
+
+.tool-item__icon img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.tools-footer .tool-item__icon img {
+  width: 12px;
+  height: 12px;
+}
+
+.tool-item__name {
+  font-size: 0.6rem;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.tools-footer .tool-item__name {
+  font-size: 0.48rem;
+  line-height: 1.1;
+}

@@ -589,19 +589,10 @@ ${timelineHtml}
       initial: tool.name.charAt(0)
     }));
 
-    return indentLines(`<section class="tools-footer" aria-label="Tools and technologies">
-  <div class="tools-footer__inner">
-    ${renderComponent('section-label', {
-      modifierClass: 'section-label section-label--small section-label--compact',
-      id: '',
-      sectionNumber: tools.sectionNumber,
-      sectionTitle: tools.sectionTitle
-    })}
-    <div class="tools-grid">
-${indentBlock(toolsHtml, 3)}
-    </div>
-  </div>
-</section>`, 2);
+    return indentBlock(renderComponent('tools-footer', {
+      sectionTitle: tools.sectionTitle || 'Tools & Technologies',
+      tools: indentBlock(toolsHtml, 3)
+    }), 2);
   }
 
   /** Build one portfolio image if the asset exists. */

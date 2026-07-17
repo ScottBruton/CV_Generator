@@ -85,11 +85,9 @@
           "subtitle": "3DICOM",
           "images": [
             "assets/Portfolio/dicom1.png",
-            "assets/Portfolio/dicom2.jpeg",
-            "assets/Portfolio/dicom3.png",
-            "assets/Portfolio/dicom4.jpeg"
+            "assets/Portfolio/dicom2.jpeg"
           ],
-          "layout": "full"
+          "layout": "half"
         },
         {
           "id": "ai-medical-device-program",
@@ -110,7 +108,7 @@
           "title": "SignaStretch Ligament Preparation Jig",
           "subtitle": "Jigs & machinery",
           "images": ["assets/Portfolio/Ligament_Tensioner.png"],
-          "layout": "half-centered"
+          "layout": "half"
         }
       ]
     }
