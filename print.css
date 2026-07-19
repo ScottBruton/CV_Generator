@@ -4,6 +4,11 @@
    ============================================================ */
 
 @media print {
+  @page {
+    size: 210mm 297mm;
+    margin: 0;
+  }
+
   *,
   *::before,
   *::after {
@@ -26,6 +31,11 @@
 
   img {
     image-rendering: auto;
+  }
+
+  body.is-print-export-hq img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
   }
 
   svg {

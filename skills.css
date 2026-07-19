@@ -96,6 +96,11 @@
   white-space: nowrap;
 }
 
+.skills-legend__exp-line--sub {
+  text-transform: none;
+  font-weight: 600;
+}
+
 .skills-card__columns {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -211,6 +211,28 @@
     }));
   }
 
+  function downloadBlob(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function exportViaServer() {
+    const response = await fetch('http://127.0.0.1:3001/export', {
+      method: 'POST'
+    });
+
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+
+    const blob = await response.blob();
+    downloadBlob(blob, 'Scott-Bruton-Application.pdf');
+  }
+
   async function exportPdf() {
     const pages = buildCombinedPages();
     if (!pages.length) {
@@ -226,7 +248,16 @@
       if (document.fonts && document.fonts.ready) {
         await document.fonts.ready;
       }
-      document.body.classList.add('is-print-export');
+
+      try {
+        exportBtn.textContent = 'Exporting…';
+        await exportViaServer();
+        return;
+      } catch (serverError) {
+        console.warn('High-quality export server unavailable, using browser print.', serverError);
+      }
+
+      document.body.classList.add('is-print-export', 'is-print-export-hq');
       window.print();
     } finally {
       exportBtn.disabled = false;
@@ -235,7 +266,7 @@
   }
 
   window.addEventListener('afterprint', () => {
-    document.body.classList.remove('is-print-export');
+    document.body.classList.remove('is-print-export', 'is-print-export-hq');
   });
 
   previewBtn?.addEventListener('click', openPreview);

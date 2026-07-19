@@ -7,7 +7,9 @@
     "build": "node scripts/build.js",
     "generate-markers": "node scripts/generate-company-markers.js",
     "watch": "node scripts/watch.js",
-    "dev": "concurrently -n watch,serve -c blue,green \"npm run watch\" \"live-server --port=3000 --watch=content,components,templates,index.html,scripts/app.js,style.css,profile.css,stat-card.css,timeline.css,impact.css,skills.css,portfolio.css,tools.css,cover.css,app.css,print.css,assets --wait=500\"",
+    "export-pdf": "node scripts/export-pdf.js",
+    "export-server": "node scripts/export-server.js",
+    "dev": "concurrently -n watch,serve,export -c blue,green,magenta \"npm run watch\" \"live-server --port=3000 --watch=content,components,templates,index.html,scripts/app.js,style.css,profile.css,stat-card.css,timeline.css,impact.css,skills.css,portfolio.css,tools.css,cover.css,app.css,print.css,assets --wait=500\" \"npm run export-server\"",
     "start": "npm run build && npm run dev",
     "run": "npm run start"
   },
