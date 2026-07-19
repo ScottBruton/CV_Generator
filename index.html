@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scott Bruton — CV</title>
+  <title>Scott Bruton — CV Generator</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,9 +17,87 @@
   <link rel="stylesheet" href="skills.css">
   <link rel="stylesheet" href="portfolio.css">
   <link rel="stylesheet" href="tools.css">
+  <link rel="stylesheet" href="cover.css">
+  <link rel="stylesheet" href="app.css">
 </head>
-<body>
-  <article class="page" id="cv" aria-label="CV document">
+<body class="app">
+<header class="app-dashboard" aria-label="CV Generator dashboard">
+  <div class="app-dashboard__brand">
+    <span class="app-dashboard__title">CV Generator</span>
+    <span class="app-dashboard__active" id="app-active-label">Export — Cover Letter: General cover letter · CV: General CV · Portfolio: Full portfolio</span>
+  </div>
+  <nav class="app-dashboard__nav" aria-label="Document navigation">
+    <div class="app-dropdown" data-doc="cover">
+      <button type="button" class="app-dropdown__trigger" aria-expanded="false" aria-haspopup="true">
+        <span class="app-dropdown__trigger-text">
+          <span class="app-dropdown__type">Cover Letter</span>
+          <span class="app-dropdown__selection" data-dropdown-selection="cover">General cover letter</span>
+        </span>
+        <span class="app-dropdown__chevron" aria-hidden="true">▾</span>
+      </button>
+      <ul class="app-dropdown__menu" role="menu">
+        <li role="none"><button type="button" class="app-dropdown__option" role="menuitem" data-view="cover" data-version="default">General cover letter</button></li>
+      </ul>
+    </div>
+    <div class="app-dropdown" data-doc="cv">
+      <button type="button" class="app-dropdown__trigger" aria-expanded="false" aria-haspopup="true">
+        <span class="app-dropdown__trigger-text">
+          <span class="app-dropdown__type">CV</span>
+          <span class="app-dropdown__selection" data-dropdown-selection="cv">General CV</span>
+        </span>
+        <span class="app-dropdown__chevron" aria-hidden="true">▾</span>
+      </button>
+      <ul class="app-dropdown__menu" role="menu">
+        <li role="none"><button type="button" class="app-dropdown__option" role="menuitem" data-view="cv" data-version="default">General CV</button></li>
+      </ul>
+    </div>
+    <div class="app-dropdown" data-doc="portfolio">
+      <button type="button" class="app-dropdown__trigger" aria-expanded="false" aria-haspopup="true">
+        <span class="app-dropdown__trigger-text">
+          <span class="app-dropdown__type">Portfolio</span>
+          <span class="app-dropdown__selection" data-dropdown-selection="portfolio">Full portfolio</span>
+        </span>
+        <span class="app-dropdown__chevron" aria-hidden="true">▾</span>
+      </button>
+      <ul class="app-dropdown__menu" role="menu">
+        <li role="none"><button type="button" class="app-dropdown__option" role="menuitem" data-view="portfolio" data-version="default">Full portfolio</button></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="app-dashboard__actions">
+    <button type="button" class="app-btn app-btn--secondary" id="app-preview-btn">Preview</button>
+    <button type="button" class="app-btn app-btn--primary" id="app-export-btn">Export PDF</button>
+  </div>
+</header>
+
+  <main class="app-workspace">
+    <div class="app-view" data-view="cover">
+<article class="page page--cover" id="cover-default" data-version="default" aria-label="Cover letter">
+  <header class="cover__header">
+    <p class="cover__sender-name">Scott Bruton</p>
+    <p class="cover__sender-title">Senior Mechanical Engineer / Product Developer</p>
+    <p class="cover__sender-contact">Sydney, Australia · scottpbruton@gmail.com · +61 (40) 6755 034</p>
+  </header>
+  <div class="cover__meta">
+    <p>19 July 2026</p>
+    <p>Hiring Manager</p>
+    <p>Example Company</p>
+  </div>
+  <p class="cover__subject"><strong>Re:</strong> Application — Senior Mechanical Engineer / Product Developer</p>
+  <div class="cover__body">
+    <p class="cover__salutation">Dear Hiring Manager,</p>
+    <p class="cover__paragraph">I am writing to express my interest in contributing my MedTech product development experience to your team. With more than eight years across biomedical R&amp;D, mechanical design, and cross-functional delivery, I bring a strong track record of taking devices from concept through regulatory readiness.</p>
+<p class="cover__paragraph">My experience spans implant systems, surgical instrumentation, electro-mechanical platforms, and software-enabled medical products. I am comfortable leading technical work, collaborating with quality and regulatory stakeholders, and communicating progress clearly to clients and internal teams.</p>
+<p class="cover__paragraph">I would welcome the opportunity to discuss how my background in design, verification, and product delivery could support your organisation's goals.</p>
+    <p class="cover__closing">Yours sincerely,</p>
+    <p class="cover__signature">Scott Bruton</p>
+  </div>
+  <p class="cover__temp-note">Temporary cover letter — replace with company-specific content.</p>
+</article>
+
+    </div>
+    <div class="app-view is-active" data-view="cv">
+      <article class="page" id="cv" aria-label="CV document">
     <header class="header">
       <div class="header__photo"><img src="assets/profilePic.jpg" alt="Scott Bruton" class="header__photo-img"></div>
       <div class="header__right">
@@ -650,8 +729,8 @@
         </div>
         <span class="skills-legend__separator"></span>
         <span class="skills-legend__exp">
-          <span class="skills-legend__exp-line">Exp</span>
-          <span class="skills-legend__exp-line">Years</span>
+          <span class="skills-legend__exp-line">Experience</span>
+          <span class="skills-legend__exp-line">(Years)</span>
         </span>
       </div>
 
@@ -934,7 +1013,9 @@
         </div>
       </div>
     </section>
-  </article>
+      </article>
+    </div>
+    <div class="app-view" data-view="portfolio">
   <article class="page page--portfolio" id="portfolio" aria-label="Portfolio">
     <header class="portfolio-header">
       <a href="#cv" class="portfolio-header__back">↑ CV</a>
@@ -1174,5 +1255,18 @@
       </article>
     </div>
   </article>
+    </div>
+  </main>
+  <div class="app-preview" id="app-preview" aria-hidden="true">
+    <div class="app-preview__header">
+      <span class="app-preview__title">Full application preview — Cover, CV, Portfolio</span>
+      <button type="button" class="app-btn app-btn--secondary" id="app-preview-close">Close</button>
+    </div>
+    <div class="app-preview__body" id="app-preview-body"></div>
+  </div>
+  <div class="app-export-root" id="app-export-root" aria-hidden="true"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="scripts/app.js"></script>
 </body>
 </html>

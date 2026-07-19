@@ -1,0 +1,11 @@
+{
+  "coverLetters": [
+    { "id": "default", "label": "General cover letter" }
+  ],
+  "cvs": [
+    { "id": "default", "label": "General CV" }
+  ],
+  "portfolios": [
+    { "id": "default", "label": "Full portfolio" }
+  ]
+}

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{pageTitle}}</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -15,13 +16,36 @@
   <link rel="stylesheet" href="skills.css">
   <link rel="stylesheet" href="portfolio.css">
   <link rel="stylesheet" href="tools.css">
+  <link rel="stylesheet" href="cover.css">
+  <link rel="stylesheet" href="app.css">
 </head>
-<body>
-  <article class="page" id="cv" aria-label="CV document">
+<body class="app">
+{{dashboard}}
+  <main class="app-workspace">
+    <div class="app-view" data-view="cover">
+{{cover}}
+    </div>
+    <div class="app-view is-active" data-view="cv">
+      <article class="page" id="cv" aria-label="CV document">
 {{header}}
 {{impact}}
 {{toolsFooter}}
-  </article>
+      </article>
+    </div>
+    <div class="app-view" data-view="portfolio">
 {{portfolio}}
+    </div>
+  </main>
+  <div class="app-preview" id="app-preview" aria-hidden="true">
+    <div class="app-preview__header">
+      <span class="app-preview__title">Full application preview — Cover, CV, Portfolio</span>
+      <button type="button" class="app-btn app-btn--secondary" id="app-preview-close">Close</button>
+    </div>
+    <div class="app-preview__body" id="app-preview-body"></div>
+  </div>
+  <div class="app-export-root" id="app-export-root" aria-hidden="true"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="scripts/app.js"></script>
 </body>
 </html>

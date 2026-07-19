@@ -1,0 +1,12 @@
+{
+  "id": "default",
+  "recipient": "Hiring Manager",
+  "company": "Example Company",
+  "subject": "Application — Senior Mechanical Engineer / Product Developer",
+  "paragraphs": [
+    "I am writing to express my interest in contributing my MedTech product development experience to your team. With more than eight years across biomedical R&D, mechanical design, and cross-functional delivery, I bring a strong track record of taking devices from concept through regulatory readiness.",
+    "My experience spans implant systems, surgical instrumentation, electro-mechanical platforms, and software-enabled medical products. I am comfortable leading technical work, collaborating with quality and regulatory stakeholders, and communicating progress clearly to clients and internal teams.",
+    "I would welcome the opportunity to discuss how my background in design, verification, and product delivery could support your organisation's goals."
+  ],
+  "closing": "Yours sincerely,"
+}

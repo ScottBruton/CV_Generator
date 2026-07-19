@@ -1,0 +1,20 @@
+<article class="page page--cover" id="cover-{{versionId}}" data-version="{{versionId}}" aria-label="Cover letter">
+  <header class="cover__header">
+    <p class="cover__sender-name">{{senderName}}</p>
+    <p class="cover__sender-title">{{senderTitle}}</p>
+    <p class="cover__sender-contact">{{senderContact}}</p>
+  </header>
+  <div class="cover__meta">
+    <p>{{dateLine}}</p>
+    <p>{{recipientLine}}</p>
+    <p>{{companyLine}}</p>
+  </div>
+  <p class="cover__subject"><strong>Re:</strong> {{subject}}</p>
+  <div class="cover__body">
+    <p class="cover__salutation">Dear {{recipient}},</p>
+    {{paragraphsHtml}}
+    <p class="cover__closing">{{closing}}</p>
+    <p class="cover__signature">{{senderName}}</p>
+  </div>
+  <p class="cover__temp-note">Temporary cover letter — replace with company-specific content.</p>
+</article>

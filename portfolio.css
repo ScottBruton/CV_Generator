@@ -199,7 +199,7 @@
 .portfolio-item__header {
   flex-shrink: 0;
   padding: 7px 10px 6px;
-  border-bottom: 1px solid color-mix(in srgb, var(--blue) 12%, transparent);
+  border-bottom: 1px solid rgba(36, 89, 195, 0.12);
   background: linear-gradient(180deg, #f3f7ff 0%, var(--portfolio-header-bg) 100%);
   text-align: center;
 }

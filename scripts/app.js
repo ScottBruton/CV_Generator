@@ -1,0 +1,285 @@
+'use strict';
+
+(function initApp() {
+  const DOC_LABELS = {
+    cover: 'Cover Letter',
+    cv: 'CV',
+    portfolio: 'Portfolio'
+  };
+
+  const state = {
+    view: 'cv',
+    versions: {
+      cover: 'default',
+      cv: 'default',
+      portfolio: 'default'
+    }
+  };
+
+  const workspace = document.querySelector('.app-workspace');
+  const activeLabel = document.getElementById('app-active-label');
+  const previewRoot = document.getElementById('app-preview');
+  const previewBody = document.getElementById('app-preview-body');
+  const exportRoot = document.getElementById('app-export-root');
+  const previewBtn = document.getElementById('app-preview-btn');
+  const exportBtn = document.getElementById('app-export-btn');
+  const closePreviewBtn = document.getElementById('app-preview-close');
+
+  if (!workspace) return;
+
+  function getViewElement(view) {
+    return document.querySelector(`.app-view[data-view="${view}"]`);
+  }
+
+  function getSelectedLabel(view, versionId) {
+    const option = document.querySelector(
+      `.app-dropdown[data-doc="${view}"] .app-dropdown__option[data-version="${versionId}"]`
+    );
+    return option ? option.textContent.trim() : versionId;
+  }
+
+  function updateDropdownSelections() {
+    Object.keys(DOC_LABELS).forEach((view) => {
+      const versionLabel = getSelectedLabel(view, state.versions[view]);
+      const selectionEl = document.querySelector(`[data-dropdown-selection="${view}"]`);
+      if (selectionEl) {
+        selectionEl.textContent = versionLabel;
+      }
+
+      const dropdown = document.querySelector(`.app-dropdown[data-doc="${view}"]`);
+      dropdown?.classList.toggle('is-view-active', state.view === view);
+    });
+  }
+
+  function updateExportLabel() {
+    if (!activeLabel) return;
+    const parts = Object.keys(DOC_LABELS).map((view) => {
+      const versionLabel = getSelectedLabel(view, state.versions[view]);
+      return `${DOC_LABELS[view]}: ${versionLabel}`;
+    });
+    activeLabel.textContent = `Export — ${parts.join(' · ')}`;
+  }
+
+  function updateSelectionUi() {
+    document.querySelectorAll('.app-dropdown__option').forEach((option) => {
+      const optionView = option.dataset.view;
+      const optionVersion = option.dataset.version;
+      option.classList.toggle(
+        'is-selected',
+        optionVersion === state.versions[optionView]
+      );
+      option.setAttribute('aria-selected', optionVersion === state.versions[optionView] ? 'true' : 'false');
+    });
+
+    updateDropdownSelections();
+    updateExportLabel();
+  }
+
+  function setActiveView(view, versionId) {
+    if (!DOC_LABELS[view]) return;
+
+    state.view = view;
+    if (versionId) {
+      state.versions[view] = versionId;
+    }
+
+    document.querySelectorAll('.app-view').forEach((el) => {
+      el.classList.toggle('is-active', el.dataset.view === view);
+    });
+
+    updateSelectionUi();
+  }
+
+  function closeDropdowns() {
+    document.querySelectorAll('.app-dropdown.is-open').forEach((dropdown) => {
+      dropdown.classList.remove('is-open');
+      dropdown.querySelector('.app-dropdown__trigger')?.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  function initDropdowns() {
+    document.querySelectorAll('.app-dropdown').forEach((dropdown) => {
+      const trigger = dropdown.querySelector('.app-dropdown__trigger');
+      const menu = dropdown.querySelector('.app-dropdown__menu');
+
+      trigger?.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const isOpen = dropdown.classList.contains('is-open');
+        closeDropdowns();
+        if (!isOpen) {
+          dropdown.classList.add('is-open');
+          trigger.setAttribute('aria-expanded', 'true');
+        }
+      });
+
+      menu?.addEventListener('click', (event) => {
+        const option = event.target.closest('.app-dropdown__option');
+        if (!option) return;
+        const view = option.dataset.view;
+        const versionId = option.dataset.version;
+        setActiveView(view, versionId);
+        closeDropdowns();
+      });
+    });
+
+    document.addEventListener('click', closeDropdowns);
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeDropdowns();
+        closePreview();
+      }
+    });
+  }
+
+  function collectPages(view) {
+    const viewEl = getViewElement(view);
+    if (!viewEl) return [];
+    return Array.from(viewEl.querySelectorAll('.page'));
+  }
+
+  function clonePageForExport(page) {
+    const clone = page.cloneNode(true);
+    clone.querySelector('.cover__temp-note')?.remove();
+    return clone;
+  }
+
+  function clonePages(pages) {
+    return pages.map((page) => page.cloneNode(true));
+  }
+
+  function buildCombinedPages() {
+    return [
+      ...collectPages('cover'),
+      ...collectPages('cv'),
+      ...collectPages('portfolio')
+    ];
+  }
+
+  function renderPreview() {
+    if (!previewBody) return;
+    previewBody.innerHTML = '';
+
+    const sections = [
+      { view: 'cover', label: 'Cover Letter' },
+      { view: 'cv', label: 'CV' },
+      { view: 'portfolio', label: 'Portfolio' }
+    ];
+
+    sections.forEach(({ view, label }) => {
+      const pages = collectPages(view);
+      if (!pages.length) return;
+
+      const heading = document.createElement('div');
+      heading.className = 'app-preview__section-label';
+      heading.textContent = label;
+      previewBody.appendChild(heading);
+
+      clonePages(pages).forEach((page) => {
+        previewBody.appendChild(page);
+      });
+    });
+  }
+
+  function openPreview() {
+    if (!previewRoot) return;
+    renderPreview();
+    previewRoot.classList.add('is-open');
+    previewRoot.setAttribute('aria-hidden', 'false');
+  }
+
+  function closePreview() {
+    if (!previewRoot) return;
+    previewRoot.classList.remove('is-open');
+    previewRoot.setAttribute('aria-hidden', 'true');
+  }
+
+  function clearExportRoot() {
+    if (!exportRoot) return;
+    exportRoot.innerHTML = '';
+    exportRoot.classList.remove('is-exporting');
+  }
+
+  function waitForPaint() {
+    return new Promise((resolve) => {
+      requestAnimationFrame(() => requestAnimationFrame(resolve));
+    });
+  }
+
+  function getPdfLibraries() {
+    return {
+      html2canvasFn: window.html2canvas,
+      JsPdf: window.jspdf?.jsPDF || window.jsPDF
+    };
+  }
+
+  async function exportPdf() {
+    const { html2canvasFn, JsPdf } = getPdfLibraries();
+
+    if (!html2canvasFn || !JsPdf) {
+      window.alert('PDF export libraries failed to load. Please refresh and try again.');
+      return;
+    }
+
+    const pages = buildCombinedPages();
+    if (!pages.length) {
+      window.alert('Nothing to export.');
+      return;
+    }
+
+    exportBtn.disabled = true;
+    exportBtn.textContent = 'Exporting…';
+
+    try {
+      const pdf = new JsPdf({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+      const pageWidthMm = 210;
+      const pageHeightMm = 297;
+
+      for (let index = 0; index < pages.length; index += 1) {
+        if (!exportRoot) break;
+
+        exportRoot.innerHTML = '';
+        exportRoot.classList.add('is-exporting');
+        const pageClone = clonePageForExport(pages[index]);
+        exportRoot.appendChild(pageClone);
+        await waitForPaint();
+
+        const captureWidth = pageClone.offsetWidth || 794;
+        const captureHeight = pageClone.offsetHeight || 1123;
+
+        const canvas = await html2canvasFn(pageClone, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: false,
+          backgroundColor: '#ffffff',
+          logging: false,
+          scrollX: 0,
+          scrollY: 0,
+          width: captureWidth,
+          height: captureHeight
+        });
+
+        const imgData = canvas.toDataURL('image/jpeg', 0.95);
+        if (index > 0) {
+          pdf.addPage();
+        }
+        pdf.addImage(imgData, 'JPEG', 0, 0, pageWidthMm, pageHeightMm, undefined, 'FAST');
+      }
+
+      pdf.save('Scott-Bruton-Application.pdf');
+    } catch (error) {
+      console.error(error);
+      window.alert('Export failed. Check the browser console for details.');
+    } finally {
+      exportBtn.disabled = false;
+      exportBtn.textContent = 'Export PDF';
+      clearExportRoot();
+    }
+  }
+
+  previewBtn?.addEventListener('click', openPreview);
+  closePreviewBtn?.addEventListener('click', closePreview);
+  exportBtn?.addEventListener('click', exportPdf);
+
+  initDropdowns();
+  setActiveView('cv', 'default');
+})();

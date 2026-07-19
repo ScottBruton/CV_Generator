@@ -1,0 +1,69 @@
+/* ============================================================
+   Cover letter page
+   ============================================================ */
+
+.page--cover {
+  gap: var(--s2);
+  font-size: 0.72rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.cover__header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cover__sender-name {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--blue);
+}
+
+.cover__sender-title,
+.cover__sender-contact {
+  color: var(--text-secondary);
+}
+
+.cover__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: var(--text-secondary);
+}
+
+.cover__subject {
+  margin-top: var(--s1);
+}
+
+.cover__body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.cover__salutation,
+.cover__closing,
+.cover__signature {
+  margin: 0;
+}
+
+.cover__paragraph {
+  margin: 0;
+}
+
+.cover__signature {
+  margin-top: var(--s2);
+  font-weight: 700;
+}
+
+.cover__temp-note {
+  margin-top: auto;
+  padding-top: var(--s1);
+  font-size: 0.58rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  border-top: 1px dashed var(--border);
+}
