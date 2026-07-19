@@ -20,6 +20,26 @@
   <link rel="stylesheet" href="cover.css">
   <link rel="stylesheet" href="app.css">
   <link rel="stylesheet" href="print.css">
+  <script>
+    (function applyExportModeBootstrap() {
+      var mode = new URLSearchParams(window.location.search).get('export');
+      var hideByMode = {
+        'cv-portfolio': ['cover'],
+        cover: ['cv', 'portfolio'],
+        cv: ['cover', 'portfolio'],
+        portfolio: ['cover', 'cv']
+      };
+      var hide = hideByMode[mode];
+      if (!hide) return;
+      document.documentElement.setAttribute('data-export-mode', mode);
+      var style = document.createElement('style');
+      style.setAttribute('data-export-mode-style', mode);
+      style.textContent = hide.map(function (view) {
+        return '.app-view[data-view="' + view + '"]{display:none!important}';
+      }).join('');
+      document.documentElement.appendChild(style);
+    })();
+  </script>
 </head>
 <body class="app">
 <header class="app-dashboard" aria-label="CV Generator dashboard">
@@ -102,7 +122,7 @@
 
   <section class="cover__letter-card" aria-label="Cover letter body">
     <p class="cover__salutation">Dear Breville Hiring Team,</p>
-    <p class="cover__paragraph">Having progressed to the final rounds of Breville's Senior Mechanical Engineer application at the end of last year, I'm writing again with continued enthusiasm for the opportunity. I'm a mechatronics engineer, with a master's in biomedical engineering, a diploma in software development, and a love for product developing. I have over seven years of experience designing and engineering medical devices within the R&amp;D, orthopaedic, and consulting space. This includes implant systems, prosthetics, surgical tools, and custom-built manufacturing equipment. While my background is in healthcare, I'm an inventor at heart. In my spare time, I enjoy creating everything from mechanical tools to smart software. Building and refining ideas is something I genuinely love.</p>
+    <p class="cover__paragraph">Having progressed to the final rounds of Breville's Senior Mechanical Engineer application at the end of last year, I'm writing again with continued enthusiasm for the opportunity. I'm a Mechatronics Engineer, with a Masters Degree in Biomedical Engineering, a Diploma in Software Development, and a love for product developing. I have over eight years of experience designing and engineering medical devices within the R&amp;D, orthopaedic, and consulting space. This includes implant systems, prosthetics, surgical tools, and custom-built manufacturing equipment. While my background is in healthcare, I'm an inventor at heart. In my spare time, I enjoy creating everything from mechanical tools to smart software. Building and refining ideas is something I genuinely love.</p>
 <p class="cover__paragraph">Over the course of my last two roles, I've developed a strong working knowledge of materials used in both medical and food grade applications. I've been responsible for managing internal material databases and often work closely with suppliers, quality teams, and compliance reviewers to ensure selected materials meet functional, aesthetic, and regulatory requirements. I see this as highly relevant to Breville's products, which need to perform reliably, look great, and meet the expectations of everyday users.</p>
 <p class="cover__paragraph">I'm excited by the chance to explore something new, especially with a team that brings together engineering and user experience. I bring hands on design and prototyping experience, a solid understanding of product lifecycles, and a practical approach to solving problems. I work best in collaborative environments where good design, smart engineering, and real-world testing come together.</p>
 <p class="cover__paragraph">Thank you for considering my application. I'd love the opportunity to share more and see how I can contribute to your team.</p>
@@ -1402,6 +1422,30 @@
       <button type="button" class="app-btn app-btn--secondary" id="app-preview-close">Close</button>
     </div>
     <div class="app-preview__body" id="app-preview-body"></div>
+  </div>
+  <div class="app-export-dialog" id="app-export-dialog" aria-hidden="true">
+    <div class="app-export-dialog__panel" role="dialog" aria-modal="true" aria-labelledby="app-export-dialog-title">
+      <h2 class="app-export-dialog__title" id="app-export-dialog-title">What should we export?</h2>
+      <p class="app-export-dialog__hint">Choose which documents to include in the PDF.</p>
+      <div class="app-export-dialog__actions">
+        <button type="button" class="app-export-dialog__choice app-export-dialog__choice--primary" data-export-choice="all">
+          Cover letter + CV + Portfolio
+        </button>
+        <button type="button" class="app-export-dialog__choice" data-export-choice="cv-portfolio">
+          CV + Portfolio
+        </button>
+        <button type="button" class="app-export-dialog__choice" data-export-choice="cover">
+          Cover letter only
+        </button>
+        <button type="button" class="app-export-dialog__choice" data-export-choice="cv">
+          CV only
+        </button>
+        <button type="button" class="app-export-dialog__choice" data-export-choice="portfolio">
+          Portfolio only
+        </button>
+        <button type="button" class="app-export-dialog__cancel" id="app-export-dialog-cancel">Cancel</button>
+      </div>
+    </div>
   </div>
   <script src="scripts/app.js"></script>
 </body>

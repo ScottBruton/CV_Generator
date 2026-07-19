@@ -7,6 +7,14 @@
     portfolio: 'Portfolio'
   };
 
+  const EXPORT_VIEWS = {
+    all: ['cover', 'cv', 'portfolio'],
+    'cv-portfolio': ['cv', 'portfolio'],
+    cover: ['cover'],
+    cv: ['cv'],
+    portfolio: ['portfolio']
+  };
+
   const state = {
     view: 'cv',
     versions: {
@@ -16,6 +24,8 @@
     }
   };
 
+  let printExportMode = null;
+
   const workspace = document.querySelector('.app-workspace');
   const activeLabel = document.getElementById('app-active-label');
   const previewRoot = document.getElementById('app-preview');
@@ -23,8 +33,39 @@
   const previewBtn = document.getElementById('app-preview-btn');
   const exportBtn = document.getElementById('app-export-btn');
   const closePreviewBtn = document.getElementById('app-preview-close');
+  const exportDialog = document.getElementById('app-export-dialog');
+  const exportDialogCancel = document.getElementById('app-export-dialog-cancel');
 
   if (!workspace) return;
+
+  function normalizeExportMode(mode) {
+    return EXPORT_VIEWS[mode] ? mode : 'all';
+  }
+
+  function getExportViews(mode) {
+    return EXPORT_VIEWS[normalizeExportMode(mode)];
+  }
+
+  function setExportMode(mode) {
+    const normalized = normalizeExportMode(mode);
+    if (normalized === 'all') {
+      document.documentElement.removeAttribute('data-export-mode');
+      return;
+    }
+    document.documentElement.setAttribute('data-export-mode', normalized);
+  }
+
+  function clearExportMode() {
+    document.documentElement.removeAttribute('data-export-mode');
+  }
+
+  function applyExportModeFromQuery() {
+    const params = new URLSearchParams(window.location.search);
+    const mode = params.get('export');
+    if (mode && EXPORT_VIEWS[mode] && mode !== 'all') {
+      setExportMode(mode);
+    }
+  }
 
   function getViewElement(view) {
     return document.querySelector(`.app-view[data-view="${view}"]`);
@@ -96,6 +137,18 @@
     });
   }
 
+  function openExportDialog() {
+    if (!exportDialog) return;
+    exportDialog.classList.add('is-open');
+    exportDialog.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeExportDialog() {
+    if (!exportDialog) return;
+    exportDialog.classList.remove('is-open');
+    exportDialog.setAttribute('aria-hidden', 'true');
+  }
+
   function initDropdowns() {
     document.querySelectorAll('.app-dropdown').forEach((dropdown) => {
       const trigger = dropdown.querySelector('.app-dropdown__trigger');
@@ -126,6 +179,7 @@
       if (event.key === 'Escape') {
         closeDropdowns();
         closePreview();
+        closeExportDialog();
       }
     });
   }
@@ -140,12 +194,8 @@
     return pages.map((page) => page.cloneNode(true));
   }
 
-  function buildCombinedPages() {
-    return [
-      ...collectPages('cover'),
-      ...collectPages('cv'),
-      ...collectPages('portfolio')
-    ];
+  function buildCombinedPages(mode = 'all') {
+    return getExportViews(mode).flatMap((view) => collectPages(view));
   }
 
   function renderPreview() {
@@ -186,9 +236,8 @@
     previewRoot.setAttribute('aria-hidden', 'true');
   }
 
-  async function preloadExportImages() {
-    const views = ['cover', 'cv', 'portfolio'];
-    const images = views.flatMap((view) =>
+  async function preloadExportImages(mode = 'all') {
+    const images = getExportViews(mode).flatMap((view) =>
       Array.from(document.querySelectorAll(`.app-view[data-view="${view}"] img[src]`))
     );
 
@@ -220,9 +269,11 @@
     URL.revokeObjectURL(url);
   }
 
-  async function exportViaServer() {
+  async function exportViaServer(mode) {
     const response = await fetch('http://127.0.0.1:3001/export', {
-      method: 'POST'
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode: normalizeExportMode(mode) })
     });
 
     if (!response.ok) {
@@ -233,8 +284,9 @@
     downloadBlob(blob, 'Scott-Bruton-Application.pdf');
   }
 
-  async function exportPdf() {
-    const pages = buildCombinedPages();
+  async function exportPdf(mode = 'all') {
+    const exportMode = normalizeExportMode(mode);
+    const pages = buildCombinedPages(exportMode);
     if (!pages.length) {
       window.alert('Nothing to export.');
       return;
@@ -244,19 +296,21 @@
     exportBtn.textContent = 'Preparing…';
 
     try {
-      await preloadExportImages();
+      await preloadExportImages(exportMode);
       if (document.fonts && document.fonts.ready) {
         await document.fonts.ready;
       }
 
       try {
         exportBtn.textContent = 'Exporting…';
-        await exportViaServer();
+        await exportViaServer(exportMode);
         return;
       } catch (serverError) {
         console.warn('High-quality export server unavailable, using browser print.', serverError);
       }
 
+      printExportMode = exportMode === 'all' ? null : exportMode;
+      setExportMode(exportMode);
       document.body.classList.add('is-print-export', 'is-print-export-hq');
       window.print();
     } finally {
@@ -267,12 +321,31 @@
 
   window.addEventListener('afterprint', () => {
     document.body.classList.remove('is-print-export', 'is-print-export-hq');
+    if (printExportMode) {
+      clearExportMode();
+      printExportMode = null;
+    }
   });
 
   previewBtn?.addEventListener('click', openPreview);
   closePreviewBtn?.addEventListener('click', closePreview);
-  exportBtn?.addEventListener('click', exportPdf);
+  exportBtn?.addEventListener('click', openExportDialog);
+  exportDialogCancel?.addEventListener('click', closeExportDialog);
 
+  exportDialog?.addEventListener('click', (event) => {
+    if (event.target === exportDialog) {
+      closeExportDialog();
+      return;
+    }
+
+    const choiceBtn = event.target.closest('[data-export-choice]');
+    if (!choiceBtn) return;
+
+    closeExportDialog();
+    exportPdf(choiceBtn.dataset.exportChoice);
+  });
+
+  applyExportModeFromQuery();
   initDropdowns();
   setActiveView('cv', 'default');
 })();

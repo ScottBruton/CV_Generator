@@ -275,9 +275,102 @@ body.app {
   color: rgba(255, 255, 255, 0.82);
 }
 
+.app-export-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 220;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s2);
+  background: rgba(17, 23, 47, 0.55);
+}
+
+.app-export-dialog.is-open {
+  display: flex;
+}
+
+.app-export-dialog__panel {
+  width: min(400px, 100%);
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  padding: 22px 22px 18px;
+  border-radius: 12px;
+  background: #f7f8fb;
+  box-shadow: 0 16px 40px rgba(17, 23, 47, 0.28);
+}
+
+.app-export-dialog__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #11172f;
+}
+
+.app-export-dialog__hint {
+  margin: 6px 0 0;
+  font-size: 0.78rem;
+  color: #5a6478;
+}
+
+.app-export-dialog__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.app-export-dialog__choice {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 8px;
+  border: 1px solid #cfd6e4;
+  background: #fff;
+  color: #11172f;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+}
+
+.app-export-dialog__choice:hover {
+  border-color: #9aa6bf;
+  background: #f0f3f8;
+}
+
+.app-export-dialog__choice--primary {
+  border-color: transparent;
+  background: var(--blue);
+  color: #fff;
+}
+
+.app-export-dialog__choice--primary:hover {
+  filter: brightness(1.06);
+  background: var(--blue);
+  border-color: transparent;
+}
+
+.app-export-dialog__cancel {
+  margin-top: 4px;
+  padding: 8px 14px;
+  border: none;
+  background: transparent;
+  color: #5a6478;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.app-export-dialog__cancel:hover {
+  color: #11172f;
+}
+
 @media print {
   .app-dashboard,
   .app-preview,
+  .app-export-dialog,
   .cover__temp-note {
     display: none !important;
   }
@@ -296,6 +389,16 @@ body.app {
 
   .app-view {
     display: block !important;
+  }
+
+  html[data-export-mode="cv-portfolio"] .app-view[data-view="cover"],
+  html[data-export-mode="cover"] .app-view[data-view="cv"],
+  html[data-export-mode="cover"] .app-view[data-view="portfolio"],
+  html[data-export-mode="cv"] .app-view[data-view="cover"],
+  html[data-export-mode="cv"] .app-view[data-view="portfolio"],
+  html[data-export-mode="portfolio"] .app-view[data-view="cover"],
+  html[data-export-mode="portfolio"] .app-view[data-view="cv"] {
+    display: none !important;
   }
 
   .app-view .page {

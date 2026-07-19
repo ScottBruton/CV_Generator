@@ -33,6 +33,11 @@ echo   - Builds index.html once
 echo   - Watches content, components, CSS, and assets for changes
 echo   - Serves the CV at http://localhost:3000
 echo.
+echo Freeing export port 3001 if needed...
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr :3001 ^| findstr LISTENING') do (
+  taskkill /F /PID %%a >nul 2>&1
+)
+echo.
 echo Press Ctrl+C to stop.
 echo.
 

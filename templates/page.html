@@ -19,6 +19,26 @@
   <link rel="stylesheet" href="cover.css">
   <link rel="stylesheet" href="app.css">
   <link rel="stylesheet" href="print.css">
+  <script>
+    (function applyExportModeBootstrap() {
+      var mode = new URLSearchParams(window.location.search).get('export');
+      var hideByMode = {
+        'cv-portfolio': ['cover'],
+        cover: ['cv', 'portfolio'],
+        cv: ['cover', 'portfolio'],
+        portfolio: ['cover', 'cv']
+      };
+      var hide = hideByMode[mode];
+      if (!hide) return;
+      document.documentElement.setAttribute('data-export-mode', mode);
+      var style = document.createElement('style');
+      style.setAttribute('data-export-mode-style', mode);
+      style.textContent = hide.map(function (view) {
+        return '.app-view[data-view="' + view + '"]{display:none!important}';
+      }).join('');
+      document.documentElement.appendChild(style);
+    })();
+  </script>
 </head>
 <body class="app">
 {{dashboard}}
@@ -43,6 +63,30 @@
       <button type="button" class="app-btn app-btn--secondary" id="app-preview-close">Close</button>
     </div>
     <div class="app-preview__body" id="app-preview-body"></div>
+  </div>
+  <div class="app-export-dialog" id="app-export-dialog" aria-hidden="true">
+    <div class="app-export-dialog__panel" role="dialog" aria-modal="true" aria-labelledby="app-export-dialog-title">
+      <h2 class="app-export-dialog__title" id="app-export-dialog-title">What should we export?</h2>
+      <p class="app-export-dialog__hint">Choose which documents to include in the PDF.</p>
+      <div class="app-export-dialog__actions">
+        <button type="button" class="app-export-dialog__choice app-export-dialog__choice--primary" data-export-choice="all">
+          Cover letter + CV + Portfolio
+        </button>
+        <button type="button" class="app-export-dialog__choice" data-export-choice="cv-portfolio">
+          CV + Portfolio
+        </button>
+        <button type="button" class="app-export-dialog__choice" data-export-choice="cover">
+          Cover letter only
+        </button>
+        <button type="button" class="app-export-dialog__choice" data-export-choice="cv">
+          CV only
+        </button>
+        <button type="button" class="app-export-dialog__choice" data-export-choice="portfolio">
+          Portfolio only
+        </button>
+        <button type="button" class="app-export-dialog__cancel" id="app-export-dialog-cancel">Cancel</button>
+      </div>
+    </div>
   </div>
   <script src="scripts/app.js"></script>
 </body>
