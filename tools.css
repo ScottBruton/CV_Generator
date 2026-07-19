@@ -4,9 +4,11 @@
 
 .page > .tools-footer {
   margin-top: auto;
+  padding-top: 2px;
 }
 
 .tools-footer {
+  top: 15px;
   flex-shrink: 0;
   border-top: 1px solid var(--border);
   background: var(--bg-white);

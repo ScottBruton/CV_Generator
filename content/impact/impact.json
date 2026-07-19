@@ -47,7 +47,7 @@
             { "text": "50+ unique components, with full tolerance stack-up analysis", "company": "" },
             { "text": "User interface, electrical layout, and mechanical integration design", "company": "" },
             { "text": "IP22 rated and IEC 60601-1 compliant", "company": "" },
-            { "text": "CNC, sheet metal bending, die forming, and overmolding manufacturing", "company": "" }
+            { "text": "CNC, sheet metal bending, die forming, and overmolding manufacturing processes used", "company": "" }
           ]
         },
         {
@@ -58,7 +58,8 @@
           "href": "#stillbirth-prevention",
           "bullets": [
             { "text": "Portable ultrasound system", "company": "" },
-            { "text": "Mechanical integration of display and transducer module", "company": "" }
+            { "text": "Mechanical integration of display and transducer module", "company": "" },
+            { "text": "Electrical", "company": "" }
           ]
         },
         {
@@ -90,9 +91,26 @@
         {
           "bullets": [
             { "text": "Biocompatible and high-temperature polymer database for medical devices", "endToEnd": true, "company": "" },
-            { "text": "SolidWorks macros and design automation tools", "endToEnd": true, "company": "" },
-            { "text": "Honours: accelerated weathering system", "endToEnd": true, "company": "" },
-            { "text": "Master's: tactile prosthetic fitment system", "endToEnd": true, "company": "" }
+            { "text": "SolidWorks macros and design automation tools", "endToEnd": true, "company": "" }
+          ]
+        },
+        {
+          "text": "Honours: accelerated weathering system (85% grade - Top mark in grade)",
+          "endToEnd": true,
+          "bulletsInline": true,
+          "company": "",
+          "bullets": [
+            { "text": "Thermal–UV decoupling via conduction, convection and fin design (Volkswagen)", "company": "" }
+          ]
+        },
+        {
+          "text": "Master's: tactile prosthetic fitment system (78% grade)",
+          "endToEnd": true,
+          "bulletsInline": true,
+          "company": "",
+          "bullets": [
+            { "text": "Software, mechanical and electrical design", "company": "" },
+            { "text": "Ethics approval and clinical trials; hypothesis validated", "company": "" }
           ]
         }
       ]

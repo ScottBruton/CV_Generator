@@ -48,7 +48,7 @@
   gap: clamp(0.5rem, 2vw, 1rem);
   width: var(--content-width);
   max-width: 100%;
-  margin: 0 0 4px;
+  margin: 0 0 0px;
   flex-shrink: 0;
   font-family: inherit;
   font-weight: 700;
