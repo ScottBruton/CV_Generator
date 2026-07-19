@@ -200,7 +200,7 @@
   max-width: 100%;
   width: calc(var(--skill-level) * 1%);
   background: var(--blue);
-  border-radius: 2px;
+  border-radius: 2px 0 0 2px;
 }
 
 .skill-row__dividers {
@@ -208,12 +208,27 @@
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  background-image:
-    linear-gradient(90deg, transparent calc(25% - 0.5px), var(--skills-divider-color) calc(25% - 0.5px), var(--skills-divider-color) calc(25% + 0.5px), transparent calc(25% + 0.5px)),
-    linear-gradient(90deg, transparent calc(50% - 0.5px), var(--skills-divider-color) calc(50% - 0.5px), var(--skills-divider-color) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
-    linear-gradient(90deg, transparent calc(75% - 0.5px), var(--skills-divider-color) calc(75% - 0.5px), var(--skills-divider-color) calc(75% + 0.5px), transparent calc(75% + 0.5px));
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
+}
+
+.skill-row__divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--skills-divider-color);
+  transform: translateX(-50%);
+}
+
+.skill-row__divider:nth-child(1) {
+  left: 25%;
+}
+
+.skill-row__divider:nth-child(2) {
+  left: 50%;
+}
+
+.skill-row__divider:nth-child(3) {
+  left: 75%;
 }
 
 .skill-row__years {

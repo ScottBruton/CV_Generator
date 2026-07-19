@@ -1,0 +1,74 @@
+/* ============================================================
+   Print / PDF export fidelity
+   Load last — overrides generic print rules where needed
+   ============================================================ */
+
+@media print {
+  *,
+  *::before,
+  *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  html {
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  .page {
+    zoom: 1;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  img {
+    image-rendering: auto;
+  }
+
+  svg {
+    shape-rendering: geometricPrecision;
+  }
+
+  /* Keep links visible and clickable in the saved PDF */
+  a[href] {
+    text-decoration: underline;
+    text-decoration-thickness: 0.06em;
+    text-underline-offset: 0.12em;
+  }
+
+  .contact__item a[href] {
+    color: var(--text) !important;
+  }
+
+  .pillar__body-link {
+    font-weight: 600;
+  }
+
+  .pillar--technical .pillar__body-link {
+    color: var(--impact-blue) !important;
+  }
+
+  .pillar--business .pillar__body-link {
+    color: var(--impact-green) !important;
+  }
+
+  .pillar--leadership .pillar__body-link {
+    color: var(--impact-purple) !important;
+  }
+
+  a[href^="#"] {
+    color: var(--blue) !important;
+  }
+
+  a.tool-item__icon.tool-item__link,
+  .timeline__logo[href] {
+    text-decoration: none;
+  }
+
+  .portfolio-header__back[href] {
+    display: none !important;
+  }
+}

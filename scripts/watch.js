@@ -34,7 +34,7 @@ function rebuild() {
 }
 
 function watchCssFiles() {
-  for (const file of ['style.css', 'profile.css', 'stat-card.css', 'timeline.css', 'impact.css', 'skills.css', 'portfolio.css', 'tools.css', 'cover.css', 'app.css']) {
+  for (const file of ['style.css', 'profile.css', 'stat-card.css', 'timeline.css', 'impact.css', 'skills.css', 'portfolio.css', 'tools.css', 'cover.css', 'app.css', 'print.css']) {
     const filePath = path.join(ROOT, file);
     if (!fs.existsSync(filePath)) continue;
     fs.watch(filePath, () => rebuild());

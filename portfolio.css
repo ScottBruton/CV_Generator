@@ -276,4 +276,16 @@
   .portfolio-item {
     break-inside: avoid;
   }
+
+  .portfolio-item__media {
+    overflow: visible;
+  }
+
+  .portfolio-item__image {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 }

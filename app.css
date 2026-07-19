@@ -275,46 +275,31 @@ body.app {
   color: rgba(255, 255, 255, 0.82);
 }
 
-.app-export-root {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  width: var(--page-width);
-  pointer-events: none;
-  visibility: hidden;
-  background: #fff;
-}
-
-.app-export-root.is-exporting {
-  visibility: visible;
-  z-index: 9999;
-}
-
-.app-export-root.is-exporting .page {
-  display: flex !important;
-  box-shadow: none;
-}
-
 @media print {
   .app-dashboard,
   .app-preview,
-  .app-export-root,
   .cover__temp-note {
     display: none !important;
   }
 
   body.app {
     background: none;
+    padding: 0;
+    min-width: 0;
   }
 
-  .app-workspace,
-  .app-view {
+  .app-workspace {
     display: block !important;
     padding: 0;
+    overflow: visible;
   }
 
-  .app-view:not(.is-active) {
-    display: none !important;
+  .app-view {
+    display: block !important;
+  }
+
+  .app-view .page {
+    margin: 0 auto;
+    box-shadow: none;
   }
 }

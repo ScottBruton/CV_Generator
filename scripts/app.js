@@ -20,7 +20,6 @@
   const activeLabel = document.getElementById('app-active-label');
   const previewRoot = document.getElementById('app-preview');
   const previewBody = document.getElementById('app-preview-body');
-  const exportRoot = document.getElementById('app-export-root');
   const previewBtn = document.getElementById('app-preview-btn');
   const exportBtn = document.getElementById('app-export-btn');
   const closePreviewBtn = document.getElementById('app-preview-close');
@@ -137,12 +136,6 @@
     return Array.from(viewEl.querySelectorAll('.page'));
   }
 
-  function clonePageForExport(page) {
-    const clone = page.cloneNode(true);
-    clone.querySelector('.cover__temp-note')?.remove();
-    return clone;
-  }
-
   function clonePages(pages) {
     return pages.map((page) => page.cloneNode(true));
   }
@@ -193,33 +186,32 @@
     previewRoot.setAttribute('aria-hidden', 'true');
   }
 
-  function clearExportRoot() {
-    if (!exportRoot) return;
-    exportRoot.innerHTML = '';
-    exportRoot.classList.remove('is-exporting');
-  }
+  async function preloadExportImages() {
+    const views = ['cover', 'cv', 'portfolio'];
+    const images = views.flatMap((view) =>
+      Array.from(document.querySelectorAll(`.app-view[data-view="${view}"] img[src]`))
+    );
 
-  function waitForPaint() {
-    return new Promise((resolve) => {
-      requestAnimationFrame(() => requestAnimationFrame(resolve));
-    });
-  }
+    await Promise.all(images.map((img) => {
+      img.loading = 'eager';
 
-  function getPdfLibraries() {
-    return {
-      html2canvasFn: window.html2canvas,
-      JsPdf: window.jspdf?.jsPDF || window.jsPDF
-    };
+      if (img.complete && img.naturalWidth > 0) {
+        return typeof img.decode === 'function' ? img.decode().catch(() => {}) : Promise.resolve();
+      }
+
+      return new Promise((resolve) => {
+        const done = () => resolve();
+        img.addEventListener('load', done, { once: true });
+        img.addEventListener('error', done, { once: true });
+        const src = img.getAttribute('src');
+        if (src) {
+          img.src = src;
+        }
+      });
+    }));
   }
 
   async function exportPdf() {
-    const { html2canvasFn, JsPdf } = getPdfLibraries();
-
-    if (!html2canvasFn || !JsPdf) {
-      window.alert('PDF export libraries failed to load. Please refresh and try again.');
-      return;
-    }
-
     const pages = buildCombinedPages();
     if (!pages.length) {
       window.alert('Nothing to export.');
@@ -227,54 +219,24 @@
     }
 
     exportBtn.disabled = true;
-    exportBtn.textContent = 'Exporting…';
+    exportBtn.textContent = 'Preparing…';
 
     try {
-      const pdf = new JsPdf({ unit: 'mm', format: 'a4', orientation: 'portrait' });
-      const pageWidthMm = 210;
-      const pageHeightMm = 297;
-
-      for (let index = 0; index < pages.length; index += 1) {
-        if (!exportRoot) break;
-
-        exportRoot.innerHTML = '';
-        exportRoot.classList.add('is-exporting');
-        const pageClone = clonePageForExport(pages[index]);
-        exportRoot.appendChild(pageClone);
-        await waitForPaint();
-
-        const captureWidth = pageClone.offsetWidth || 794;
-        const captureHeight = pageClone.offsetHeight || 1123;
-
-        const canvas = await html2canvasFn(pageClone, {
-          scale: 2,
-          useCORS: true,
-          allowTaint: false,
-          backgroundColor: '#ffffff',
-          logging: false,
-          scrollX: 0,
-          scrollY: 0,
-          width: captureWidth,
-          height: captureHeight
-        });
-
-        const imgData = canvas.toDataURL('image/jpeg', 0.95);
-        if (index > 0) {
-          pdf.addPage();
-        }
-        pdf.addImage(imgData, 'JPEG', 0, 0, pageWidthMm, pageHeightMm, undefined, 'FAST');
+      await preloadExportImages();
+      if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready;
       }
-
-      pdf.save('Scott-Bruton-Application.pdf');
-    } catch (error) {
-      console.error(error);
-      window.alert('Export failed. Check the browser console for details.');
+      document.body.classList.add('is-print-export');
+      window.print();
     } finally {
       exportBtn.disabled = false;
       exportBtn.textContent = 'Export PDF';
-      clearExportRoot();
     }
   }
+
+  window.addEventListener('afterprint', () => {
+    document.body.classList.remove('is-print-export');
+  });
 
   previewBtn?.addEventListener('click', openPreview);
   closePreviewBtn?.addEventListener('click', closePreview);

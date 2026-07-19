@@ -358,19 +358,25 @@ hr {
     --content-width: 200mm;
   }
 
-  body {
+  body,
+  body.app {
     background: none;
     padding: 0;
     display: block;
+    min-width: 0;
   }
 
   .page {
     width: var(--page-width);
     height: var(--page-height);
+    min-height: var(--page-height);
+    max-height: var(--page-height);
     box-shadow: none;
     page-break-after: always;
     page-break-inside: avoid;
     overflow: hidden;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   .page:last-child {
@@ -380,9 +386,5 @@ hr {
   .bottom-card,
   .page-footer {
     box-shadow: none;
-  }
-
-  a {
-    color: inherit;
   }
 }
