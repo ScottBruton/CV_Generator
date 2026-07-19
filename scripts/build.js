@@ -700,13 +700,41 @@ ${timelineHtml}
   /** Build the app dashboard header with document/version selectors. */
   buildDashboard(content) {
     const { versions } = content;
+    const coverLabel = versions.coverLetters?.[0]?.label || 'Default';
+    const cvLabel = versions.cvs?.[0]?.label || 'Default';
+    const portfolioLabel = versions.portfolios?.[0]?.label || 'Default';
 
     return renderComponent('dashboard-header', {
-      activeLabel: 'Export — Cover Letter: General cover letter · CV: General CV · Portfolio: Full portfolio',
+      activeLabel: `Export — Cover Letter: ${coverLabel} · CV: ${cvLabel} · Portfolio: ${portfolioLabel}`,
       coverOptions: this.buildDashboardOptions(versions.coverLetters, 'cover'),
       cvOptions: this.buildDashboardOptions(versions.cvs, 'cv'),
       portfolioOptions: this.buildDashboardOptions(versions.portfolios, 'portfolio')
     });
+  }
+
+  /** Portrait block for the cover letter identity header. */
+  buildCoverPhotoHtml(profile) {
+    if (profile.photo?.src && fs.existsSync(path.join(this.root, profile.photo.src))) {
+      return `<img src="${escapeHtml(profile.photo.src)}" alt="${escapeHtml(profile.photo.alt)}" class="cover__photo-img">`;
+    }
+
+    return `<div class="cover__photo-placeholder" aria-label="Portrait photo placeholder">
+      ${icons.photo.replace('photo-placeholder__icon', 'cover__photo-placeholder-icon')}
+      <span class="placeholder-label">${escapeHtml(profile.photo?.alt || 'Photo')}</span>
+    </div>`;
+  }
+
+  /** Resolve an optional company logo path for the cover application block. */
+  resolveCoverCompanyLogo(cover) {
+    const logoPath = cover.companyLogo || '';
+    const hasCompanyLogo = Boolean(logoPath && fs.existsSync(path.join(this.root, logoPath)));
+
+    return {
+      hasCompanyLogo,
+      companyLogo: hasCompanyLogo ? escapeHtml(logoPath) : '',
+      companyLogoAlt: escapeHtml(cover.company ? `${cover.company} logo` : 'Company logo'),
+      companyInitial: escapeHtml((cover.company || '?').charAt(0).toUpperCase())
+    };
   }
 
   /** Build a temporary cover letter page. */
@@ -716,7 +744,9 @@ ${timelineHtml}
     const email = (profile.contact || []).find((item) => item.type === 'email');
     const phone = (profile.contact || []).find((item) => item.type === 'phone');
     const location = (profile.contact || []).find((item) => item.type === 'location');
+    const linkedin = (profile.contact || []).find((item) => item.type === 'linkedin');
     const contactParts = [location?.value, email?.value, phone?.value].filter(Boolean);
+    const companyLogo = this.resolveCoverCompanyLogo(cover);
 
     const paragraphsHtml = (cover.paragraphs || [])
       .map((paragraph) => `<p class="cover__paragraph">${escapeHtml(paragraph)}</p>`)
@@ -730,8 +760,18 @@ ${timelineHtml}
 
     return renderComponent('cover-page', {
       versionId: escapeHtml(cover.id || 'default'),
+      photoHtml: this.buildCoverPhotoHtml(profile),
+      senderFirstName: escapeHtml(profile.firstName || ''),
+      senderLastName: escapeHtml(profile.lastName || ''),
       senderName: escapeHtml(senderName),
       senderTitle: escapeHtml(profile.title || ''),
+      senderPhone: escapeHtml(phone?.value || ''),
+      senderPhoneHref: phone?.href ? escapeHtml(phone.href) : '',
+      senderEmail: escapeHtml(email?.value || ''),
+      senderEmailHref: email?.href ? escapeHtml(email.href) : '',
+      senderLinkedIn: escapeHtml(linkedin?.value || ''),
+      senderLinkedInHref: linkedin?.href ? escapeHtml(linkedin.href) : '',
+      senderLocation: escapeHtml(location?.value || ''),
       senderContact: escapeHtml(contactParts.join(' · ')),
       dateLine: escapeHtml(cover.date || today),
       recipientLine: escapeHtml(cover.recipient || 'Hiring Manager'),
@@ -739,7 +779,8 @@ ${timelineHtml}
       subject: escapeHtml(cover.subject || 'Application'),
       recipient: escapeHtml((cover.recipient || 'Hiring Manager').replace(/^Dear\s+/i, '')),
       paragraphsHtml,
-      closing: escapeHtml(cover.closing || 'Yours sincerely,')
+      closing: escapeHtml(cover.closing || 'Yours sincerely,'),
+      ...companyLogo
     });
   }
 

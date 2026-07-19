@@ -42,19 +42,33 @@
     shape-rendering: geometricPrecision;
   }
 
-  /* Keep links visible and clickable in the saved PDF */
-  a[href] {
-    text-decoration: underline;
-    text-decoration-thickness: 0.06em;
-    text-underline-offset: 0.12em;
-  }
-
-  .contact__item a[href] {
-    color: var(--text) !important;
+  /*
+   * PDF link underlines — use native text-decoration only.
+   * box-shadow / background tricks cause side-line artefacts in Chrome PDF.
+   */
+  a[href]:not(.tool-item__icon):not(.timeline__logo):not(.portfolio-header__back) {
+    text-decoration: underline !important;
+    -webkit-text-decoration: underline !important;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+    -webkit-text-decoration-thickness: 1px;
+    box-shadow: none !important;
+    background: none !important;
+    font-weight: inherit;
   }
 
   .pillar__body-link {
     font-weight: 600;
+  }
+
+  .contact__item a[href] {
+    color: var(--text) !important;
+    font-weight: 400;
+  }
+
+  .cover__contact-link[href] {
+    color: var(--text) !important;
+    font-weight: 500;
   }
 
   .pillar--technical .pillar__body-link {
@@ -69,13 +83,14 @@
     color: var(--impact-purple) !important;
   }
 
-  a[href^="#"] {
+  a[href^="#"]:not(.pillar__body-link) {
     color: var(--blue) !important;
   }
 
   a.tool-item__icon.tool-item__link,
   .timeline__logo[href] {
-    text-decoration: none;
+    text-decoration: none !important;
+    box-shadow: none !important;
   }
 
   .portfolio-header__back[href] {

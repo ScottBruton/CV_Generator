@@ -1,11 +1,11 @@
 {
   "coverLetters": [
-    { "id": "default", "label": "General cover letter" }
+    { "id": "default", "label": "Breville Cover Letter" }
   ],
   "cvs": [
-    { "id": "default", "label": "General CV" }
+    { "id": "default", "label": "Breville CV" }
   ],
   "portfolios": [
-    { "id": "default", "label": "Full portfolio" }
+    { "id": "default", "label": "Breville Portfolio" }
   ]
 }
