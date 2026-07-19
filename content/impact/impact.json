@@ -123,19 +123,32 @@
         "label": "Product Impact",
         "stats": [
           { "number": "2", "label": "CE-Marked Devices" },
-          { "number": "13+", "label": "R&D Projects" },
-          { "number": "2", "label": "Implant Systems" }
+          { "number": "13+", "label": "R&D Med-Tech Projects" },
+          { "number": "4", "label": "Implant Systems" }
         ]
       },
       "body": [
         { "heading": "Product & regulatory delivery" },
         { "subheading": "Regulatory & certification" },
         {
+          "text": "CE marking and regulatory submission - Class II and Class III medical devices",
+          "bulletsInline": true,
+          "company": "",
           "bullets": [
-            { "text": "CE marking and regulatory submission - Class II and Class III medical devices", "company": "" },
-            { "text": "Designed and executed pre-validation protocols for OculusID pupillometer", "company": "" },
-            { "text": "Verification, validation and pupil-tracking performance evaluation", "company": "" },
-            { "text": "Internal regulatory audits across multiple devices pre-certification and submission", "company": "" }
+            { "text": "2 ENT balloon dilation systems & 2 implant systems", "company": "" }
+          ]
+        },
+        {
+          "text": "Internal regulatory audits across multiple devices pre-certification and submission",
+          "bulletsInline": true,
+          "company": "",
+          "bullets": [
+            { "text": "ISO 13485 and MDR compliance audits", "company": "" }
+          ]
+        },
+        {
+          "bullets": [
+            { "text": "Designed and executed pre-validation protocols for OculusID pupillometer", "company": "" }
           ]
         },
         { "subheading": "Project delivery" },
@@ -143,21 +156,24 @@
           "bullets": [
             { "text": "Cardiac monitoring and ultrasound system - concept through submission (2.5 years)", "company": "" },
             { "text": "IEC 60601-1 design requirements and V&V protocol development", "company": "" },
-            { "text": "Early-stage medical device concepts incl. high-temperature reprocessable Class II device (global client)", "company": "" }
+            { "text": "Multiple concept generation workshops and market research for rapid concepting and XFT alignment for project direction", "company": "" },
+            { "text": "10+ Internal and formal design reviews for technical accuracy and regulatory compliance", "company": "" }
           ]
         },
         { "subheading": "Portfolio & lifecycle" },
         {
           "bullets": [
             { "text": "13+ product-development projects - concept through prototyping, testing, integration and regulatory readiness", "company": "" },
-            { "text": "Implantable and surgical portfolio expansion to support clinical and commercial growth", "company": "" }
+            { "text": "Orthopaedic Implants and surgical portfolio expansion to support clinical and commercial growth", "company": "" }
           ]
         },
         { "subheading": "Operations & QMS" },
         {
           "bullets": [
-            { "text": "Supply chain restructure at Signature Orthopaedics", "company": "" },
-            { "text": "Product-tracking interface integrated into QMS - improved visibility and cross-department transparency", "company": "" }
+            { "text": "Product-tracking interface integrated into QMS - improved visibility and cross-department transparency", "company": "" },
+            { "text": "Designed and developed a JIRA and Clarizen application for automation of project management", "company": "" },
+            { "text": "Experienced in timesheets tracking (3+ years)", "company": "" }
+            
           ]
         }
       ]
@@ -171,17 +187,26 @@
         "stats": [
           { "number": "10+", "label": "Engineers Mentored" },
           { "number": "4", "label": "Teams Led" },
-          { "number": "5+", "label": "Cross-Functional Projects" }
+          { "number": "10+", "label": "Cross-Functional Projects" }
         ]
       },
       "body": [
         { "heading": "Leadership & collaboration" },
         { "subheading": "Product & project leadership" },
         {
+          "text": "Mechanical lead - cardiac monitoring and ultrasound platform; coordinated cross-functional team through to submission",
+          "bulletsInline": true,
+          "href": "#cardiac-monitor-v1",
+          "company": "",
           "bullets": [
-            { "text": "Product lead - AI-based medical device program", "company": "", "href": "#ai-medical-device-program" },
+            { "text": "Senior mechanical engineer managing 2+ team members throughout entire project", "company": "" },
+            { "text": "Coordination of cross-functional team on layouts, design reviews, and technical accuracy through to submission", "company": "" }
+          ]
+        },
+        {
+          "bullets": [
+            { "text": "Product lead - AI-based machine learning device for wet detection of inline IV components.", "company": "", "href": "#ai-medical-device-program" },
             { "text": "Product lead - OculusID handheld pupillometer", "company": "" },
-            { "text": "Mechanical lead - cardiac monitoring and ultrasound platform; coordinated cross-functional team through submission", "company": "" },
             { "text": "Managed junior product developers, stakeholders, timeline and budget", "company": "" }
           ]
         },
