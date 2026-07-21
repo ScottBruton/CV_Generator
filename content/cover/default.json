@@ -1,14 +1,14 @@
 {
   "id": "default",
-  "recipient": "Breville Hiring Team",
-  "company": "Breville",
-  "companyLogo": "assets/cover/Breville.jpg",
-  "subject": "Application - Senior Mechanical Engineer / Product Developer",
+  "label": "Default Cover Letter",
+  "recipient": "Hiring Manager",
+  "company": "",
+  "companyLogo": "",
+  "subject": "Application — Senior Mechanical Engineer / Product Developer",
   "paragraphs": [
-    "Having progressed to the final rounds of Breville's Senior Mechanical Engineer application at the end of last year, I'm writing again with continued enthusiasm for the opportunity. I'm a Mechatronics Engineer, with a Masters Degree in Biomedical Engineering, a Diploma in Software Development, and a love for product developing. I have over eight years of experience designing and engineering medical devices within the R&D, orthopaedic, and consulting space. This includes implant systems, prosthetics, surgical tools, and custom-built manufacturing equipment. While my background is in healthcare, I'm an inventor at heart. In my spare time, I enjoy creating everything from mechanical tools to smart software. Building and refining ideas is something I genuinely love.",
-    "Over the course of my last two roles, I've developed a strong working knowledge of materials used in both medical and food grade applications. I've been responsible for managing internal material databases and often work closely with suppliers, quality teams, and compliance reviewers to ensure selected materials meet functional, aesthetic, and regulatory requirements. I see this as highly relevant to Breville's products, which need to perform reliably, look great, and meet the expectations of everyday users.",
-    "I'm excited by the chance to explore something new, especially with a team that brings together engineering and user experience. I bring hands on design and prototyping experience, a solid understanding of product lifecycles, and a practical approach to solving problems. I work best in collaborative environments where good design, smart engineering, and real-world testing come together.",
-    "Thank you for considering my application. I'd love the opportunity to share more and see how I can contribute to your team."
+    "I'm a Mechatronics Engineer with a Masters Degree in Biomedical Engineering, a Diploma in Software Development, and a strong focus on product development. I have over eight years of experience designing and engineering medical devices within R&D, orthopaedic, and consulting environments. This includes implant systems, prosthetics, surgical tools, and custom-built manufacturing equipment. I'm an inventor at heart — in my spare time I enjoy creating everything from mechanical tools to smart software.",
+    "Across recent roles I've built practical experience with materials selection, supplier collaboration, quality teams, and compliance review. I work to balance functional performance, aesthetics, and regulatory requirements, and I bring a hands-on approach to design, prototyping, and problem solving.",
+    "I'm looking for collaborative environments where engineering, user experience, and real-world testing come together. Thank you for considering my application — I'd welcome the chance to discuss how I can contribute to your team."
   ],
   "closing": "Yours sincerely,"
 }

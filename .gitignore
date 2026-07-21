@@ -18,3 +18,11 @@ Thumbs.db
 # Environment
 .env
 .env.*
+
+# Local SQLite database (applications JSON in content/app is the git-friendly backup)
+data/*.db
+data/*.db-*
+
+# Vite
+dist/
+.vite/

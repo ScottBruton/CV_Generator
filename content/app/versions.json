@@ -1,11 +1,32 @@
 {
   "coverLetters": [
-    { "id": "default", "label": "Breville Cover Letter" }
+    {
+      "id": "breville",
+      "label": "Breville Cover Letter"
+    },
+    {
+      "id": "default",
+      "label": "Default Cover Letter"
+    }
   ],
   "cvs": [
-    { "id": "default", "label": "Breville CV" }
+    {
+      "id": "breville",
+      "label": "Breville CV"
+    },
+    {
+      "id": "default",
+      "label": "Default CV"
+    }
   ],
   "portfolios": [
-    { "id": "default", "label": "Breville Portfolio" }
+    {
+      "id": "breville",
+      "label": "Breville Portfolio"
+    },
+    {
+      "id": "default",
+      "label": "Default Portfolio"
+    }
   ]
 }

@@ -367,10 +367,201 @@ body.app {
   color: #11172f;
 }
 
+.app-dropdown--application .app-dropdown__trigger {
+  min-width: 190px;
+  border-color: rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.app-view [data-version][hidden] {
+  display: none !important;
+}
+
+.app-manage-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 230;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s2);
+  background: rgba(17, 23, 47, 0.55);
+}
+
+.app-manage-dialog.is-open {
+  display: flex;
+}
+
+.app-manage-dialog__panel {
+  width: min(720px, 100%);
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  padding: 20px 22px 18px;
+  border-radius: 12px;
+  background: #f7f8fb;
+  box-shadow: 0 16px 40px rgba(17, 23, 47, 0.28);
+}
+
+.app-manage-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.app-manage-dialog__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #11172f;
+}
+
+.app-manage-dialog__hint,
+.app-manage-note {
+  margin: 8px 0 0;
+  font-size: 0.78rem;
+  color: #5a6478;
+  line-height: 1.45;
+}
+
+.app-manage-note code {
+  font-size: 0.72rem;
+  color: #11172f;
+}
+
+.app-manage-section {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #d7deea;
+}
+
+.app-manage-section__title {
+  margin: 0 0 10px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #11172f;
+}
+
+.app-manage-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 12px;
+}
+
+.app-manage-form--compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.app-manage-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #5a6478;
+}
+
+.app-manage-field input,
+.app-manage-field select {
+  padding: 8px 10px;
+  border: 1px solid #cfd6e4;
+  border-radius: 8px;
+  background: #fff;
+  color: #11172f;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.app-manage-form__actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.app-manage-form__actions .app-btn--secondary {
+  background: #e8ecf4;
+  border-color: #cfd6e4;
+  color: #11172f;
+}
+
+.app-manage-form__actions .app-btn--secondary:hover:not(:disabled) {
+  background: #dde3ef;
+}
+
+.app-manage-dialog .app-btn--secondary {
+  background: #e8ecf4;
+  border-color: #cfd6e4;
+  color: #11172f;
+}
+
+.app-manage-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 180px;
+  overflow: auto;
+}
+
+.app-manage-list__item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px solid #d7deea;
+  border-radius: 8px;
+  background: #fff;
+  color: #11172f;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.app-manage-list__item span {
+  font-size: 0.68rem;
+  color: #5a6478;
+  font-weight: 600;
+}
+
+.app-manage-list__item.is-active,
+.app-manage-list__item:hover {
+  border-color: #9aa6bf;
+  background: #f0f3f8;
+}
+
+.app-manage-status {
+  min-height: 1.2em;
+  margin: 14px 0 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #2f6f4e;
+}
+
+.app-manage-status.is-error {
+  color: #a1262f;
+}
+
+@media (max-width: 720px) {
+  .app-manage-form,
+  .app-manage-form--compact {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media print {
   .app-dashboard,
   .app-preview,
   .app-export-dialog,
+  .app-manage-dialog,
   .cover__temp-note {
     display: none !important;
   }

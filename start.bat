@@ -29,12 +29,14 @@ if not exist "node_modules\" (
 
 echo.
 echo Starting CV Generator...
-echo   - Builds index.html once
-echo   - Watches content, components, CSS, and assets for changes
-echo   - Serves the CV at http://localhost:3000
+echo   - React app (Vite) at http://127.0.0.1:5173
+echo   - API + PDF export at http://127.0.0.1:3001
 echo.
-echo Freeing export port 3001 if needed...
+echo Freeing ports 3001 and 5173 if needed...
 for /f "tokens=5" %%a in ('netstat -ano ^| findstr :3001 ^| findstr LISTENING') do (
+  taskkill /F /PID %%a >nul 2>&1
+)
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr :5173 ^| findstr LISTENING') do (
   taskkill /F /PID %%a >nul 2>&1
 )
 echo.

@@ -1,20 +1,27 @@
 {
   "name": "cv-generator",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "JSON-driven build for the engineering CV template",
+  "description": "Variant-centric React CV Generator with local JSON content and PDF export",
   "scripts": {
-    "build": "node scripts/build.js",
-    "generate-markers": "node scripts/generate-company-markers.js",
-    "watch": "node scripts/watch.js",
+    "dev": "concurrently -n web,api -c blue,magenta \"vite\" \"npm run export-server\"",
+    "dev:web": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "export-pdf": "node scripts/export-pdf.js",
     "export-server": "node scripts/export-server.js",
-    "dev": "concurrently -n watch,serve,export -c blue,green,magenta \"npm run watch\" \"live-server --port=3000 --watch=content,components,templates,index.html,scripts/app.js,style.css,profile.css,stat-card.css,timeline.css,impact.css,skills.css,portfolio.css,tools.css,cover.css,app.css,print.css,assets --wait=500\" \"npm run export-server\"",
-    "start": "npm run build && npm run dev",
+    "generate-markers": "node scripts/generate-company-markers.js",
+    "start": "npm run dev",
     "run": "npm run start"
   },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.9.0"
+  },
   "devDependencies": {
+    "@vitejs/plugin-react": "^4.7.0",
     "concurrently": "^9.1.2",
-    "live-server": "^1.2.2"
+    "vite": "^7.1.0"
   }
 }

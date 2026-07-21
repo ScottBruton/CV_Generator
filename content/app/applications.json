@@ -1,0 +1,25 @@
+{
+  "activeApplicationId": "breville",
+  "applications": [
+    {
+      "id": "default",
+      "label": "Default template",
+      "company": "",
+      "isTemplate": true,
+      "coverId": "default",
+      "cvId": "default",
+      "portfolioId": "default",
+      "updatedAt": "2026-07-21T08:59:53.989Z"
+    },
+    {
+      "id": "breville",
+      "label": "Breville",
+      "company": "Breville",
+      "isTemplate": false,
+      "coverId": "breville",
+      "cvId": "breville",
+      "portfolioId": "breville",
+      "updatedAt": "2026-07-21T08:59:54.015Z"
+    }
+  ]
+}
