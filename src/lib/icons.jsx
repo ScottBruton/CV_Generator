@@ -1,4 +1,9 @@
 import { cloneElement } from 'react';
+import { assetUrl } from './content.js';
+
+const ASSET_ICONS = {
+  multi: 'assets/icons/multi.svg'
+};
 
 const ICONS = {
   location: (
@@ -45,13 +50,6 @@ const ICONS = {
       <path d="M14 14c2 0 4 1.5 4 4" />
     </svg>
   ),
-  multi: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-      <circle cx="8" cy="8" r="3" />
-      <circle cx="16" cy="8" r="3" />
-      <circle cx="12" cy="16" r="3" />
-    </svg>
-  ),
   gear: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
       <circle cx="12" cy="12" r="3" />
@@ -85,7 +83,32 @@ const ICONS = {
   )
 };
 
+function AssetIcon({ src, className }) {
+  return (
+    <span
+      className={className ? `${className} icon-asset` : 'icon-asset'}
+      aria-hidden="true"
+      style={{
+        backgroundColor: 'currentColor',
+        WebkitMaskImage: `url(${src})`,
+        maskImage: `url(${src})`,
+        WebkitMaskSize: 'contain',
+        maskSize: 'contain',
+        WebkitMaskRepeat: 'no-repeat',
+        maskRepeat: 'no-repeat',
+        WebkitMaskPosition: 'center',
+        maskPosition: 'center'
+      }}
+    />
+  );
+}
+
 export function Icon({ name, className }) {
+  const assetPath = ASSET_ICONS[name];
+  if (assetPath) {
+    return <AssetIcon src={assetUrl(assetPath)} className={className} />;
+  }
+
   const icon = ICONS[name];
   if (!icon) return null;
   return cloneElement(icon, {

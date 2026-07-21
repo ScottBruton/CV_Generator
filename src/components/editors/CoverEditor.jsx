@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import AutoTextarea from './AutoTextarea.jsx';
 
 export default function CoverEditor({ content, onSave, onChange, status }) {
   const [draft, setDraft] = useState(content || {});
@@ -63,7 +64,7 @@ export default function CoverEditor({ content, onSave, onChange, status }) {
       {paragraphs.map((paragraph, index) => (
         <label className="shell-field" key={index}>
           <span>Paragraph {index + 1}</span>
-          <textarea value={paragraph} onChange={(e) => updateParagraph(index, e.target.value)} />
+          <AutoTextarea value={paragraph} onChange={(e) => updateParagraph(index, e.target.value)} />
         </label>
       ))}
 

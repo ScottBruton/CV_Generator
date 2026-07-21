@@ -148,6 +148,10 @@ body {
   min-height: 0;
 }
 
+.shell-workspace--editor-collapsed {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 @media (max-width: 960px) {
   .shell-workspace {
     grid-template-columns: 1fr;
@@ -178,6 +182,12 @@ body {
   padding: 16px;
 }
 
+.shell-editor__toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
 .shell-editor__title {
   margin: 0 0 8px;
   font-size: 0.9rem;
@@ -189,6 +199,28 @@ body {
   margin: 0 0 14px;
   font-size: 0.74rem;
   color: #5a6478;
+}
+
+.shell-editor__section {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #dde3ef;
+}
+
+.shell-editor__heading-label {
+  margin: 10px 0 6px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #11172f;
+}
+
+.shell-editor__subheading-label {
+  margin: 8px 0 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #3d4a66;
 }
 
 .shell-field {
@@ -203,8 +235,9 @@ body {
 
 .shell-field input,
 .shell-field textarea,
-.shell-field select {
-  padding: 8px 10px;
+.shell-field select,
+.shell-bullet textarea {
+  padding: 4px 8px;
   border: 1px solid #cfd6e4;
   border-radius: 8px;
   background: #fff;
@@ -212,12 +245,109 @@ body {
   font: inherit;
   font-size: 0.78rem;
   font-weight: 600;
+  box-sizing: border-box;
+  width: 100%;
 }
 
-.shell-field textarea {
-  min-height: 90px;
-  resize: vertical;
-  line-height: 1.45;
+/* Auto-grow: mirror text sizes the grid row; textarea fills it */
+.shell-grow-wrap {
+  display: grid;
+  width: 100%;
+}
+
+.shell-grow-wrap::after {
+  content: attr(data-replicated-value) " ";
+  white-space: pre-wrap;
+  word-break: break-word;
+  visibility: hidden;
+  grid-area: 1 / 1 / 2 / 2;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.35;
+  box-sizing: border-box;
+}
+
+.shell-field textarea,
+.shell-bullet textarea,
+.shell-textarea-auto,
+.shell-grow-wrap > textarea {
+  grid-area: 1 / 1 / 2 / 2;
+  min-height: 0;
+  height: 100%;
+  resize: none;
+  line-height: 1.35;
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-break: break-word;
+  field-sizing: fixed;
+}
+
+.shell-bullet-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.shell-bullet {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 8px;
+  border: 1px solid #dde3ef;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.shell-bullet--sub {
+  margin-left: 16px;
+  border-left: 3px solid #93a4c7;
+  background: #fbfcff;
+}
+
+.shell-bullet__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.shell-bullet__label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #5a6478;
+}
+
+.shell-bullet--sub .shell-bullet__label {
+  color: #6b7c99;
+}
+
+.shell-bullet__actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.shell-btn--tiny {
+  padding: 3px 8px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  border-radius: 6px;
+  border: 1px solid #cfd6e4;
+  background: #e8ecf4;
+  color: #11172f;
+  cursor: pointer;
+}
+
+.shell-btn--tiny.shell-btn--danger {
+  background: #f8e8ea;
+  border-color: #e3b4b8;
+  color: #a1262f;
 }
 
 .shell-editor__actions {
@@ -231,6 +361,11 @@ body {
   background: #e8ecf4;
   border-color: #cfd6e4;
   color: #11172f;
+}
+
+.icon-asset {
+  display: block;
+  flex-shrink: 0;
 }
 
 .shell-status {

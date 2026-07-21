@@ -24,6 +24,7 @@ function EditorShell() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [activeDoc, setActiveDoc] = useState('cv');
   const [editorMode, setEditorMode] = useState('fields');
+  const [editorOpen, setEditorOpen] = useState(true);
   const [coverContent, setCoverContent] = useState(null);
   const [cvContent, setCvContent] = useState(null);
   const [portfolioContent, setPortfolioContent] = useState(null);
@@ -220,10 +221,21 @@ function EditorShell() {
           <button
             type="button"
             className="shell-btn shell-btn--secondary"
-            onClick={() => setEditorMode((mode) => (mode === 'fields' ? 'json' : 'fields'))}
+            onClick={() => setEditorOpen((open) => !open)}
+            aria-pressed={editorOpen}
+            aria-controls="shell-editor-panel"
           >
-            {editorMode === 'fields' ? 'Advanced JSON' : 'Structured edit'}
+            {editorOpen ? 'Hide editor' : 'Show editor'}
           </button>
+          {editorOpen ? (
+            <button
+              type="button"
+              className="shell-btn shell-btn--secondary"
+              onClick={() => setEditorMode((mode) => (mode === 'fields' ? 'json' : 'fields'))}
+            >
+              {editorMode === 'fields' ? 'Advanced JSON' : 'Structured edit'}
+            </button>
+          ) : null}
           <button type="button" className="shell-btn shell-btn--secondary" onClick={() => setExportOpen(true)} disabled={busy}>
             Export PDF
           </button>
@@ -232,7 +244,7 @@ function EditorShell() {
 
       <DocTabs labels={labels} activeDoc={activeDoc} onChange={setActiveDoc} />
 
-      <div className="shell-workspace">
+      <div className={`shell-workspace${editorOpen ? '' : ' shell-workspace--editor-collapsed'}`}>
         <DocumentPreview
           activeDoc={activeDoc}
           cover={previewCover}
@@ -245,36 +257,48 @@ function EditorShell() {
             portfolio: activeVariant.portfolioId
           }}
         />
-        <aside className="shell-editor">
-          {editorMode === 'json' ? (
-            <JsonEditor
-              content={editContent}
-              status={status}
-              onSave={(content) => handleSave(activeDoc === 'cover' ? 'cover' : activeDoc === 'portfolio' ? 'portfolio' : 'cv', content)}
-            />
-          ) : activeDoc === 'cover' ? (
-            <CoverEditor
-              content={editContent}
-              status={status}
-              onSave={(content) => handleSave('cover', content)}
-              onChange={handleEditorChange}
-            />
-          ) : activeDoc === 'portfolio' ? (
-            <PortfolioEditor
-              content={editContent}
-              status={status}
-              onSave={(content) => handleSave('portfolio', content)}
-              onChange={handleEditorChange}
-            />
-          ) : (
-            <CvEditor
-              content={editContent}
-              status={status}
-              onSave={(content) => handleSave('cv', content)}
-              onChange={handleEditorChange}
-            />
-          )}
-        </aside>
+        {editorOpen ? (
+          <aside className="shell-editor" id="shell-editor-panel">
+            <div className="shell-editor__toolbar">
+              <button
+                type="button"
+                className="shell-btn shell-btn--tiny"
+                onClick={() => setEditorOpen(false)}
+                aria-label="Collapse editor"
+              >
+                Collapse
+              </button>
+            </div>
+            {editorMode === 'json' ? (
+              <JsonEditor
+                content={editContent}
+                status={status}
+                onSave={(content) => handleSave(activeDoc === 'cover' ? 'cover' : activeDoc === 'portfolio' ? 'portfolio' : 'cv', content)}
+              />
+            ) : activeDoc === 'cover' ? (
+              <CoverEditor
+                content={editContent}
+                status={status}
+                onSave={(content) => handleSave('cover', content)}
+                onChange={handleEditorChange}
+              />
+            ) : activeDoc === 'portfolio' ? (
+              <PortfolioEditor
+                content={editContent}
+                status={status}
+                onSave={(content) => handleSave('portfolio', content)}
+                onChange={handleEditorChange}
+              />
+            ) : (
+              <CvEditor
+                content={editContent}
+                status={status}
+                onSave={(content) => handleSave('cv', content)}
+                onChange={handleEditorChange}
+              />
+            )}
+          </aside>
+        ) : null}
       </div>
 
       <VariantDrawer
