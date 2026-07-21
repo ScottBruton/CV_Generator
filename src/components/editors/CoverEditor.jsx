@@ -1,8 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { uploadCoverLogo } from '../../api/client';
+import { assetUrl } from '../../lib/content.js';
 import AutoTextarea from './AutoTextarea.jsx';
+
+function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ''));
+    reader.onerror = () => reject(new Error('Could not read image file'));
+    reader.readAsDataURL(file);
+  });
+}
 
 export default function CoverEditor({ content, onSave, onChange, status }) {
   const [draft, setDraft] = useState(content || {});
+  const [uploadStatus, setUploadStatus] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     setDraft(content || {});
@@ -11,6 +25,7 @@ export default function CoverEditor({ content, onSave, onChange, status }) {
   if (!draft) return null;
 
   const paragraphs = Array.isArray(draft.paragraphs) ? draft.paragraphs : [''];
+  const logoSrc = draft.companyLogo ? assetUrl(draft.companyLogo) : '';
 
   function commit(next) {
     setDraft(next);
@@ -31,6 +46,34 @@ export default function CoverEditor({ content, onSave, onChange, status }) {
     commit({ ...draft, paragraphs: [...(draft.paragraphs || []), ''] });
   }
 
+  async function handleLogoFile(event) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setUploadStatus({ error: true, message: 'Please choose an image file.' });
+      return;
+    }
+
+    setUploading(true);
+    setUploadStatus({ message: 'Uploading logo…' });
+    try {
+      const dataUrl = await readFileAsDataUrl(file);
+      const uploaded = await uploadCoverLogo({
+        filename: file.name,
+        mimeType: file.type,
+        data: dataUrl
+      });
+      updateField('companyLogo', uploaded.path);
+      setUploadStatus({ message: 'Logo selected. Save cover to keep it.' });
+    } catch (error) {
+      setUploadStatus({ error: true, message: error.message || 'Upload failed' });
+    } finally {
+      setUploading(false);
+    }
+  }
+
   return (
     <div>
       <h3 className="shell-editor__title">Edit cover letter</h3>
@@ -48,10 +91,41 @@ export default function CoverEditor({ content, onSave, onChange, status }) {
         <span>Company</span>
         <input value={draft.company || ''} onChange={(e) => updateField('company', e.target.value)} />
       </label>
-      <label className="shell-field">
-        <span>Company logo path</span>
-        <input value={draft.companyLogo || ''} onChange={(e) => updateField('companyLogo', e.target.value)} placeholder="assets/cover/example.jpg" />
-      </label>
+
+      <div className="shell-field">
+        <span>Company logo</span>
+        <div className="shell-file-row">
+          <input
+            value={draft.companyLogo || ''}
+            onChange={(e) => updateField('companyLogo', e.target.value)}
+            placeholder="assets/cover/example.jpg"
+          />
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            hidden
+            onChange={handleLogoFile}
+          />
+          <button
+            type="button"
+            className="shell-btn shell-btn--tiny"
+            disabled={uploading}
+            onClick={() => fileInputRef.current?.click()}
+          >
+            {uploading ? 'Uploading…' : 'Browse…'}
+          </button>
+        </div>
+        {logoSrc ? (
+          <img className="shell-logo-preview" src={logoSrc} alt="Company logo preview" />
+        ) : null}
+        {uploadStatus ? (
+          <p className={`shell-status${uploadStatus.error ? ' is-error' : ''}`} style={{ marginTop: 6 }}>
+            {uploadStatus.message}
+          </p>
+        ) : null}
+      </div>
+
       <label className="shell-field">
         <span>Subject</span>
         <input value={draft.subject || ''} onChange={(e) => updateField('subject', e.target.value)} />

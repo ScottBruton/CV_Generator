@@ -15,9 +15,17 @@ import DocumentPreview from './components/documents/DocumentPreview.jsx';
 import CoverEditor from './components/editors/CoverEditor.jsx';
 import CvEditor from './components/editors/CvEditor.jsx';
 import PortfolioEditor from './components/editors/PortfolioEditor.jsx';
+import CareerPathEditor from './components/editors/CareerPathEditor.jsx';
 import JsonEditor from './components/editors/JsonEditor.jsx';
 import ExportDialog from './components/export/ExportDialog.jsx';
 import PrintApp from './print/PrintApp.jsx';
+
+function saveKindForDoc(doc) {
+  if (doc === 'cover') return 'cover';
+  if (doc === 'portfolio') return 'portfolio';
+  if (doc === 'career-path') return 'career-path';
+  return 'cv';
+}
 
 function EditorShell() {
   const [bootstrap, setBootstrap] = useState(null);
@@ -28,6 +36,7 @@ function EditorShell() {
   const [coverContent, setCoverContent] = useState(null);
   const [cvContent, setCvContent] = useState(null);
   const [portfolioContent, setPortfolioContent] = useState(null);
+  const [careerPathContent, setCareerPathContent] = useState(null);
   const [sharedProfile, setSharedProfile] = useState(null);
   const [editContent, setEditContent] = useState(null);
   const [status, setStatus] = useState(null);
@@ -39,22 +48,30 @@ function EditorShell() {
   const activeVariant = bootstrap?.activeVariant || null;
 
   const loadVariantBundle = useCallback(async (variant) => {
-    const [cover, cv, portfolio, shared] = await Promise.all([
+    const [cover, cv, portfolio, careerPath, shared] = await Promise.all([
       fetchContent('cover', variant.coverId),
       fetchContent('cv', variant.cvId),
       fetchContent('portfolio', variant.portfolioId),
+      fetchContent('career-path', variant.careerPathId || 'default'),
       fetchContent('shared-profile', 'shared')
     ]);
     setCoverContent(cover.content);
     setCvContent(cv.content);
     setPortfolioContent(portfolio.content);
+    setCareerPathContent(careerPath.content);
     setSharedProfile(shared.content);
-    return { cover: cover.content, cv: cv.content, portfolio: portfolio.content };
+    return {
+      cover: cover.content,
+      cv: cv.content,
+      portfolio: portfolio.content,
+      careerPath: careerPath.content
+    };
   }, []);
 
   const syncEditorForDoc = useCallback((doc, bundle) => {
     if (doc === 'cover') setEditContent(bundle.cover);
     else if (doc === 'portfolio') setEditContent(bundle.portfolio);
+    else if (doc === 'career-path') setEditContent(bundle.careerPath);
     else setEditContent(bundle.cv);
   }, []);
 
@@ -72,11 +89,12 @@ function EditorShell() {
   }, [refresh]);
 
   useEffect(() => {
-    if (!coverContent && !cvContent && !portfolioContent) return;
+    if (!coverContent && !cvContent && !portfolioContent && !careerPathContent) return;
     syncEditorForDoc(activeDoc, {
       cover: coverContent,
       cv: cvContent,
-      portfolio: portfolioContent
+      portfolio: portfolioContent,
+      careerPath: careerPathContent
     });
   }, [activeDoc]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -95,12 +113,14 @@ function EditorShell() {
   const labels = useMemo(() => ({
     cover: coverContent?.label || bootstrap?.catalog?.covers?.find((item) => item.id === activeVariant?.coverId)?.label || 'Cover Letter',
     cv: cvContent?.meta?.label || bootstrap?.catalog?.cvs?.find((item) => item.id === activeVariant?.cvId)?.label || 'CV',
-    portfolio: portfolioContent?.label || bootstrap?.catalog?.portfolios?.find((item) => item.id === activeVariant?.portfolioId)?.label || 'Portfolio'
+    portfolio: portfolioContent?.label || bootstrap?.catalog?.portfolios?.find((item) => item.id === activeVariant?.portfolioId)?.label || 'Portfolio',
+    careerPath: 'Career Path'
   }), [activeVariant, bootstrap, coverContent, cvContent, portfolioContent]);
 
   const previewCover = activeDoc === 'cover' && editContent ? editContent : coverContent;
   const previewCv = activeDoc === 'cv' && editContent ? editContent : cvContent;
   const previewPortfolio = activeDoc === 'portfolio' && editContent ? editContent : portfolioContent;
+  const previewCareerPath = activeDoc === 'career-path' && editContent ? editContent : careerPathContent;
 
   async function handleSelectVariant(id) {
     setBusy(true);
@@ -140,13 +160,18 @@ function EditorShell() {
         ? activeVariant.coverId
         : kind === 'portfolio'
           ? activeVariant.portfolioId
-          : activeVariant.cvId;
+          : kind === 'career-path'
+            ? (activeVariant.careerPathId || 'default')
+            : activeVariant.cvId;
       const saved = await saveContent(kind, id, content);
       if (kind === 'cover') {
         setCoverContent(saved.content);
         setEditContent(saved.content);
       } else if (kind === 'portfolio') {
         setPortfolioContent(saved.content);
+        setEditContent(saved.content);
+      } else if (kind === 'career-path') {
+        setCareerPathContent(saved.content);
         setEditContent(saved.content);
       } else {
         setCvContent(saved.content);
@@ -250,11 +275,13 @@ function EditorShell() {
           cover={previewCover}
           cv={previewCv}
           portfolio={previewPortfolio}
+          careerPath={previewCareerPath}
           sharedProfile={sharedProfile}
           versionIds={{
             cover: activeVariant.coverId,
             cv: activeVariant.cvId,
-            portfolio: activeVariant.portfolioId
+            portfolio: activeVariant.portfolioId,
+            careerPath: activeVariant.careerPathId || 'default'
           }}
         />
         {editorOpen ? (
@@ -273,7 +300,7 @@ function EditorShell() {
               <JsonEditor
                 content={editContent}
                 status={status}
-                onSave={(content) => handleSave(activeDoc === 'cover' ? 'cover' : activeDoc === 'portfolio' ? 'portfolio' : 'cv', content)}
+                onSave={(content) => handleSave(saveKindForDoc(activeDoc), content)}
               />
             ) : activeDoc === 'cover' ? (
               <CoverEditor
@@ -287,6 +314,13 @@ function EditorShell() {
                 content={editContent}
                 status={status}
                 onSave={(content) => handleSave('portfolio', content)}
+                onChange={handleEditorChange}
+              />
+            ) : activeDoc === 'career-path' ? (
+              <CareerPathEditor
+                content={editContent}
+                status={status}
+                onSave={(content) => handleSave('career-path', content)}
                 onChange={handleEditorChange}
               />
             ) : (

@@ -2,7 +2,8 @@ export default function DocTabs({ labels, activeDoc, onChange }) {
   const tabs = [
     { id: 'cover', label: labels?.cover || 'Cover Letter' },
     { id: 'cv', label: labels?.cv || 'CV' },
-    { id: 'portfolio', label: labels?.portfolio || 'Portfolio' }
+    { id: 'portfolio', label: labels?.portfolio || 'Portfolio' },
+    { id: 'career-path', label: labels?.careerPath || 'Career Path' }
   ];
 
   return (

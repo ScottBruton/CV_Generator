@@ -1,0 +1,76 @@
+.career-path-doc {
+  width: min(100%, 720px);
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid #cfd6e4;
+  border-radius: 12px;
+  padding: 20px 22px 28px;
+  color: #11172f;
+  box-shadow: 0 8px 24px rgba(17, 23, 47, 0.08);
+}
+
+.career-path-doc__toolbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.career-path-doc__title {
+  margin: 0 0 4px;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.career-path-doc__hint {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #5a6478;
+}
+
+.career-path-doc__status {
+  margin: 0 0 10px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #2f6f4e;
+}
+
+.career-path-doc__body {
+  font-family: Aptos, 'Segoe UI', Calibri, sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  user-select: text;
+}
+
+.career-path-role {
+  margin: 0 0 22px;
+}
+
+.career-path-role p {
+  margin: 0 0 0.35em;
+}
+
+.career-path-role__heading {
+  margin: 0 0 0.55em;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: inherit;
+}
+
+.career-path-role__section {
+  margin-top: 0.75em !important;
+  margin-bottom: 0.55em !important;
+  font-weight: 700;
+}
+
+.career-path-role__list {
+  margin: 0;
+  padding-left: 1.25em;
+  list-style: disc;
+}
+
+.career-path-role__list li {
+  margin: 0 0 0.35em;
+  padding-left: 0.15em;
+}

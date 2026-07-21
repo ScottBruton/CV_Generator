@@ -1,5 +1,7 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
 const http = require('http');
 const { exportPdfBuffer, DEFAULT_FILENAME, DEVICE_SCALE_FACTOR } = require('./export-pdf');
 const {
@@ -18,15 +20,25 @@ const {
 
 const PORT = Number(process.env.EXPORT_PORT || 3001);
 const ORIGIN = process.env.EXPORT_ORIGIN || 'http://127.0.0.1:5173';
+const ROOT = path.resolve(__dirname, '..');
+const COVER_ASSET_DIR = path.join(ROOT, 'assets', 'cover');
 
 const EXPORT_MODES = new Set(['all', 'cv-portfolio', 'cover', 'cv', 'portfolio']);
+const COVER_LOGO_MIME = {
+  'image/jpeg': '.jpg',
+  'image/jpg': '.jpg',
+  'image/png': '.png',
+  'image/webp': '.webp',
+  'image/gif': '.gif',
+  'image/svg+xml': '.svg'
+};
 
-function readJsonBody(req) {
+function readJsonBody(req, maxBytes = 1e6) {
   return new Promise((resolve, reject) => {
     let data = '';
     req.on('data', (chunk) => {
       data += chunk;
-      if (data.length > 1e6) {
+      if (data.length > maxBytes) {
         reject(new Error('Request body too large'));
         req.destroy();
       }
@@ -44,6 +56,56 @@ function readJsonBody(req) {
     });
     req.on('error', reject);
   });
+}
+
+function sanitizeFilename(name) {
+  const base = path.basename(String(name || 'logo'))
+    .replace(/[^a-zA-Z0-9._-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80);
+  return base || 'logo';
+}
+
+function uniqueCoverLogoPath(filename) {
+  const ext = path.extname(filename);
+  const stem = path.basename(filename, ext) || 'logo';
+  let candidate = `${stem}${ext}`;
+  let index = 1;
+  while (fs.existsSync(path.join(COVER_ASSET_DIR, candidate))) {
+    candidate = `${stem}-${index}${ext}`;
+    index += 1;
+  }
+  return candidate;
+}
+
+function saveCoverLogoUpload(body = {}) {
+  const mimeType = String(body.mimeType || '').toLowerCase();
+  const ext = COVER_LOGO_MIME[mimeType];
+  if (!ext) {
+    throw new Error('Unsupported image type. Use JPG, PNG, WEBP, GIF, or SVG.');
+  }
+
+  const raw = String(body.data || '').replace(/^data:[^;]+;base64,/, '');
+  if (!raw) throw new Error('Missing image data');
+
+  const buffer = Buffer.from(raw, 'base64');
+  if (!buffer.length) throw new Error('Invalid image data');
+  if (buffer.length > 6e6) throw new Error('Image too large (max 6MB)');
+
+  fs.mkdirSync(COVER_ASSET_DIR, { recursive: true });
+
+  let filename = sanitizeFilename(body.filename || `logo${ext}`);
+  if (!path.extname(filename)) filename += ext;
+  else filename = `${path.basename(filename, path.extname(filename))}${ext}`;
+
+  filename = uniqueCoverLogoPath(filename);
+  const absolute = path.join(COVER_ASSET_DIR, filename);
+  fs.writeFileSync(absolute, buffer);
+
+  return {
+    path: `assets/cover/${filename}`,
+    filename
+  };
 }
 
 function sendJson(res, statusCode, payload) {
@@ -163,6 +225,13 @@ async function handleApi(req, res, url) {
     const body = await readJsonBody(req);
     const content = putContent(kind, id, body.content || body);
     sendJson(res, 200, { content, bootstrap: getBootstrapData() });
+    return;
+  }
+
+  if (req.method === 'POST' && url.pathname === '/api/upload/cover-logo') {
+    const body = await readJsonBody(req, 8e6);
+    const uploaded = saveCoverLogoUpload(body);
+    sendJson(res, 200, uploaded);
     return;
   }
 

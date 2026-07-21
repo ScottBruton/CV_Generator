@@ -28,5 +28,15 @@
       "id": "default",
       "label": "Default Portfolio"
     }
+  ],
+  "careerPaths": [
+    {
+      "id": "breville",
+      "label": "Breville Career Path"
+    },
+    {
+      "id": "default",
+      "label": "Career Path"
+    }
   ]
 }

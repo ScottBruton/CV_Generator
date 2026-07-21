@@ -86,6 +86,21 @@ function listPortfolioFiles() {
     });
 }
 
+function listCareerPathFiles() {
+  const dir = path.join(CONTENT_DIR, 'career-path');
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir)
+    .filter((name) => name.endsWith('.json'))
+    .map((name) => {
+      const id = path.basename(name, '.json');
+      const data = readJson(path.join(dir, name), {});
+      return {
+        id: data.id || id,
+        label: data.label || id
+      };
+    });
+}
+
 function openDb() {
   if (dbInstance) return dbInstance;
 
@@ -109,6 +124,11 @@ function openDb() {
       label TEXT NOT NULL
     );
 
+    CREATE TABLE IF NOT EXISTS career_paths (
+      id TEXT PRIMARY KEY,
+      label TEXT NOT NULL
+    );
+
     CREATE TABLE IF NOT EXISTS applications (
       id TEXT PRIMARY KEY,
       label TEXT NOT NULL,
@@ -117,10 +137,12 @@ function openDb() {
       cover_id TEXT NOT NULL,
       cv_id TEXT NOT NULL,
       portfolio_id TEXT NOT NULL,
+      career_path_id TEXT,
       updated_at TEXT NOT NULL,
       FOREIGN KEY (cover_id) REFERENCES covers(id),
       FOREIGN KEY (cv_id) REFERENCES cvs(id),
-      FOREIGN KEY (portfolio_id) REFERENCES portfolios(id)
+      FOREIGN KEY (portfolio_id) REFERENCES portfolios(id),
+      FOREIGN KEY (career_path_id) REFERENCES career_paths(id)
     );
 
     CREATE TABLE IF NOT EXISTS app_meta (
@@ -135,7 +157,14 @@ function openDb() {
     // column already exists
   }
 
+  try {
+    dbInstance.exec('ALTER TABLE applications ADD COLUMN career_path_id TEXT');
+  } catch (error) {
+    // column already exists
+  }
+
   syncCatalogFromFilesystem();
+  backfillCareerPathIds();
   seedVariantsIfNeeded();
   return dbInstance;
 }
@@ -145,16 +174,40 @@ function syncCatalogFromFilesystem() {
   const covers = listCoverFiles();
   const cvs = listCvDirs();
   const portfolios = listPortfolioFiles();
+  const careerPaths = listCareerPathFiles();
 
   const upsertCover = db.prepare('INSERT INTO covers (id, label) VALUES (?, ?) ON CONFLICT(id) DO UPDATE SET label = excluded.label');
   const upsertCv = db.prepare('INSERT INTO cvs (id, label) VALUES (?, ?) ON CONFLICT(id) DO UPDATE SET label = excluded.label');
   const upsertPortfolio = db.prepare('INSERT INTO portfolios (id, label) VALUES (?, ?) ON CONFLICT(id) DO UPDATE SET label = excluded.label');
+  const upsertCareerPath = db.prepare('INSERT INTO career_paths (id, label) VALUES (?, ?) ON CONFLICT(id) DO UPDATE SET label = excluded.label');
 
   for (const item of covers) upsertCover.run(item.id, item.label);
   for (const item of cvs) upsertCv.run(item.id, item.label);
   for (const item of portfolios) upsertPortfolio.run(item.id, item.label);
+  for (const item of careerPaths) upsertCareerPath.run(item.id, item.label);
 
   return getCatalog();
+}
+
+function backfillCareerPathIds() {
+  const db = openDb();
+  const catalog = getCatalog();
+  const hasDefault = catalog.careerPaths.some((item) => item.id === 'default');
+  if (!hasDefault) return;
+
+  db.prepare(`
+    UPDATE applications
+    SET career_path_id = COALESCE(career_path_id, id, 'default')
+    WHERE career_path_id IS NULL OR career_path_id = ''
+  `).run();
+
+  // Point unknown ids at default when a matching career-path file does not exist
+  const rows = db.prepare('SELECT id, career_path_id AS careerPathId FROM applications').all();
+  const update = db.prepare('UPDATE applications SET career_path_id = ? WHERE id = ?');
+  for (const row of rows) {
+    const exists = catalog.careerPaths.some((item) => item.id === row.careerPathId);
+    if (!exists) update.run(hasDefault ? 'default' : row.careerPathId, row.id);
+  }
 }
 
 function mapVariantRow(row) {
@@ -167,6 +220,7 @@ function mapVariantRow(row) {
     coverId: row.coverId ?? row.cover_id,
     cvId: row.cvId ?? row.cv_id,
     portfolioId: row.portfolioId ?? row.portfolio_id,
+    careerPathId: row.careerPathId ?? row.career_path_id ?? 'default',
     updatedAt: row.updatedAt ?? row.updated_at
   };
 }
@@ -175,7 +229,7 @@ function ensureCanonicalVariants() {
   const catalog = getCatalog();
   const has = (kind, id) => catalog[kind].some((item) => item.id === id);
 
-  if (has('covers', 'default') && has('cvs', 'default') && has('portfolios', 'default')) {
+  if (has('covers', 'default') && has('cvs', 'default') && has('portfolios', 'default') && has('careerPaths', 'default')) {
     upsertVariant({
       id: 'default',
       label: 'Default template',
@@ -183,11 +237,12 @@ function ensureCanonicalVariants() {
       isTemplate: true,
       coverId: 'default',
       cvId: 'default',
-      portfolioId: 'default'
+      portfolioId: 'default',
+      careerPathId: 'default'
     }, { persist: false });
   }
 
-  if (has('covers', 'breville') && has('cvs', 'breville') && has('portfolios', 'breville')) {
+  if (has('covers', 'breville') && has('cvs', 'breville') && has('portfolios', 'breville') && has('careerPaths', 'breville')) {
     upsertVariant({
       id: 'breville',
       label: 'Breville',
@@ -195,7 +250,8 @@ function ensureCanonicalVariants() {
       isTemplate: false,
       coverId: 'breville',
       cvId: 'breville',
-      portfolioId: 'breville'
+      portfolioId: 'breville',
+      careerPathId: 'breville'
     }, { persist: false });
   }
 }
@@ -231,7 +287,8 @@ function getCatalog() {
   return {
     covers: db.prepare('SELECT id, label FROM covers ORDER BY label COLLATE NOCASE').all(),
     cvs: db.prepare('SELECT id, label FROM cvs ORDER BY label COLLATE NOCASE').all(),
-    portfolios: db.prepare('SELECT id, label FROM portfolios ORDER BY label COLLATE NOCASE').all()
+    portfolios: db.prepare('SELECT id, label FROM portfolios ORDER BY label COLLATE NOCASE').all(),
+    careerPaths: db.prepare('SELECT id, label FROM career_paths ORDER BY label COLLATE NOCASE').all()
   };
 }
 
@@ -246,6 +303,7 @@ function listVariants() {
       cover_id AS coverId,
       cv_id AS cvId,
       portfolio_id AS portfolioId,
+      career_path_id AS careerPathId,
       updated_at AS updatedAt
     FROM applications
     ORDER BY is_template DESC, label COLLATE NOCASE
@@ -264,6 +322,7 @@ function getVariant(id) {
       cover_id AS coverId,
       cv_id AS cvId,
       portfolio_id AS portfolioId,
+      career_path_id AS careerPathId,
       updated_at AS updatedAt
     FROM applications
     WHERE id = ?
@@ -311,16 +370,18 @@ function upsertVariant(input, options = {}) {
   const coverId = input.coverId || input.cover_id;
   const cvId = input.cvId || input.cv_id;
   const portfolioId = input.portfolioId || input.portfolio_id;
+  const careerPathId = input.careerPathId || input.career_path_id || 'default';
   const isTemplate = input.isTemplate ? 1 : 0;
 
   if (!label) throw new Error('Variant label is required.');
   if (!catalog.covers.some((item) => item.id === coverId)) throw new Error(`Cover "${coverId}" was not found.`);
   if (!catalog.cvs.some((item) => item.id === cvId)) throw new Error(`CV "${cvId}" was not found.`);
   if (!catalog.portfolios.some((item) => item.id === portfolioId)) throw new Error(`Portfolio "${portfolioId}" was not found.`);
+  if (!catalog.careerPaths.some((item) => item.id === careerPathId)) throw new Error(`Career Path "${careerPathId}" was not found.`);
 
   db.prepare(`
-    INSERT INTO applications (id, label, company, is_template, cover_id, cv_id, portfolio_id, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO applications (id, label, company, is_template, cover_id, cv_id, portfolio_id, career_path_id, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(id) DO UPDATE SET
       label = excluded.label,
       company = excluded.company,
@@ -328,8 +389,9 @@ function upsertVariant(input, options = {}) {
       cover_id = excluded.cover_id,
       cv_id = excluded.cv_id,
       portfolio_id = excluded.portfolio_id,
+      career_path_id = excluded.career_path_id,
       updated_at = excluded.updated_at
-  `).run(id, label, company, isTemplate, coverId, cvId, portfolioId, nowIso());
+  `).run(id, label, company, isTemplate, coverId, cvId, portfolioId, careerPathId, nowIso());
 
   if (!getActiveVariantId()) setMeta('active_variant_id', id);
   if (options.persist !== false) persistVariantsJson();
@@ -369,7 +431,8 @@ function persistVariantsJson() {
   writeJson(path.join(CONTENT_DIR, 'app', 'versions.json'), {
     coverLetters: catalog.covers,
     cvs: catalog.cvs,
-    portfolios: catalog.portfolios
+    portfolios: catalog.portfolios,
+    careerPaths: catalog.careerPaths
   });
   return payload;
 }
@@ -393,7 +456,8 @@ function getBootstrapData() {
     versions: {
       coverLetters: catalog.covers,
       cvs: catalog.cvs,
-      portfolios: catalog.portfolios
+      portfolios: catalog.portfolios,
+      careerPaths: catalog.careerPaths
     }
   };
 }
@@ -454,6 +518,21 @@ function duplicatePortfolio({ fromId, id, label }) {
   return getCatalog().portfolios.find((item) => item.id === targetId);
 }
 
+function duplicateCareerPath({ fromId, id, label }) {
+  const sourceId = slugify(fromId);
+  const targetId = slugify(id || label);
+  const sourcePath = path.join(CONTENT_DIR, 'career-path', `${sourceId}.json`);
+  const targetPath = path.join(CONTENT_DIR, 'career-path', `${targetId}.json`);
+  if (!fs.existsSync(sourcePath)) throw new Error(`Career Path "${sourceId}" was not found.`);
+  if (fs.existsSync(targetPath)) throw new Error(`Career Path "${targetId}" already exists.`);
+  const data = readJson(sourcePath, {});
+  data.id = targetId;
+  data.label = label || `${data.label || sourceId} Copy`;
+  writeJson(targetPath, data);
+  syncCatalogFromFilesystem();
+  return getCatalog().careerPaths.find((item) => item.id === targetId);
+}
+
 function createVariantFrom({ label, company, fromId }) {
   const source = getVariant(fromId || 'default');
   if (!source) throw new Error(`Clone source "${fromId || 'default'}" was not found.`);
@@ -464,10 +543,12 @@ function createVariantFrom({ label, company, fromId }) {
   const coverLabel = `${label} Cover Letter`;
   const cvLabel = `${label} CV`;
   const portfolioLabel = `${label} Portfolio`;
+  const careerPathLabel = `${label} Career Path`;
 
   duplicateCover({ fromId: source.coverId, id, label: coverLabel });
   duplicateCv({ fromId: source.cvId, id, label: cvLabel });
   duplicatePortfolio({ fromId: source.portfolioId, id, label: portfolioLabel });
+  duplicateCareerPath({ fromId: source.careerPathId || 'default', id, label: careerPathLabel });
 
   const variant = upsertVariant({
     id,
@@ -476,7 +557,8 @@ function createVariantFrom({ label, company, fromId }) {
     isTemplate: false,
     coverId: id,
     cvId: id,
-    portfolioId: id
+    portfolioId: id,
+    careerPathId: id
   });
 
   setActiveVariantId(variant.id);
@@ -495,6 +577,12 @@ function getContent(kind, id) {
     const filePath = path.join(CONTENT_DIR, 'portfolio', `${safeId}.json`);
     const data = readJson(filePath, null);
     if (!data) throw new Error(`Portfolio "${safeId}" was not found.`);
+    return data;
+  }
+  if (kind === 'career-path') {
+    const filePath = path.join(CONTENT_DIR, 'career-path', `${safeId}.json`);
+    const data = readJson(filePath, null);
+    if (!data) throw new Error(`Career Path "${safeId}" was not found.`);
     return data;
   }
   if (kind === 'cv') {
@@ -528,6 +616,12 @@ function putContent(kind, id, payload) {
   if (kind === 'portfolio') {
     const data = { ...payload, id: safeId };
     writeJson(path.join(CONTENT_DIR, 'portfolio', `${safeId}.json`), data);
+    syncCatalogFromFilesystem();
+    return data;
+  }
+  if (kind === 'career-path') {
+    const data = { ...payload, id: safeId };
+    writeJson(path.join(CONTENT_DIR, 'career-path', `${safeId}.json`), data);
     syncCatalogFromFilesystem();
     return data;
   }
@@ -581,10 +675,12 @@ module.exports = {
   duplicateCover,
   duplicateCv,
   duplicatePortfolio,
+  duplicateCareerPath,
   slugify,
   listCoverFiles,
   listCvDirs,
   listPortfolioFiles,
+  listCareerPathFiles,
   listApplications,
   getApplication,
   getActiveApplicationId,

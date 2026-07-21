@@ -233,6 +233,28 @@ body {
   color: #5a6478;
 }
 
+.shell-file-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.shell-file-row input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.shell-logo-preview {
+  margin-top: 6px;
+  max-width: 140px;
+  max-height: 56px;
+  object-fit: contain;
+  border: 1px solid #dde3ef;
+  border-radius: 6px;
+  background: #fff;
+  padding: 4px;
+}
+
 .shell-field input,
 .shell-field textarea,
 .shell-field select,

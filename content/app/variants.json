@@ -1,5 +1,5 @@
 {
-  "activeVariantId": "breville",
+  "activeVariantId": "default",
   "variants": [
     {
       "id": "default",
@@ -9,7 +9,8 @@
       "coverId": "default",
       "cvId": "default",
       "portfolioId": "default",
-      "updatedAt": "2026-07-21T08:59:53.989Z"
+      "careerPathId": "default",
+      "updatedAt": "2026-07-21T23:27:26.673Z"
     },
     {
       "id": "breville",
@@ -19,7 +20,8 @@
       "coverId": "breville",
       "cvId": "breville",
       "portfolioId": "breville",
-      "updatedAt": "2026-07-21T08:59:54.015Z"
+      "careerPathId": "breville",
+      "updatedAt": "2026-07-21T23:27:26.690Z"
     }
   ]
 }

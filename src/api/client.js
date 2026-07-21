@@ -51,6 +51,13 @@ export function saveContent(kind, id, content) {
   });
 }
 
+export function uploadCoverLogo({ filename, mimeType, data }) {
+  return request('/api/upload/cover-logo', {
+    method: 'POST',
+    body: JSON.stringify({ filename, mimeType, data })
+  });
+}
+
 export async function exportPdf({ mode, variantId, coverId, cvId, portfolioId }) {
   const response = await fetch('/export', {
     method: 'POST',
