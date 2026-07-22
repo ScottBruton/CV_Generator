@@ -1,0 +1,114 @@
+{
+  "groups": [
+    {
+      "heading": "Mechanical Engineering",
+      "subskills": [
+        {
+          "name": "Fundamental Principles",
+          "level": 84,
+          "note": "10+"
+        },
+        {
+          "name": "Tolerance & FEA analysis",
+          "level": 67,
+          "note": "5+"
+        },
+        {
+          "name": "Manufacturing Materials",
+          "level": 79,
+          "note": "5+"
+        },
+        {
+          "name": "Design for Manufacturing",
+          "level": 73,
+          "note": "8+"
+        }
+      ]
+    },
+    {
+      "heading": "Solidworks CAD",
+      "subskills": [
+        {
+          "name": "CAD Modeling (Solids and Surfaces)",
+          "level": 91,
+          "note": "15"
+        },
+        {
+          "name": "CAD Drawings",
+          "level": 76,
+          "note": "15"
+        }
+      ]
+    },
+    {
+      "heading": "Technical Writing",
+      "subskills": [
+        {
+          "name": "Protocols & Reports",
+          "level": 71,
+          "note": "8"
+        },
+        {
+          "name": "Design & Client Presentations",
+          "level": 64,
+          "note": "6"
+        }
+      ]
+    },
+    {
+      "heading": "Product Development",
+      "subskills": [
+        {
+          "name": "Product Strategy and Requirements",
+          "level": 69,
+          "note": "8"
+        },
+        {
+          "name": "Concept Development",
+          "level": 77,
+          "note": "10"
+        },
+        {
+          "name": "Prototyping and Iteration",
+          "level": 82,
+          "note": "10"
+        },
+        {
+          "name": "Verification, Validation and Launch",
+          "level": 74,
+          "note": "5"
+        }
+      ]
+    },
+    {
+      "heading": "Automation",
+      "subskills": [
+        {
+          "name": "VBA",
+          "level": 52,
+          "note": "4"
+        },
+        {
+          "name": "AI Integration",
+          "level": 41,
+          "note": "2"
+        }
+      ]
+    },
+    {
+      "heading": "Software Development",
+      "subskills": [
+        {
+          "name": "Front-End",
+          "level": 48,
+          "note": "3"
+        },
+        {
+          "name": "Back-End",
+          "level": 44,
+          "note": "3"
+        }
+      ]
+    }
+  ]
+}

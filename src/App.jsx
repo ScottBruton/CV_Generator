@@ -415,6 +415,7 @@ function EditorShell() {
 
       <AiTailoringDialog
         open={aiOpen}
+        variantId={activeVariant.id}
         cover={coverContent}
         cv={cvContent}
         onSaveDocuments={handleAiSaveDocuments}

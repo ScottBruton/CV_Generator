@@ -41,6 +41,34 @@ const SOURCE_TABS = [
   { id: 'text', label: 'Pasted text' }
 ];
 
+function createEmptySession() {
+  return {
+    customInstructions: '',
+    selectedChips: [],
+    sourceTab: 'text',
+    urlValue: '',
+    pasteText: '',
+    pdfFile: null,
+    jobSummary: null,
+    useJobSummary: false,
+    analyseStatus: null,
+    snapshot: null,
+    suggestions: [],
+    warnings: [],
+    groups: [],
+    historyPast: [],
+    historyFuture: [],
+    activeGroupIndex: 0,
+    reviewTab: 'cover',
+    generateError: '',
+    saveError: '',
+    saveSuccess: ''
+  };
+}
+
+/** In-memory AI sessions keyed by variant id (survives dialog remounts). */
+const sessionsByVariant = new Map();
+
 function readFileAsDataUrl(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -103,12 +131,15 @@ function JobSummaryView({ summary }) {
 export default function AiTailoringDialog({
   open,
   onClose,
+  variantId,
   cover,
   cv,
   onSaveDocuments
 }) {
   const fileInputRef = useRef(null);
   const categories = useMemo(() => chipsByCategory(), []);
+  const boundVariantRef = useRef(null);
+  const stateRef = useRef(null);
 
   const [customInstructions, setCustomInstructions] = useState('');
   const [selectedChips, setSelectedChips] = useState(() => new Set());
@@ -135,12 +166,81 @@ export default function AiTailoringDialog({
   const [saveError, setSaveError] = useState('');
   const [saveSuccess, setSaveSuccess] = useState('');
 
+  function applySession(session) {
+    const next = session || createEmptySession();
+    setCustomInstructions(next.customInstructions || '');
+    setSelectedChips(new Set(next.selectedChips || []));
+    setSourceTab(next.sourceTab || 'text');
+    setUrlValue(next.urlValue || '');
+    setPasteText(next.pasteText || '');
+    setPdfFile(next.pdfFile || null);
+    setJobSummary(next.jobSummary || null);
+    setUseJobSummary(Boolean(next.useJobSummary && next.jobSummary));
+    setAnalyseStatus(next.analyseStatus || null);
+    setSnapshot(next.snapshot || null);
+    setSuggestions(next.suggestions || []);
+    setWarnings(next.warnings || []);
+    setGroups(next.groups || []);
+    setHistoryPast(next.historyPast || []);
+    setHistoryFuture(next.historyFuture || []);
+    setActiveGroupIndex(next.activeGroupIndex || 0);
+    setReviewTab(next.reviewTab || 'cover');
+    setGenerateError(next.generateError || '');
+    setSaveError(next.saveError || '');
+    setSaveSuccess(next.saveSuccess || '');
+    setAnalysing(false);
+    setGenerating(false);
+    setSaving(false);
+  }
+
+  function captureSession() {
+    return {
+      customInstructions,
+      selectedChips: [...selectedChips],
+      sourceTab,
+      urlValue,
+      pasteText,
+      pdfFile,
+      jobSummary,
+      useJobSummary,
+      analyseStatus,
+      snapshot,
+      suggestions,
+      warnings,
+      groups,
+      historyPast,
+      historyFuture,
+      activeGroupIndex,
+      reviewTab,
+      generateError,
+      saveError,
+      saveSuccess
+    };
+  }
+
+  stateRef.current = captureSession();
+
   useEffect(() => {
-    if (!open) return;
-    setGenerateError('');
-    setSaveError('');
-    setSaveSuccess('');
-  }, [open]);
+    if (!variantId) return;
+    const previous = boundVariantRef.current;
+    if (previous && previous !== variantId && stateRef.current) {
+      sessionsByVariant.set(previous, stateRef.current);
+    }
+    if (previous !== variantId) {
+      boundVariantRef.current = variantId;
+      applySession(sessionsByVariant.get(variantId) || createEmptySession());
+    }
+  }, [variantId]);
+
+  useEffect(() => {
+    if (!open || !variantId) return;
+    // Persist when the dialog closes for this variant.
+    return () => {
+      if (boundVariantRef.current === variantId && stateRef.current) {
+        sessionsByVariant.set(variantId, stateRef.current);
+      }
+    };
+  }, [open, variantId]);
 
   const canGenerate = Boolean(
     customInstructions.trim()
@@ -315,7 +415,23 @@ export default function AiTailoringDialog({
 
       const nextDocs = applyFieldUpdates({ cover: snapshot.cover, cv: snapshot.cv }, updates);
       await onSaveDocuments(nextDocs);
-      setSaveSuccess('Accepted changes saved.');
+
+      // Review payload is stale after save; keep job analysis inputs for this variant.
+      const kept = {
+        ...createEmptySession(),
+        customInstructions,
+        selectedChips: [...selectedChips],
+        sourceTab,
+        urlValue,
+        pasteText,
+        pdfFile,
+        jobSummary,
+        useJobSummary,
+        analyseStatus,
+        saveSuccess: 'Accepted changes saved.'
+      };
+      if (variantId) sessionsByVariant.set(variantId, kept);
+      applySession(kept);
       onClose({ saved: true });
     } catch (error) {
       setSaveError(error.message || 'Save failed.');
@@ -325,10 +441,8 @@ export default function AiTailoringDialog({
   }
 
   function handleClose() {
-    const dirty = groups.some((group) => group.status !== 'pending') || suggestions.length;
-    if (dirty) {
-      const proceed = window.confirm('Discard the current AI tailoring session? Live documents will remain unchanged.');
-      if (!proceed) return;
+    if (variantId && stateRef.current) {
+      sessionsByVariant.set(variantId, stateRef.current);
     }
     onClose({ saved: false });
   }

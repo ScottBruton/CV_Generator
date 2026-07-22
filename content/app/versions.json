@@ -9,6 +9,14 @@
       "label": "Default Cover Letter"
     },
     {
+      "id": "drone-shield-antenna-enginner",
+      "label": "Drone Shield Antenna Enginner Cover Letter"
+    },
+    {
+      "id": "intellihub-group-product-engineer-ev-charging-hardware",
+      "label": "Intellihub Group - Product Engineer - EV Charging Hardware Cover Letter"
+    },
+    {
       "id": "rhl",
       "label": "RHL Cover Letter"
     },
@@ -25,6 +33,14 @@
     {
       "id": "default",
       "label": "Default CV"
+    },
+    {
+      "id": "drone-shield-antenna-enginner",
+      "label": "Drone Shield Antenna Enginner CV"
+    },
+    {
+      "id": "intellihub-group-product-engineer-ev-charging-hardware",
+      "label": "Intellihub Group - Product Engineer - EV Charging Hardware CV"
     },
     {
       "id": "rhl",
@@ -45,6 +61,14 @@
       "label": "Default Portfolio"
     },
     {
+      "id": "drone-shield-antenna-enginner",
+      "label": "Drone Shield Antenna Enginner Portfolio"
+    },
+    {
+      "id": "intellihub-group-product-engineer-ev-charging-hardware",
+      "label": "Intellihub Group - Product Engineer - EV Charging Hardware Portfolio"
+    },
+    {
       "id": "rhl",
       "label": "RHL Portfolio"
     },
@@ -61,6 +85,14 @@
     {
       "id": "default",
       "label": "Career Path"
+    },
+    {
+      "id": "drone-shield-antenna-enginner",
+      "label": "Drone Shield Antenna Enginner Career Path"
+    },
+    {
+      "id": "intellihub-group-product-engineer-ev-charging-hardware",
+      "label": "Intellihub Group - Product Engineer - EV Charging Hardware Career Path"
     },
     {
       "id": "rhl",

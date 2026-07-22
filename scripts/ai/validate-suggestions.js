@@ -45,11 +45,11 @@ function validateTailoringResult(snapshot, result) {
 
     const delta = wordCount(suggestion.proposedText) - wordCount(suggestion.originalText);
     const justification = suggestion.changeJustification;
-    if (delta > 8) {
+    if (delta > 25) {
       warnings.push(`Rejected verbose rewrite for ${suggestion.fieldPath} (+${delta} words).`);
       continue;
     }
-    if (delta > 3 && (!justification || !String(justification.matchedRequirement || '').trim())) {
+    if (delta > 12 && (!justification || !String(justification.matchedRequirement || '').trim())) {
       warnings.push(`Rejected unsupported word-count increase for ${suggestion.fieldPath}.`);
       continue;
     }

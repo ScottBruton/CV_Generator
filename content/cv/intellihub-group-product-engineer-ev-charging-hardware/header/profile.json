@@ -1,0 +1,31 @@
+{
+  "firstName": "Scott",
+  "lastName": "Bruton",
+  "title": "Senior Mechanical Engineer / Product Developer",
+  "summary": "Passionate biomedical engineer and product developer with 8+ years of MedTech R&D experience, multiple engineering and IT qualifications, and a strong background in multi-language software development.",
+  "photo": {
+    "src": "assets/profilePic.jpg",
+    "alt": "Scott Bruton"
+  },
+  "contact": [
+    {
+      "type": "location",
+      "value": "Sydney, Australia"
+    },
+    {
+      "type": "linkedin",
+      "value": "linkedin.com/in/scottpbruton",
+      "href": "https://linkedin.com/in/scottpbruton"
+    },
+    {
+      "type": "email",
+      "value": "scottpbruton@gmail.com",
+      "href": "mailto:scottpbruton@gmail.com"
+    },
+    {
+      "type": "phone",
+      "value": "+61 (40) 6755 034",
+      "href": "tel:+61406755034"
+    }
+  ]
+}

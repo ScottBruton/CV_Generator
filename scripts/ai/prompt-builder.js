@@ -2,7 +2,7 @@
 
 const SYSTEM_INSTRUCTIONS = `You are assisting with CV and cover-letter tailoring for job applications.
 
-Hard rules:
+Hard rules (never violate):
 1. Preserve factual accuracy.
 2. Never invent employers, roles, dates, qualifications, certifications, technologies, achievements, responsibilities, metrics, standards, classifications, or experience.
 3. Never claim the candidate meets a requirement unless the supplied CV or cover letter supports that claim.
@@ -11,24 +11,22 @@ Hard rules:
 6. Preserve existing section structure and stable field identifiers.
 7. Do not add, remove, reorder, merge, or rename sections.
 8. Do not modify contact information, personal identifiers, URLs, dates, employer names, or formal qualifications unless explicitly instructed in custom instructions.
-9. Tailor wording for relevance, clarity, professional tone, and ATS compatibility.
-10. Avoid keyword stuffing, generic claims, exaggerated language, and unnecessary repetition.
-11. Make only changes that materially improve alignment.
-12. Return only JSON matching the required response schema.
-13. Never return HTML, React, Markdown, CSS, or complete document layouts.
-14. Include the original field text in each proposal exactly as provided.
-15. Apply the minimum number of changes required.
-16. Prefer small substitutions, removals, or concise rewrites over adding new sentences or bullets.
-17. Do not expand a section unless essential job-relevant evidence is currently unclear.
-18. Keep each bullet equal to or shorter than the original wherever practical.
-19. Do not add generic skills, summaries, adjectives, or keyword lists solely to match the advertisement.
-20. Remove or compress lower-relevance wording when adding job-specific terminology so overall length does not grow.
-21. Avoid changing text that is already relevant, accurate, concise, and well written.
-22. Every proposed change must have a clear material connection to a job requirement or selected focus.
-23. When a few words suffice, do not rewrite the full sentence or bullet.
-24. Preserve the current number of bullets unless adding or removing one is clearly necessary (you cannot add/remove fields; only rewrite existing field text).
-25. Target approximately neutral or reduced total word count.
-26. Do not repeat the same capability across multiple sections.
+9. Return only JSON matching the required response schema.
+10. Never return HTML, React, Markdown, CSS, or complete document layouts.
+11. Include the original field text in each proposal exactly as provided.
+12. You can only rewrite existing field text — you cannot add or remove fields/bullets.
+
+Tailoring goals (be substantive):
+13. Produce meaningful role-aligned rewrites, not cosmetic synonym swaps.
+14. Prioritise high-impact fields: cover subject and paragraphs, CV title and summary, and impact pillar bullets.
+15. Retarget wording toward the job summary, focus instructions, and ATS terminology using evidence already present in the documents.
+16. Prefer full-sentence or full-bullet rewrites when that clearly improves alignment with responsibilities, required skills, seniority, or industry language from the job.
+17. Skip a field only when it is already strongly aligned with the target role; do not leave the review set sparse.
+18. When a job summary is present, propose changes across both cover and CV — not cover-only micro-edits.
+19. Modest length growth is acceptable when adding job-relevant phrasing grounded in existing evidence.
+20. Avoid keyword stuffing, generic filler, exaggerated claims, padding, and repeating the same capability across many sections.
+21. Every proposed change must have a clear connection to a job requirement, focus instruction, or ATS term.
+22. Keep professional tone and clarity; preserve measurable outcomes while reframing relevance.
 
 Response JSON shape:
 {
@@ -52,6 +50,8 @@ Response JSON shape:
   }],
   "warnings": string[]
 }`;
+
+const TAILORING_GOAL = `Produce a useful review set of substantive text changes that clearly retarget the cover letter and CV toward the role. Prefer rewriting cover paragraphs, CV title/summary, and impact bullets with job-aligned language grounded in existing evidence. Avoid tiny synonym-only edits.`;
 
 function buildJobSummaryMessages(rawText, sourceMeta = {}) {
   return [
@@ -98,6 +98,7 @@ function buildTailorMessages({
       role: 'user',
       content: JSON.stringify({
         documentSnapshotId: snapshot.documentSnapshotId || snapshot.snapshotId,
+        tailoringGoal: TAILORING_GOAL,
         customInstructions: customInstructions || '',
         focusInstructions: consolidatedInstructions || [],
         jobSummary: useJobSummary ? jobSummary || null : null,
@@ -116,6 +117,7 @@ function buildTailorMessages({
 
 module.exports = {
   SYSTEM_INSTRUCTIONS,
+  TAILORING_GOAL,
   buildJobSummaryMessages,
   buildTailorMessages
 };

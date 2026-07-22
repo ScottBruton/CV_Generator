@@ -52,7 +52,9 @@ function PillarBody({ body = [] }) {
             <ul className="pillar__body-list pillar__body-list--standalone" key={index}>
               {bullets.map((bullet, bulletIndex) => (
                 <li className="pillar__body-bullet" key={bulletIndex}>
-                  <PillarLineContent entry={bullet} />
+                  <span className="pillar__body-bullet__text">
+                    <PillarLineContent entry={bullet} />
+                  </span>
                 </li>
               ))}
             </ul>
@@ -70,7 +72,9 @@ function PillarBody({ body = [] }) {
               <ul className={inline ? 'pillar__body-sublist' : 'pillar__body-list'}>
                 {bullets.map((bullet, bulletIndex) => (
                   <li className={inline ? 'pillar__body-subbullet' : 'pillar__body-bullet'} key={bulletIndex}>
-                    <PillarLineContent entry={bullet} />
+                    <span className={inline ? 'pillar__body-subbullet__text' : 'pillar__body-bullet__text'}>
+                      <PillarLineContent entry={bullet} />
+                    </span>
                   </li>
                 ))}
               </ul>

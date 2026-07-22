@@ -1,5 +1,5 @@
 {
-  "activeVariantId": "senior-systems-engineer",
+  "activeVariantId": "intellihub-group-product-engineer-ev-charging-hardware",
   "variants": [
     {
       "id": "default",
@@ -22,6 +22,28 @@
       "portfolioId": "breville",
       "careerPathId": "breville",
       "updatedAt": "2026-07-22T03:31:55.744Z"
+    },
+    {
+      "id": "drone-shield-antenna-enginner",
+      "label": "Drone Shield Antenna Enginner",
+      "company": "Drone Shield Antenna Enginner",
+      "isTemplate": false,
+      "coverId": "drone-shield-antenna-enginner",
+      "cvId": "drone-shield-antenna-enginner",
+      "portfolioId": "drone-shield-antenna-enginner",
+      "careerPathId": "drone-shield-antenna-enginner",
+      "updatedAt": "2026-07-22T05:01:31.104Z"
+    },
+    {
+      "id": "intellihub-group-product-engineer-ev-charging-hardware",
+      "label": "Intellihub Group - Product Engineer - EV Charging Hardware",
+      "company": "Intellihub Group - Product Engineer - EV Charging Hardware",
+      "isTemplate": false,
+      "coverId": "intellihub-group-product-engineer-ev-charging-hardware",
+      "cvId": "intellihub-group-product-engineer-ev-charging-hardware",
+      "portfolioId": "intellihub-group-product-engineer-ev-charging-hardware",
+      "careerPathId": "intellihub-group-product-engineer-ev-charging-hardware",
+      "updatedAt": "2026-07-22T05:10:13.186Z"
     },
     {
       "id": "rhl",

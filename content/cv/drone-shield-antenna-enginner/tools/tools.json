@@ -1,0 +1,15 @@
+{
+  "sectionTitle": "Tools & Technologies",
+  "tools": [
+    { "name": "SolidWorks", "icon": "assets/icons/solidworks.jpg", "href": "https://www.solidworks.com/" },
+    { "name": "Blender", "icon": "assets/icons/Blender.svg", "href": "https://www.blender.org/" },
+    { "name": "Cursor", "icon": "assets/icons/cursorai.jpg", "href": "https://cursor.com/" },
+    { "name": "GitHub", "icon": "assets/icons/GitHub.svg", "href": "https://github.com/" },
+    { "name": "Jira", "icon": "assets/icons/jira.jpg", "href": "https://www.atlassian.com/software/jira" },
+    { "name": "Python", "icon": "assets/icons/python.png", "href": "https://www.python.org/" },
+    { "name": "React", "icon": "assets/icons/react.png", "href": "https://react.dev/" },
+    { "name": "Java", "icon": "assets/icons/java.png", "href": "https://dev.java/" },
+    { "name": "C#", "icon": "assets/icons/c.svg", "href": "https://dotnet.microsoft.com/languages/csharp" },
+    { "name": "Keyshot", "icon": "assets/icons/keyshot.jpg", "href": "https://www.keyshot.com/" }
+  ]
+}
