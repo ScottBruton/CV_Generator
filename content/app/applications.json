@@ -1,5 +1,5 @@
 {
-  "activeApplicationId": "default",
+  "activeApplicationId": "senior-systems-engineer",
   "applications": [
     {
       "id": "default",
@@ -10,7 +10,7 @@
       "cvId": "default",
       "portfolioId": "default",
       "careerPathId": "default",
-      "updatedAt": "2026-07-21T23:27:26.673Z"
+      "updatedAt": "2026-07-22T03:31:55.727Z"
     },
     {
       "id": "breville",
@@ -21,7 +21,29 @@
       "cvId": "breville",
       "portfolioId": "breville",
       "careerPathId": "breville",
-      "updatedAt": "2026-07-21T23:27:26.690Z"
+      "updatedAt": "2026-07-22T03:31:55.744Z"
+    },
+    {
+      "id": "rhl",
+      "label": "RHL",
+      "company": "RHL",
+      "isTemplate": false,
+      "coverId": "rhl",
+      "cvId": "rhl",
+      "portfolioId": "rhl",
+      "careerPathId": "rhl",
+      "updatedAt": "2026-07-22T03:01:05.363Z"
+    },
+    {
+      "id": "senior-systems-engineer",
+      "label": "Senior Systems Engineer",
+      "company": "Senior Systems Engineer",
+      "isTemplate": false,
+      "coverId": "senior-systems-engineer",
+      "cvId": "senior-systems-engineer",
+      "portfolioId": "senior-systems-engineer",
+      "careerPathId": "senior-systems-engineer",
+      "updatedAt": "2026-07-22T04:51:06.076Z"
     }
   ]
 }

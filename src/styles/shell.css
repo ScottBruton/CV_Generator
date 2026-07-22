@@ -75,6 +75,31 @@ body {
   text-overflow: ellipsis;
 }
 
+.shell-ai-btn {
+  box-shadow: none !important;
+}
+
+.ai-diff__ins {
+  background: #d9f5e3;
+  color: #14532d;
+  text-decoration: none;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.ai-diff__del {
+  background: #f8e8ea;
+  color: #7f1d1d;
+  text-decoration: line-through;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.ai-diff__del--subtle {
+  opacity: 0.55;
+  margin-right: 0.25em;
+}
+
 .shell-header__actions {
   margin-left: auto;
   display: flex;
@@ -501,10 +526,141 @@ body {
 .drawer__footer {
   padding: 12px;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .drawer__footer .shell-btn {
   width: 100%;
+}
+
+.shell-btn--drawer-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.shell-btn--drawer-secondary:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.debug-console {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 400;
+  display: flex;
+  flex-direction: column;
+  background: #0d111c;
+  color: #d7deea;
+  border-top: 1px solid #2a3348;
+  box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.35);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.debug-console__resize {
+  height: 6px;
+  cursor: ns-resize;
+  background: linear-gradient(to bottom, #3a4660, #1a2233);
+  flex-shrink: 0;
+}
+
+.debug-console__resize:hover {
+  background: linear-gradient(to bottom, #4d5d7d, #243049);
+}
+
+.debug-console__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 10px;
+  background: #151b2b;
+  border-bottom: 1px solid #2a3348;
+  flex-shrink: 0;
+}
+
+.debug-console__toolbar strong {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.debug-console__meta {
+  font-size: 0.68rem;
+  color: #8b96ad;
+}
+
+.debug-console__actions {
+  margin-left: auto;
+  display: flex;
+  gap: 6px;
+}
+
+.debug-console__body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 6px 10px 10px;
+}
+
+.debug-console__line {
+  display: grid;
+  grid-template-columns: 88px 52px minmax(0, 1fr);
+  gap: 8px;
+  font-size: 0.7rem;
+  line-height: 1.35;
+  padding: 2px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.debug-console__time {
+  color: #6f7c96;
+}
+
+.debug-console__level {
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.debug-console__msg {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.debug-console__line--error .debug-console__level,
+.debug-console__line--error .debug-console__msg {
+  color: #ff8b8b;
+}
+
+.debug-console__line--warn .debug-console__level,
+.debug-console__line--warn .debug-console__msg {
+  color: #ffd27a;
+}
+
+.debug-console__line--info .debug-console__level {
+  color: #8ec5ff;
+}
+
+.debug-console__line--debug .debug-console__level {
+  color: #9aa7c2;
+}
+
+.debug-console__empty {
+  color: #8b96ad;
+  font-size: 0.72rem;
+  padding: 8px 0;
+}
+
+body.has-debug-console .shell {
+  padding-bottom: 100px;
+}
+
+@media print {
+  .debug-console {
+    display: none !important;
+  }
 }
 
 .dialog-backdrop {

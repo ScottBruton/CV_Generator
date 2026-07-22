@@ -40,8 +40,12 @@ for /f "tokens=5" %%a in ('netstat -ano ^| findstr :5173 ^| findstr LISTENING') 
   taskkill /F /PID %%a >nul 2>&1
 )
 echo.
+echo Opening http://127.0.0.1:5173 in your browser when ready...
 echo Press Ctrl+C to stop.
 echo.
+
+rem Wait until Vite is listening, then open the app in the default browser.
+start "CV Generator browser" /min cmd /c "for /l %%i in (1,1,45) do @(netstat -ano ^| findstr :5173 ^| findstr LISTENING >nul && start http://127.0.0.1:5173 && exit /b 0) & timeout /t 1 /nobreak >nul"
 
 call npm start
 if errorlevel 1 (

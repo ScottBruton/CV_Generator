@@ -2,6 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App.jsx';
+import { installDebugConsoleCapture } from './lib/debugLog.js';
 
 import '../style.css';
 import '../profile.css';
@@ -18,6 +19,7 @@ import '../print.css';
 import './styles/shell.css';
 
 document.body.classList.add('app');
+installDebugConsoleCapture();
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>

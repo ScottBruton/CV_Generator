@@ -4,7 +4,9 @@ export default function VariantDrawer({
   activeVariantId,
   onClose,
   onSelect,
-  onAdd
+  onAdd,
+  debugConsoleOpen,
+  onToggleDebugConsole
 }) {
   const sorted = [...(variants || [])].sort((a, b) => {
     if (a.isTemplate && !b.isTemplate) return -1;
@@ -39,6 +41,13 @@ export default function VariantDrawer({
         <div className="drawer__footer">
           <button type="button" className="shell-btn shell-btn--primary" onClick={onAdd}>
             Add variant
+          </button>
+          <button
+            type="button"
+            className="shell-btn shell-btn--drawer-secondary"
+            onClick={onToggleDebugConsole}
+          >
+            {debugConsoleOpen ? 'Hide debug console' : 'Show debug console'}
           </button>
         </div>
       </aside>

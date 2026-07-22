@@ -1,19 +1,31 @@
+import { appendDebugLog } from '../lib/debugLog.js';
+
 const API_ORIGIN = '';
 
 async function request(pathname, options = {}) {
-  const response = await fetch(`${API_ORIGIN}${pathname}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(options.headers || {})
-    },
-    ...options
-  });
+  try {
+    const response = await fetch(`${API_ORIGIN}${pathname}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(options.headers || {})
+      },
+      ...options
+    });
 
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(data.error || `Request failed (${response.status})`);
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      const message = data.error || `Request failed (${response.status})`;
+      appendDebugLog('error', [`API ${options.method || 'GET'} ${pathname}`, message]);
+      throw new Error(message);
+    }
+    appendDebugLog('debug', [`API ${options.method || 'GET'} ${pathname}`, `OK ${response.status}`]);
+    return data;
+  } catch (error) {
+    if (!String(error.message || '').startsWith('API ') && !String(error.message || '').includes('Request failed')) {
+      appendDebugLog('error', [`API ${options.method || 'GET'} ${pathname}`, error.message || error]);
+    }
+    throw error;
   }
-  return data;
 }
 
 export function fetchBootstrap() {
@@ -55,6 +67,20 @@ export function uploadCoverLogo({ filename, mimeType, data }) {
   return request('/api/upload/cover-logo', {
     method: 'POST',
     body: JSON.stringify({ filename, mimeType, data })
+  });
+}
+
+export function analyseJobSummary(payload) {
+  return request('/api/ai/job-summary', {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  });
+}
+
+export function tailorDocuments(payload) {
+  return request('/api/ai/tailor', {
+    method: 'POST',
+    body: JSON.stringify(payload)
   });
 }
 

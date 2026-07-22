@@ -7,6 +7,14 @@
     {
       "id": "default",
       "label": "Default Cover Letter"
+    },
+    {
+      "id": "rhl",
+      "label": "RHL Cover Letter"
+    },
+    {
+      "id": "senior-systems-engineer",
+      "label": "Senior Systems Engineer Cover Letter"
     }
   ],
   "cvs": [
@@ -17,6 +25,14 @@
     {
       "id": "default",
       "label": "Default CV"
+    },
+    {
+      "id": "rhl",
+      "label": "RHL CV"
+    },
+    {
+      "id": "senior-systems-engineer",
+      "label": "Senior Systems Engineer CV"
     }
   ],
   "portfolios": [
@@ -27,6 +43,14 @@
     {
       "id": "default",
       "label": "Default Portfolio"
+    },
+    {
+      "id": "rhl",
+      "label": "RHL Portfolio"
+    },
+    {
+      "id": "senior-systems-engineer",
+      "label": "Senior Systems Engineer Portfolio"
     }
   ],
   "careerPaths": [
@@ -37,6 +61,14 @@
     {
       "id": "default",
       "label": "Career Path"
+    },
+    {
+      "id": "rhl",
+      "label": "RHL Career Path"
+    },
+    {
+      "id": "senior-systems-engineer",
+      "label": "Senior Systems Engineer Career Path"
     }
   ]
 }

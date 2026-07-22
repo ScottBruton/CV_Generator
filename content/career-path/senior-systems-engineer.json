@@ -1,0 +1,88 @@
+{
+  "id": "senior-systems-engineer",
+  "label": "Senior Systems Engineer Career Path",
+  "roles": [
+    {
+      "company": "IDE Group",
+      "jobTitle": "Senior Product Developer / Senior Mechanical Engineer",
+      "startDate": "August 2023",
+      "endDate": "Present",
+      "accomplishments": [
+        "Mechanical Lead for a cardiac monitoring and ultrasound integrated display system, progressing from concept through regulatory submission over approximately 2.5 years.",
+        "Managed the design and integration of more than 50 unique components, including complete tolerance stack-up analysis.",
+        "Led mechanical integration, user-interface layout and electrical-component packaging.",
+        "Designed the system to meet IP22 and applicable IEC 60601-1 requirements.",
+        "Developed components using CNC machining, sheet-metal bending, die forming and overmoulding.",
+        "Mechanical Lead for the next-generation chassis of a globally recognised contrast-injector system, progressing through system integration.",
+        "Product Lead for an AI-based machine-learning system for detecting wet conditions in inline intravenous components.",
+        "Mechanical Lead for a portable ultrasound system intended to support stillbirth prevention, including display, transducer and electrical integration.",
+        "Built and deployed a fully functional iOS application for 3D medical imaging, including UI/UX design, backend integration, Xcode generation and iOS implementation.",
+        "Contributed across 13+ projects involving mechanical engineering, software, firmware, manufacturing and medical-device development.",
+        "Developed the company’s largest database of biocompatible and high-temperature engineering polymers for medical-device applications.",
+        "Designed a Jira and Clarizen application to automate aspects of project management and tracking.",
+        "Managed and mentored junior product developers and coordinated more than two team members throughout major projects.",
+        "Delivered SolidWorks training sessions and provided daily guidance in CAD, design for manufacture, materials selection and medical-device development.",
+        "Acted as a mechanical external reviewer for other company projects.",
+        "Led and participated in more than ten internal and formal design reviews for technical accuracy and regulatory compliance.",
+        "Hosted weekly client meetings, presenting technical outcomes, risks, proposed solutions and design decisions.",
+        "Coordinated cross-functional teams across mechanical, electrical, firmware, software, manufacturing, quality and regulatory disciplines."
+      ]
+    },
+    {
+      "company": "Signature Orthopaedics",
+      "jobTitle": "Biomedical Engineer",
+      "startDate": "August 2020",
+      "endDate": "July 2023",
+      "accomplishments": [
+        "Designed and developed more than 200 orthopaedic surgical instruments currently used in theatre settings.",
+        "Developed the company’s first reverse shoulder arthroplasty instrument set, providing a lightweight, single-tray solution suitable for all configurations.",
+        "Designed knee-replacement instrumentation and an associated surgical tray set.",
+        "Designed a customised femoral-head retractor.",
+        "Contributed to the design and development of a canine femoral implant system.",
+        "Project Lead for a Class II constrained liner and femoral-head combination targeting a broader clinical market.",
+        "Invented a self-orienting femoral-stem broach system currently progressing through the patent process.",
+        "Designed the SignaStretch ligament-preparation jig.",
+        "Developed a product-tracking interface integrated into the Quality Management System, improving visibility and communication between departments.",
+        "Created SolidWorks macros and design-automation tools to reduce repetitive work and improve engineering output.",
+        "Supported expansion of the company’s orthopaedic implant and surgical-instrument portfolio.",
+        "Conducted internal audits across multiple devices for pre-certification and regulatory-submission readiness."
+      ]
+    },
+    {
+      "company": "Medical Diagnostech",
+      "jobTitle": "Biomedical Engineer",
+      "startDate": "April 2020",
+      "endDate": "August 2020",
+      "accomplishments": [
+        "Product Lead for the OculusID handheld pupillometer.",
+        "Managed project stakeholders, development activities, timeline and budget.",
+        "Designed and developed the application’s UI/UX using React, Electron, JavaScript and TypeScript.",
+        "Developed backend functionality using Python.",
+        "Coordinated software and hardware development activities required for the handheld medical device.",
+        "Designed and executed pre-validation protocols to support regulatory readiness."
+      ]
+    },
+    {
+      "company": "DISA Vascular",
+      "jobTitle": "Research and Development Biomedical Engineer",
+      "startDate": "April 2018",
+      "endDate": "March 2020",
+      "accomplishments": [
+        "One of two engineers responsible for achieving CE marking on two medical devices, with an additional device progressing through regulatory submission.",
+        "Contributed to regulatory and certification activities involving Class II and Class III medical devices.",
+        "Designed and developed a nitinol arterial stent.",
+        "Project Lead for an implantable Class IIa tracheal stent.",
+        "Project Lead for a sinuplasty balloon-dilation system.",
+        "Contributed to five medical-device R&D projects and led two devices through final prototyping, regulatory documentation and verification and validation.",
+        "Designed and developed medical devices within an ISO 13485 quality-management framework.",
+        "Worked across concept development, CAD, prototyping, risk management, regulatory documentation, verification and validation, manufacturing transfer and production support.",
+        "Designed and manufactured the mechanical and electrical components for two three-axis precision micro-gluing machines.",
+        "Designed and manufactured a multi-chamber ultraviolet adhesive-curing station.",
+        "Sole developer of four production machines used to improve and scale medical-device manufacturing.",
+        "Designed bench-test equipment and prepared equipment and process validation plans, including DQ, IQ, OQ and PQ.",
+        "Conducted internal regulatory and quality audits.",
+        "Performed cleanroom production, stent design, electropolishing, PCB layout and machining activities."
+      ]
+    }
+  ]
+}

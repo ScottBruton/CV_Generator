@@ -11,7 +11,12 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     proxy: {
-      '/api': 'http://127.0.0.1:3001',
+      // AI tailor can run several minutes; keep the proxy open.
+      '/api': {
+        target: 'http://127.0.0.1:3001',
+        timeout: 600_000,
+        proxyTimeout: 600_000
+      },
       '/export': 'http://127.0.0.1:3001'
     }
   },

@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import {
   createVariant,
   exportPdf,
@@ -10,7 +13,9 @@ import {
 } from './api/client';
 import DocTabs from './components/shell/DocTabs.jsx';
 import VariantDrawer from './components/shell/VariantDrawer.jsx';
+import DebugConsole from './components/shell/DebugConsole.jsx';
 import AddVariantDialog from './components/shell/AddVariantDialog.jsx';
+import { appendDebugLog } from './lib/debugLog.js';
 import DocumentPreview from './components/documents/DocumentPreview.jsx';
 import CoverEditor from './components/editors/CoverEditor.jsx';
 import CvEditor from './components/editors/CvEditor.jsx';
@@ -18,7 +23,9 @@ import PortfolioEditor from './components/editors/PortfolioEditor.jsx';
 import CareerPathEditor from './components/editors/CareerPathEditor.jsx';
 import JsonEditor from './components/editors/JsonEditor.jsx';
 import ExportDialog from './components/export/ExportDialog.jsx';
+import AiTailoringDialog from './components/ai/AiTailoringDialog.jsx';
 import PrintApp from './print/PrintApp.jsx';
+import { muiTheme } from './theme/muiTheme.js';
 
 function saveKindForDoc(doc) {
   if (doc === 'cover') return 'cover';
@@ -42,6 +49,8 @@ function EditorShell() {
   const [status, setStatus] = useState(null);
   const [addOpen, setAddOpen] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
+  const [debugConsoleOpen, setDebugConsoleOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
 
@@ -85,8 +94,16 @@ function EditorShell() {
   }, [activeDoc, loadVariantBundle, syncEditorForDoc]);
 
   useEffect(() => {
-    refresh().catch((err) => setError(err.message));
+    refresh().catch((err) => {
+      setError(err.message);
+      appendDebugLog('error', ['Failed to load bootstrap', err.message || err]);
+    });
   }, [refresh]);
+
+  useEffect(() => {
+    document.body.classList.toggle('has-debug-console', debugConsoleOpen);
+    return () => document.body.classList.remove('has-debug-console');
+  }, [debugConsoleOpen]);
 
   useEffect(() => {
     if (!coverContent && !cvContent && !portfolioContent && !careerPathContent) return;
@@ -191,6 +208,24 @@ function EditorShell() {
     setEditContent(next);
   }
 
+  async function handleAiSaveDocuments({ cover, cv }) {
+    if (!activeVariant) throw new Error('No active variant.');
+    setBusy(true);
+    try {
+      const savedCover = await saveContent('cover', activeVariant.coverId, cover);
+      const savedCv = await saveContent('cv', activeVariant.cvId, cv);
+      setCoverContent(savedCover.content);
+      setCvContent(savedCv.content);
+      if (activeDoc === 'cover') setEditContent(savedCover.content);
+      if (activeDoc === 'cv') setEditContent(savedCv.content);
+      const boot = await fetchBootstrap();
+      setBootstrap(boot);
+      setStatus({ message: 'AI tailored changes saved.' });
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function handleExport(mode) {
     if (!activeVariant) return;
     setBusy(true);
@@ -233,6 +268,7 @@ function EditorShell() {
   }
 
   return (
+    <ThemeProvider theme={muiTheme}>
     <div className="shell">
       <header className="shell-header">
         <button type="button" className="shell-burger" aria-label="Open variants menu" onClick={() => setDrawerOpen(true)}>
@@ -242,6 +278,17 @@ function EditorShell() {
           <span className="shell-brand__title">CV Generator</span>
           <span className="shell-brand__variant">{activeVariant.label}</span>
         </div>
+        <Button
+          className="shell-ai-btn"
+          variant="contained"
+          color="primary"
+          size="small"
+          startIcon={<AutoAwesomeIcon />}
+          onClick={() => setAiOpen(true)}
+          sx={{ ml: 1, flexShrink: 0 }}
+        >
+          AI Tailored
+        </Button>
         <div className="shell-header__actions">
           <button
             type="button"
@@ -342,7 +389,14 @@ function EditorShell() {
         onClose={() => setDrawerOpen(false)}
         onSelect={handleSelectVariant}
         onAdd={() => setAddOpen(true)}
+        debugConsoleOpen={debugConsoleOpen}
+        onToggleDebugConsole={() => {
+          setDebugConsoleOpen((open) => !open);
+          setDrawerOpen(false);
+        }}
       />
+
+      <DebugConsole open={debugConsoleOpen} onClose={() => setDebugConsoleOpen(false)} />
 
       <AddVariantDialog
         open={addOpen}
@@ -358,7 +412,16 @@ function EditorShell() {
         onClose={() => setExportOpen(false)}
         onExport={handleExport}
       />
+
+      <AiTailoringDialog
+        open={aiOpen}
+        cover={coverContent}
+        cv={cvContent}
+        onSaveDocuments={handleAiSaveDocuments}
+        onClose={() => setAiOpen(false)}
+      />
     </div>
+    </ThemeProvider>
   );
 }
 

@@ -1,5 +1,7 @@
 'use strict';
 
+require('./ai/env');
+
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
@@ -17,6 +19,7 @@ const {
   putContent,
   syncCatalogFromFilesystem
 } = require('./db');
+const { handleJobSummary, handleTailor } = require('./ai/handlers');
 
 const PORT = Number(process.env.EXPORT_PORT || 3001);
 const ORIGIN = process.env.EXPORT_ORIGIN || 'http://127.0.0.1:5173';
@@ -118,7 +121,13 @@ function sendJson(res, statusCode, payload) {
 }
 
 function sendError(res, statusCode, error) {
-  sendJson(res, statusCode, { error: error.message || String(error) });
+  const code = error?.statusCode || statusCode;
+  let message = error?.message || String(error);
+  if (error?.name === 'ZodError' && Array.isArray(error.issues)) {
+    message = error.issues.map((issue) => issue.message).join('; ') || 'Invalid request.';
+  }
+  // Never return stack traces or raw provider payloads to the client
+  sendJson(res, code, { error: message });
 }
 
 function resolveExportMode(body) {
@@ -235,6 +244,30 @@ async function handleApi(req, res, url) {
     return;
   }
 
+  if (req.method === 'POST' && url.pathname === '/api/ai/job-summary') {
+    const body = await readJsonBody(req, 8e6);
+    try {
+      const result = await handleJobSummary(req, body);
+      sendJson(res, 200, result);
+    } catch (error) {
+      console.error('[ai/job-summary]', error?.name || 'Error', error?.statusCode || 500);
+      sendError(res, error?.statusCode || 400, error);
+    }
+    return;
+  }
+
+  if (req.method === 'POST' && url.pathname === '/api/ai/tailor') {
+    const body = await readJsonBody(req, 4e6);
+    try {
+      const result = await handleTailor(req, body);
+      sendJson(res, 200, result);
+    } catch (error) {
+      console.error('[ai/tailor]', error?.name || 'Error', error?.statusCode || 500);
+      sendError(res, error?.statusCode || 400, error);
+    }
+    return;
+  }
+
   if (req.method === 'GET' && url.pathname.startsWith('/api/render/')) {
     const variantId = decodeURIComponent(url.pathname.slice('/api/render/'.length));
     const variant = getVariant(variantId) || getVariant(getActiveVariantId());
@@ -286,9 +319,14 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('Not found');
   } catch (error) {
+    if (req.url && String(req.url).startsWith('/api/ai/')) {
+      console.error('[ai]', error?.name || 'Error', error?.statusCode || 500);
+      sendError(res, error?.statusCode || 500, error);
+      return;
+    }
     console.error(error);
     if (req.url && req.url.startsWith('/api/')) {
-      sendError(res, 400, error);
+      sendError(res, error?.statusCode || 400, error);
       return;
     }
     res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
