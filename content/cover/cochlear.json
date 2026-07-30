@@ -1,0 +1,14 @@
+{
+  "id": "cochlear",
+  "label": "Cochlear Cover Letter",
+  "recipient": "Hiring Manager",
+  "company": "",
+  "companyLogo": "",
+  "subject": "Application — Senior Systems Engineer at Cochlear",
+  "paragraphs": [
+    "I am a Mechatronics Engineer with a Masters Degree in Biomedical Engineering, a Diploma in Software Development, and over eight years of medical-device R&D and product-development experience. Across implant systems, prosthetics, surgical tools, integrated medical equipment, and software-enabled products, I have combined mechanical, electrical, software, and biomedical knowledge to support system-level design, integration, verification, and delivery.",
+    "Across recent roles, I have led and contributed to multidisciplinary medical-device development involving mechanical, electrical, firmware, software, manufacturing, and quality/regulatory teams. My experience spans product and design requirements, system integration, concept development, prototyping, verification and validation, design reviews, technical issue resolution, and documentation supporting CE marking and Class II and Class III regulatory submissions.",
+    "Cochlear's combination of multidisciplinary engineering, user needs, rigorous verification, and regulated product delivery strongly aligns with my medical-device background. I would welcome the opportunity to bring my transferable systems-integration experience, cross-functional technical leadership, and hands-on product-development approach to Cochlear's sound processor projects while continuing to deepen my knowledge of Cochlear's product architecture."
+  ],
+  "closing": "Yours sincerely,"
+}

@@ -2,37 +2,48 @@
    Tools & Technologies footer
    ============================================================ */
 
+/* CV pages with a tools bar: pull Tools nearer the page edge. */
+.page:has(> .tools-footer) {
+  padding-bottom: 1mm;
+}
+
 .page > .tools-footer {
-  margin-top: auto;
-  padding-top: 2px;
+  /* Cancel most of the page gap so Tools sits close under Impact. */
+  margin-top: calc(2px - var(--s2));
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .tools-footer {
-  top: 15px;
-  flex-shrink: 0;
+  top: 0;
+  flex-shrink: 1;
+  min-height: 0;
   border-top: 1px solid var(--border);
   background: var(--bg-white);
+  /* Modest breathing room under the divider */
   padding: 6px 0 0;
   position: relative;
-  z-index: 2;
+  z-index: 5;
 }
 
 .tools-footer__inner {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  min-height: 0;
 }
 
 .tools-footer__title {
   margin: 0;
   flex-shrink: 0;
   white-space: nowrap;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   font-weight: 700;
   color: var(--blue);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  line-height: 1.2;
+  line-height: 1.15;
 }
 
 .tools-footer .tools-grid {
@@ -43,6 +54,7 @@
   align-items: center;
   gap: 2px;
   min-width: 0;
+  min-height: 0;
 }
 
 .tools-grid {
@@ -62,7 +74,7 @@
 .tools-footer .tool-item {
   flex: 1 1 0;
   min-width: 0;
-  gap: 2px;
+  gap: 1px;
 }
 
 .tool-item__icon {
@@ -92,9 +104,9 @@ a.tool-item__icon.tool-item__link:hover {
 }
 
 .tools-footer .tool-item__icon {
-  width: 18px;
-  height: 18px;
-  font-size: 0.55rem;
+  width: 16px;
+  height: 16px;
+  font-size: 0.5rem;
 }
 
 .tool-item__icon img {
@@ -104,8 +116,8 @@ a.tool-item__icon.tool-item__link:hover {
 }
 
 .tools-footer .tool-item__icon img {
-  width: 12px;
-  height: 12px;
+  width: 11px;
+  height: 11px;
 }
 
 .tool-item__name {
@@ -116,6 +128,6 @@ a.tool-item__icon.tool-item__link:hover {
 }
 
 .tools-footer .tool-item__name {
-  font-size: 0.48rem;
-  line-height: 1.1;
+  font-size: 0.44rem;
+  line-height: 1.05;
 }

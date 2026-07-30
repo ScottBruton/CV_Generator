@@ -344,9 +344,13 @@ export default function CvDocument({ content, versionId }) {
         </div>
         <div className="pillars-layout">
           <div className="pillar-col pillar-col--technical">{technical ? <Pillar pillar={technical} /> : null}</div>
-          <div className="pillar-col pillar-col--business">{business ? <Pillar pillar={business} /> : null}</div>
-          <div className="pillar-col pillar-col--leadership">{leadership ? <Pillar pillar={leadership} /> : null}</div>
-          <SkillsSection skills={content.skills} />
+          <div className="pillars-layout__main">
+            <div className="pillars-layout__top">
+              <div className="pillar-col pillar-col--business">{business ? <Pillar pillar={business} /> : null}</div>
+              <div className="pillar-col pillar-col--leadership">{leadership ? <Pillar pillar={leadership} /> : null}</div>
+            </div>
+            <SkillsSection skills={content.skills} />
+          </div>
         </div>
       </section>
 

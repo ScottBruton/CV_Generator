@@ -13,9 +13,13 @@
 
   display: flex;
   flex-direction: column;
-  flex: 1 1 auto;
+  /* Claim all leftover page height; never shrink (Tools flexes first). */
+  flex: 1 0 0%;
   min-height: 0;
   margin-top: -10px;
+  margin-bottom: 0;
+  /* Hard stop: Impact may never paint into the Tools footer. */
+  overflow: hidden;
 }
 
 /* Framework — floating title card + branch wiring */
@@ -107,15 +111,34 @@
   background: var(--impact-purple);
 }
 
-/* Three pillars — per-column layout so side cards tuck under shorter pillars */
+/* Three pillars — technical | (business + leadership over skills) */
 .pillars-layout {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 1fr auto;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--s1);
+  align-items: stretch;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.pillars-layout__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+  min-width: 0;
+  min-height: 0;
+  /* Pack pillars + skills together; leftover space stays below skills. */
+  justify-content: flex-start;
+}
+
+.pillars-layout__top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: var(--s1);
   align-items: start;
-  flex: 1;
-  min-height: 0;
+  flex: 0 0 auto;
+  min-width: 0;
 }
 
 .pillar-col {
@@ -123,17 +146,24 @@
   flex-direction: column;
   gap: var(--s1);
   min-width: 0;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .pillar-col--technical {
-  grid-row: 1 / -1;
+  height: 100%;
+  min-height: 0;
+}
+
+.pillar-col--business,
+.pillar-col--leadership {
+  height: auto;
+  overflow: visible;
 }
 
 .pillars-layout__skills {
-  grid-column: 2 / -1;
-  grid-row: 2;
+  flex: 0 0 auto;
   min-width: 0;
-  align-self: end;
 }
 
 .pillars {
@@ -147,13 +177,33 @@
 .pillar {
   display: flex;
   flex-direction: column;
-  height: auto;
+  width: 100%;
+  min-height: 0;
   border-radius: var(--radius);
   border: 1px solid rgba(17, 23, 47, 0.08);
   box-shadow: 0 2px 10px rgba(17, 23, 47, 0.05);
   overflow: hidden;
   position: relative;
   z-index: 2;
+  /* Reserved clear space below body — flex items lay out inside the content box,
+     so this padding is never eaten by overflow clipping. */
+  padding-bottom: 3px;
+  box-sizing: border-box;
+}
+
+/* Technical fills the full left column height beside the right stack. */
+.pillar-col--technical .pillar {
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0;
+}
+
+/* Business / leadership size to their content. */
+.pillar-col--business .pillar,
+.pillar-col--leadership .pillar {
+  flex: 0 0 auto;
+  height: auto;
+  max-height: none;
 }
 
 .pillar--technical {
@@ -179,6 +229,7 @@
   text-align: center;
   padding: 8px var(--s1) 2px;
   gap: 3px;
+  flex-shrink: 0;
 }
 
 .pillar__hex {
@@ -259,13 +310,16 @@
 }
 
 .pillar__divider {
-  margin: 6px var(--s1);
+  margin: 6px var(--s1) 0;
   border-color: rgba(17, 23, 47, 0.08);
 }
 
 /* Pillar body content */
 .pillar__body {
-  padding: 2px var(--s1) 8px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  padding: 3px var(--s1) 0;
 }
 
 .pillar__body-heading {
@@ -275,6 +329,10 @@
   letter-spacing: 0.05em;
   line-height: var(--lh-tight);
   margin: 8px 0 5px;
+}
+
+.pillar__body-heading:first-child {
+  margin-top: 0;
 }
 
 .pillar--technical .pillar__body-heading { color: var(--impact-blue); }

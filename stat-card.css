@@ -5,7 +5,7 @@
 .stat-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
+  gap: 5px;
 }
 
 .stat-cards--header {
@@ -17,17 +17,17 @@
   background: var(--bg-white);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 6px;
+  padding: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 2px;
+  gap: 1px;
 }
 
 .stat-card__icon {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   display: block;
   flex-shrink: 0;
 }
@@ -37,7 +37,7 @@
 .stat-card--purple .stat-card__icon { color: var(--purple); }
 
 .stat-card__title {
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.03em;
@@ -46,7 +46,7 @@
 }
 
 .stat-card__desc {
-  font-size: 0.8rem;
+  font-size: 0.64rem;
   color: var(--text-secondary);
   line-height: 1.3;
 }

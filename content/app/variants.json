@@ -1,5 +1,5 @@
 {
-  "activeVariantId": "vertiv",
+  "activeVariantId": "cochlear",
   "variants": [
     {
       "id": "default",
@@ -11,7 +11,7 @@
       "portfolioId": "default",
       "careerPathId": "default",
       "educationId": "default",
-      "updatedAt": "2026-07-30T07:17:31.919Z"
+      "updatedAt": "2026-07-30T07:43:25.530Z"
     },
     {
       "id": "arista",
@@ -35,7 +35,19 @@
       "portfolioId": "breville",
       "careerPathId": "breville",
       "educationId": "default",
-      "updatedAt": "2026-07-30T07:17:31.939Z"
+      "updatedAt": "2026-07-30T07:43:25.553Z"
+    },
+    {
+      "id": "cochlear",
+      "label": "Cochlear",
+      "company": "Cochlear",
+      "isTemplate": false,
+      "coverId": "cochlear",
+      "cvId": "cochlear",
+      "portfolioId": "cochlear",
+      "careerPathId": "cochlear",
+      "educationId": "cochlear",
+      "updatedAt": "2026-07-30T07:44:43.234Z"
     },
     {
       "id": "drone-shield-antenna-enginner",

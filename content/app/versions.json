@@ -9,6 +9,10 @@
       "label": "Breville Cover Letter"
     },
     {
+      "id": "cochlear",
+      "label": "Cochlear Cover Letter"
+    },
+    {
       "id": "default",
       "label": "Default Cover Letter"
     },
@@ -47,6 +51,10 @@
       "label": "Breville CV"
     },
     {
+      "id": "cochlear",
+      "label": "Cochlear CV"
+    },
+    {
       "id": "default",
       "label": "Default CV"
     },
@@ -83,6 +91,10 @@
     {
       "id": "breville",
       "label": "Breville Portfolio"
+    },
+    {
+      "id": "cochlear",
+      "label": "Cochlear Portfolio"
     },
     {
       "id": "default",
@@ -127,6 +139,10 @@
       "label": "Career Path"
     },
     {
+      "id": "cochlear",
+      "label": "Cochlear Career Path"
+    },
+    {
       "id": "drone-shield-antenna-enginner",
       "label": "Drone Shield Antenna Enginner Career Path"
     },
@@ -155,6 +171,10 @@
     {
       "id": "arista",
       "label": "Arista Education"
+    },
+    {
+      "id": "cochlear",
+      "label": "Cochlear Education"
     },
     {
       "id": "default",

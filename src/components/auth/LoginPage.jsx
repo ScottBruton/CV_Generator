@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { login } from '../api/client';
+import { login } from '../../api/client';
 
 export default function LoginPage({ onSuccess }) {
   const [username, setUsername] = useState('');
