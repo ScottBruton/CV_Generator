@@ -1,0 +1,14 @@
+{
+  "id": "vertiv",
+  "label": "Vertiv Cover Letter",
+  "recipient": "Hiring Manager",
+  "company": "",
+  "companyLogo": "assets/cover/vertiv_logo.jpg",
+  "subject": "Application - Lead Design Engineer, Vertiv",
+  "paragraphs": [
+    "I am a Mechatronics Engineer with a Masters Degree in Biomedical Engineering, a Diploma in Software Development, and over eight years of experience delivering complex mechanical and multidisciplinary product designs across R&D, orthopaedic, and consulting environments. My work spans implant systems, prosthetics, surgical tools, integrated medical platforms, and custom manufacturing equipment, including assignments as Mechanical Lead.",
+    "Across recent roles, I have balanced functional, regulatory, manufacturing, and commercial requirements through materials selection, supplier and quality-team collaboration, compliance review, prototyping, testing, and system integration. I have also contributed to technical design reviews and cross-functional decisions, using a hands-on approach to resolve design issues and progress regulated products from concept through submission.",
+    "I am interested in bringing this regulated-product design leadership to Vertiv, applying my experience in multidisciplinary integration, technical reviews, stakeholder communication, verification and validation, and project delivery to complex infrastructure projects. Thank you for considering my application; I would welcome the opportunity to discuss this transferable experience and the role's requirements."
+  ],
+  "closing": "Yours sincerely,"
+}

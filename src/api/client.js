@@ -5,6 +5,7 @@ const API_ORIGIN = '';
 async function request(pathname, options = {}) {
   try {
     const response = await fetch(`${API_ORIGIN}${pathname}`, {
+      credentials: 'same-origin',
       headers: {
         'Content-Type': 'application/json',
         ...(options.headers || {})
@@ -16,7 +17,9 @@ async function request(pathname, options = {}) {
     if (!response.ok) {
       const message = data.error || `Request failed (${response.status})`;
       appendDebugLog('error', [`API ${options.method || 'GET'} ${pathname}`, message]);
-      throw new Error(message);
+      const error = new Error(message);
+      error.status = response.status;
+      throw error;
     }
     appendDebugLog('debug', [`API ${options.method || 'GET'} ${pathname}`, `OK ${response.status}`]);
     return data;
@@ -26,6 +29,24 @@ async function request(pathname, options = {}) {
     }
     throw error;
   }
+}
+
+export function fetchAuthStatus() {
+  return request('/api/auth/me');
+}
+
+export function login({ username, password }) {
+  return request('/api/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ username, password })
+  });
+}
+
+export function logout() {
+  return request('/api/auth/logout', {
+    method: 'POST',
+    body: JSON.stringify({})
+  });
 }
 
 export function fetchBootstrap() {
@@ -84,21 +105,30 @@ export function tailorDocuments(payload) {
   });
 }
 
-export async function exportPdf({ mode, variantId, coverId, cvId, portfolioId }) {
+export async function exportPdf({ mode, variantId, coverId, cvId, portfolioId, maxMb }) {
   const response = await fetch('/export', {
     method: 'POST',
+    credentials: 'same-origin',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       mode,
       variant: variantId,
       cover: coverId,
       cv: cvId,
-      portfolio: portfolioId
+      portfolio: portfolioId,
+      maxMb: maxMb || undefined
     })
   });
 
   if (!response.ok) {
-    throw new Error(await response.text());
+    let message = await response.text();
+    try {
+      const data = JSON.parse(message);
+      if (data.error) message = data.error;
+    } catch {
+      // keep text
+    }
+    throw new Error(message || `Export failed (${response.status})`);
   }
 
   return response.blob();

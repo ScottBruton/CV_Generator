@@ -1,0 +1,33 @@
+{
+  "id": "resmed",
+  "label": "Resmed Education",
+  "entries": [
+    {
+      "institution": "University of Cape Town",
+      "credential": "MSc Biomedical Engineering",
+      "startDate": "2016",
+      "endDate": "2018",
+      "details": [
+        "Cum Laude"
+      ]
+    },
+    {
+      "institution": "Nelson Mandela University",
+      "credential": "Mechatronics (Honours)",
+      "startDate": "2011",
+      "endDate": "2015",
+      "details": [
+        "Distinction"
+      ]
+    },
+    {
+      "institution": "CTI Education Group",
+      "credential": "Diploma Information Systems",
+      "startDate": "2011",
+      "endDate": "2011",
+      "details": [
+        "Distinction"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "arista",
+  "label": "Arista Cover Letter",
+  "recipient": "Hiring Manager",
+  "company": "",
+  "companyLogo": "",
+  "subject": "Application — Mechanical Engineer, Arista Networks",
+  "paragraphs": [
+    "I am a Mechatronics Engineer with a Masters Degree in Biomedical Engineering, a Diploma in Software Development, and over eight years of product-development experience across R&D, orthopaedic, and engineering consulting environments. My work spans mechanical systems, system integration, surgical tools, implants, prototypes, and custom manufacturing equipment, providing transferable experience for Arista Networks' development of complex hardware modules and chassis.",
+    "Across recent roles, I have balanced mechanical performance, aesthetics, materials, tolerances, manufacturability, compliance, and supplier input. I bring hands-on experience in CAD-led design, prototyping, testing, system integration, tolerance stack-up analysis, sheet metal and overmoulded components, and collaboration with electrical, manufacturing, quality, and regulatory teams.",
+    "Arista Networks' cross-functional approach to bringing complex hardware to market strongly matches my experience coordinating mechanical, electrical, manufacturing, quality, and software disciplines. I would welcome the opportunity to apply my hands-on design, review, prototyping, testing, and product-delivery experience to the development and production support of data center networking equipment."
+  ],
+  "closing": "Yours sincerely,"
+}

@@ -1,3 +1,5 @@
+import { assetUrl } from '../../lib/content.js';
+
 function PortfolioItem({ item }) {
   const images = (item.images || []).filter(Boolean);
   if (!images.length) return null;
@@ -18,7 +20,7 @@ function PortfolioItem({ item }) {
           {images.map((src, index) => (
             <img
               key={`${src}-${index}`}
-              src={`/${String(src).replace(/^\//, '')}`}
+              src={assetUrl(src)}
               alt={`${item.title} — image ${index + 1}`}
               className="portfolio-item__image"
               loading="eager"

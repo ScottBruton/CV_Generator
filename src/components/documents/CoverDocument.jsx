@@ -3,6 +3,8 @@
  * Preview currently uses server-rendered HTML for fidelity; this component
  * is available for client-side rendering and future editor live preview.
  */
+import { assetUrl } from '../../lib/content.js';
+
 export default function CoverDocument({ cover, profile, versionId }) {
   if (!cover || !profile) return null;
 
@@ -19,7 +21,7 @@ export default function CoverDocument({ cover, profile, versionId }) {
       <header className="cover__identity">
         <div className="cover__photo">
           {profile.photo?.src ? (
-            <img src={`/${profile.photo.src.replace(/^\//, '')}`} alt={profile.photo.alt || ''} className="cover__photo-img" />
+            <img src={assetUrl(profile.photo.src)} alt={profile.photo.alt || ''} className="cover__photo-img" />
           ) : (
             <div className="cover__photo-placeholder" aria-label="Portrait photo placeholder">
               <span className="placeholder-label">{profile.photo?.alt || 'Photo'}</span>
@@ -38,7 +40,7 @@ export default function CoverDocument({ cover, profile, versionId }) {
       <section className="cover__application" aria-label="Application details">
         <div className="cover__company-mark">
           {hasLogo ? (
-            <img className="cover__company-logo" src={`/${cover.companyLogo.replace(/^\//, '')}`} alt={`${cover.company || 'Company'} logo`} />
+            <img className="cover__company-logo" src={assetUrl(cover.companyLogo)} alt={`${cover.company || 'Company'} logo`} />
           ) : (
             <span className="cover__company-logo-fallback" aria-hidden="true">
               {(cover.company || '?').charAt(0).toUpperCase()}

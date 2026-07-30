@@ -1,6 +1,10 @@
 {
   "coverLetters": [
     {
+      "id": "arista",
+      "label": "Arista Cover Letter"
+    },
+    {
       "id": "breville",
       "label": "Breville Cover Letter"
     },
@@ -17,15 +21,27 @@
       "label": "Intellihub Group - Product Engineer - EV Charging Hardware Cover Letter"
     },
     {
+      "id": "resmed",
+      "label": "Resmed Cover Letter"
+    },
+    {
       "id": "rhl",
       "label": "RHL Cover Letter"
     },
     {
       "id": "senior-systems-engineer",
       "label": "Senior Systems Engineer Cover Letter"
+    },
+    {
+      "id": "vertiv",
+      "label": "Vertiv Cover Letter"
     }
   ],
   "cvs": [
+    {
+      "id": "arista",
+      "label": "Arista CV"
+    },
     {
       "id": "breville",
       "label": "Breville CV"
@@ -43,15 +59,27 @@
       "label": "Intellihub Group - Product Engineer - EV Charging Hardware CV"
     },
     {
+      "id": "resmed",
+      "label": "Resmed CV"
+    },
+    {
       "id": "rhl",
       "label": "RHL CV"
     },
     {
       "id": "senior-systems-engineer",
       "label": "Senior Systems Engineer CV"
+    },
+    {
+      "id": "vertiv",
+      "label": "Vertiv CV"
     }
   ],
   "portfolios": [
+    {
+      "id": "arista",
+      "label": "Arista Portfolio"
+    },
     {
       "id": "breville",
       "label": "Breville Portfolio"
@@ -69,15 +97,27 @@
       "label": "Intellihub Group - Product Engineer - EV Charging Hardware Portfolio"
     },
     {
+      "id": "resmed",
+      "label": "Resmed Portfolio"
+    },
+    {
       "id": "rhl",
       "label": "RHL Portfolio"
     },
     {
       "id": "senior-systems-engineer",
       "label": "Senior Systems Engineer Portfolio"
+    },
+    {
+      "id": "vertiv",
+      "label": "Vertiv Portfolio"
     }
   ],
   "careerPaths": [
+    {
+      "id": "arista",
+      "label": "Arista Career Path"
+    },
     {
       "id": "breville",
       "label": "Breville Career Path"
@@ -95,12 +135,38 @@
       "label": "Intellihub Group - Product Engineer - EV Charging Hardware Career Path"
     },
     {
+      "id": "resmed",
+      "label": "Resmed Career Path"
+    },
+    {
       "id": "rhl",
       "label": "RHL Career Path"
     },
     {
       "id": "senior-systems-engineer",
       "label": "Senior Systems Engineer Career Path"
+    },
+    {
+      "id": "vertiv",
+      "label": "Vertiv Career Path"
+    }
+  ],
+  "educations": [
+    {
+      "id": "arista",
+      "label": "Arista Education"
+    },
+    {
+      "id": "default",
+      "label": "Education"
+    },
+    {
+      "id": "resmed",
+      "label": "Resmed Education"
+    },
+    {
+      "id": "vertiv",
+      "label": "Vertiv Education"
     }
   ]
 }

@@ -1,7 +1,15 @@
+let exportImageTransform = null;
+
 export function assetUrl(src) {
   if (!src) return '';
   const clean = String(src).replace(/^\//, '');
-  return `/${clean}`;
+  const url = `/${clean}`;
+  return exportImageTransform ? exportImageTransform(url) : url;
+}
+
+/** Used by print/export to rewrite image URLs through the compression endpoint. */
+export function setExportImageTransform(transformFn) {
+  exportImageTransform = typeof transformFn === 'function' ? transformFn : null;
 }
 
 export function formatTimelineDateRange(step) {

@@ -4,6 +4,7 @@ import { fetchBootstrap, fetchContent } from '../api/client';
 import CoverDocument from '../components/documents/CoverDocument.jsx';
 import CvDocument from '../components/documents/CvDocument.jsx';
 import PortfolioDocument from '../components/documents/PortfolioDocument.jsx';
+import { setExportImageTransform } from '../lib/content.js';
 
 const MODE_VIEWS = {
   all: ['cover', 'cv', 'portfolio'],
@@ -20,6 +21,26 @@ export default function PrintApp() {
 
   const mode = params.get('mode') || 'all';
   const views = MODE_VIEWS[mode] || MODE_VIEWS.all;
+  const imgMax = Number(params.get('imgMax')) || 0;
+  const imgQ = Number(params.get('imgQ')) || 0;
+
+  useEffect(() => {
+    if (imgMax > 0) {
+      setExportImageTransform((url) => {
+        const src = String(url || '').replace(/^\//, '');
+        if (!src || src.endsWith('.svg')) return url;
+        const query = new URLSearchParams({
+          src,
+          w: String(imgMax),
+          q: String(imgQ || 70)
+        });
+        return `/api/export-image?${query.toString()}`;
+      });
+    } else {
+      setExportImageTransform(null);
+    }
+    return () => setExportImageTransform(null);
+  }, [imgMax, imgQ]);
 
   useEffect(() => {
     let cancelled = false;
@@ -75,7 +96,7 @@ export default function PrintApp() {
     return () => {
       document.body.classList.remove('is-print-export', 'is-print-export-hq', 'print-root');
     };
-  }, [bundle]);
+  }, [bundle, imgMax, imgQ]);
 
   if (error) return <p style={{ padding: 24 }}>Export failed: {error}</p>;
   if (!bundle) return <p style={{ padding: 24 }}>Preparing export…</p>;

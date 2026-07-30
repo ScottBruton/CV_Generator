@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: cv-generator
+    runtime: node
+    plan: free
+    region: oregon
+    branch: main
+    buildCommand: npm install && npx puppeteer browsers install chrome && npm run build
+    startCommand: npm run start:prod
+    healthCheckPath: /api/auth/me
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: OPEN_AI_MODEL
+        value: gpt-5.6-sol
+      - key: OPEN_AI_API_KEY
+        sync: false
+      - key: AUTH_USERNAME
+        sync: false
+      - key: AUTH_PASSWORD
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true

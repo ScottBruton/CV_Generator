@@ -1,0 +1,14 @@
+{
+  "id": "resmed",
+  "label": "Resmed Cover Letter",
+  "recipient": "Hiring Manager",
+  "company": "ResMed",
+  "companyLogo": "assets/cover/resmed_new_logo.png",
+  "subject": "Application - Senior Design Engineer, ResMed",
+  "paragraphs": [
+    "I'm a Mechatronics Engineer with a Masters Degree in Biomedical Engineering, a Diploma in Software Development, and more than eight years of MedTech R&D experience across orthopaedic, consulting, and regulated medical-device environments. My product-development background includes implant systems, prosthetics, surgical tools, and custom-built manufacturing equipment, combining mechanical design with multidisciplinary technical judgment from concept development through testing and regulatory readiness.",
+    "Across recent roles, I have applied materials selection, supplier collaboration, quality-system engagement, and compliance review to complex mechanical development. I take a hands-on approach to concept generation, prototyping, tolerance analysis, design reviews, and verification planning, balancing functional performance and aesthetics with manufacturability and regulated medical-device requirements.",
+    "ResMed's focus on user-centred mask products, cross-functional engineering, and rigorous design verification strongly aligns with the way I work. I would welcome the opportunity to bring senior mechanical ownership, clear communication of risks and technical decisions, and experience guiding engineers and multidisciplinary teams to the development of robust, manufacturable medical devices."
+  ],
+  "closing": "Yours sincerely,"
+}

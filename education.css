@@ -1,0 +1,76 @@
+.education-doc {
+  width: min(100%, 720px);
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid #cfd6e4;
+  border-radius: 12px;
+  padding: 20px 22px 28px;
+  color: #11172f;
+  box-shadow: 0 8px 24px rgba(17, 23, 47, 0.08);
+}
+
+.education-doc__toolbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.education-doc__title {
+  margin: 0 0 4px;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.education-doc__hint {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #5a6478;
+}
+
+.education-doc__status {
+  margin: 0 0 10px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #2f6f4e;
+}
+
+.education-doc__body {
+  font-family: Aptos, 'Segoe UI', Calibri, sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  user-select: text;
+}
+
+.education-entry {
+  margin: 0 0 22px;
+}
+
+.education-entry p {
+  margin: 0 0 0.35em;
+}
+
+.education-entry__heading {
+  margin: 0 0 0.55em;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: inherit;
+}
+
+.education-entry__section {
+  margin-top: 0.75em !important;
+  margin-bottom: 0.55em !important;
+  font-weight: 700;
+}
+
+.education-entry__list {
+  margin: 0;
+  padding-left: 1.25em;
+  list-style: disc;
+}
+
+.education-entry__list li {
+  margin: 0 0 0.35em;
+  padding-left: 0.15em;
+}

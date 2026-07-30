@@ -6,6 +6,7 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import {
   createVariant,
   exportPdf,
+  fetchAuthStatus,
   fetchBootstrap,
   fetchContent,
   saveContent,
@@ -21,9 +22,11 @@ import CoverEditor from './components/editors/CoverEditor.jsx';
 import CvEditor from './components/editors/CvEditor.jsx';
 import PortfolioEditor from './components/editors/PortfolioEditor.jsx';
 import CareerPathEditor from './components/editors/CareerPathEditor.jsx';
+import EducationEditor from './components/editors/EducationEditor.jsx';
 import JsonEditor from './components/editors/JsonEditor.jsx';
 import ExportDialog from './components/export/ExportDialog.jsx';
 import AiTailoringDialog from './components/ai/AiTailoringDialog.jsx';
+import LoginPage from './components/auth/LoginPage.jsx';
 import PrintApp from './print/PrintApp.jsx';
 import { muiTheme } from './theme/muiTheme.js';
 
@@ -31,6 +34,7 @@ function saveKindForDoc(doc) {
   if (doc === 'cover') return 'cover';
   if (doc === 'portfolio') return 'portfolio';
   if (doc === 'career-path') return 'career-path';
+  if (doc === 'education') return 'education';
   return 'cv';
 }
 
@@ -44,11 +48,13 @@ function EditorShell() {
   const [cvContent, setCvContent] = useState(null);
   const [portfolioContent, setPortfolioContent] = useState(null);
   const [careerPathContent, setCareerPathContent] = useState(null);
+  const [educationContent, setEducationContent] = useState(null);
   const [sharedProfile, setSharedProfile] = useState(null);
   const [editContent, setEditContent] = useState(null);
   const [status, setStatus] = useState(null);
   const [addOpen, setAddOpen] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
+  const [exportMaxMb, setExportMaxMb] = useState('5');
   const [aiOpen, setAiOpen] = useState(false);
   const [debugConsoleOpen, setDebugConsoleOpen] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -57,23 +63,26 @@ function EditorShell() {
   const activeVariant = bootstrap?.activeVariant || null;
 
   const loadVariantBundle = useCallback(async (variant) => {
-    const [cover, cv, portfolio, careerPath, shared] = await Promise.all([
+    const [cover, cv, portfolio, careerPath, education, shared] = await Promise.all([
       fetchContent('cover', variant.coverId),
       fetchContent('cv', variant.cvId),
       fetchContent('portfolio', variant.portfolioId),
       fetchContent('career-path', variant.careerPathId || 'default'),
+      fetchContent('education', variant.educationId || 'default'),
       fetchContent('shared-profile', 'shared')
     ]);
     setCoverContent(cover.content);
     setCvContent(cv.content);
     setPortfolioContent(portfolio.content);
     setCareerPathContent(careerPath.content);
+    setEducationContent(education.content);
     setSharedProfile(shared.content);
     return {
       cover: cover.content,
       cv: cv.content,
       portfolio: portfolio.content,
-      careerPath: careerPath.content
+      careerPath: careerPath.content,
+      education: education.content
     };
   }, []);
 
@@ -81,6 +90,7 @@ function EditorShell() {
     if (doc === 'cover') setEditContent(bundle.cover);
     else if (doc === 'portfolio') setEditContent(bundle.portfolio);
     else if (doc === 'career-path') setEditContent(bundle.careerPath);
+    else if (doc === 'education') setEditContent(bundle.education);
     else setEditContent(bundle.cv);
   }, []);
 
@@ -106,12 +116,13 @@ function EditorShell() {
   }, [debugConsoleOpen]);
 
   useEffect(() => {
-    if (!coverContent && !cvContent && !portfolioContent && !careerPathContent) return;
+    if (!coverContent && !cvContent && !portfolioContent && !careerPathContent && !educationContent) return;
     syncEditorForDoc(activeDoc, {
       cover: coverContent,
       cv: cvContent,
       portfolio: portfolioContent,
-      careerPath: careerPathContent
+      careerPath: careerPathContent,
+      education: educationContent
     });
   }, [activeDoc]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -131,13 +142,15 @@ function EditorShell() {
     cover: coverContent?.label || bootstrap?.catalog?.covers?.find((item) => item.id === activeVariant?.coverId)?.label || 'Cover Letter',
     cv: cvContent?.meta?.label || bootstrap?.catalog?.cvs?.find((item) => item.id === activeVariant?.cvId)?.label || 'CV',
     portfolio: portfolioContent?.label || bootstrap?.catalog?.portfolios?.find((item) => item.id === activeVariant?.portfolioId)?.label || 'Portfolio',
-    careerPath: 'Career Path'
+    careerPath: 'Career Path',
+    education: 'Education'
   }), [activeVariant, bootstrap, coverContent, cvContent, portfolioContent]);
 
   const previewCover = activeDoc === 'cover' && editContent ? editContent : coverContent;
   const previewCv = activeDoc === 'cv' && editContent ? editContent : cvContent;
   const previewPortfolio = activeDoc === 'portfolio' && editContent ? editContent : portfolioContent;
   const previewCareerPath = activeDoc === 'career-path' && editContent ? editContent : careerPathContent;
+  const previewEducation = activeDoc === 'education' && editContent ? editContent : educationContent;
 
   async function handleSelectVariant(id) {
     setBusy(true);
@@ -179,7 +192,9 @@ function EditorShell() {
           ? activeVariant.portfolioId
           : kind === 'career-path'
             ? (activeVariant.careerPathId || 'default')
-            : activeVariant.cvId;
+            : kind === 'education'
+              ? (activeVariant.educationId || 'default')
+              : activeVariant.cvId;
       const saved = await saveContent(kind, id, content);
       if (kind === 'cover') {
         setCoverContent(saved.content);
@@ -189,6 +204,9 @@ function EditorShell() {
         setEditContent(saved.content);
       } else if (kind === 'career-path') {
         setCareerPathContent(saved.content);
+        setEditContent(saved.content);
+      } else if (kind === 'education') {
+        setEducationContent(saved.content);
         setEditContent(saved.content);
       } else {
         setCvContent(saved.content);
@@ -229,13 +247,15 @@ function EditorShell() {
   async function handleExport(mode) {
     if (!activeVariant) return;
     setBusy(true);
+    setStatus(null);
     try {
       const blob = await exportPdf({
         mode,
         variantId: activeVariant.id,
         coverId: activeVariant.coverId,
         cvId: activeVariant.cvId,
-        portfolioId: activeVariant.portfolioId
+        portfolioId: activeVariant.portfolioId,
+        maxMb: exportMaxMb || undefined
       });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -244,10 +264,16 @@ function EditorShell() {
       link.click();
       URL.revokeObjectURL(url);
       setExportOpen(false);
+      const sizeMb = (blob.size / (1024 * 1024)).toFixed(2);
+      setStatus({ message: `Exported PDF (${sizeMb} MB).` });
     } catch (err) {
-      console.warn('Export server failed, falling back to print', err);
-      window.open(`/print?variant=${encodeURIComponent(activeVariant.id)}&mode=${encodeURIComponent(mode)}`, '_blank');
-      setExportOpen(false);
+      console.warn('Export server failed', err);
+      setStatus({ error: true, message: err.message || 'Export failed.' });
+      // Only fall back to browser print when the server is unreachable / not a size limit failure.
+      if (!/under .*MB/i.test(String(err.message || ''))) {
+        window.open(`/print?variant=${encodeURIComponent(activeVariant.id)}&mode=${encodeURIComponent(mode)}`, '_blank');
+        setExportOpen(false);
+      }
     } finally {
       setBusy(false);
     }
@@ -323,12 +349,14 @@ function EditorShell() {
           cv={previewCv}
           portfolio={previewPortfolio}
           careerPath={previewCareerPath}
+          education={previewEducation}
           sharedProfile={sharedProfile}
           versionIds={{
             cover: activeVariant.coverId,
             cv: activeVariant.cvId,
             portfolio: activeVariant.portfolioId,
-            careerPath: activeVariant.careerPathId || 'default'
+            careerPath: activeVariant.careerPathId || 'default',
+            education: activeVariant.educationId || 'default'
           }}
         />
         {editorOpen ? (
@@ -370,6 +398,13 @@ function EditorShell() {
                 onSave={(content) => handleSave('career-path', content)}
                 onChange={handleEditorChange}
               />
+            ) : activeDoc === 'education' ? (
+              <EducationEditor
+                content={editContent}
+                status={status}
+                onSave={(content) => handleSave('education', content)}
+                onChange={handleEditorChange}
+              />
             ) : (
               <CvEditor
                 content={editContent}
@@ -409,6 +444,8 @@ function EditorShell() {
       <ExportDialog
         open={exportOpen}
         busy={busy}
+        maxMb={exportMaxMb}
+        onMaxMbChange={setExportMaxMb}
         onClose={() => setExportOpen(false)}
         onExport={handleExport}
       />
@@ -427,10 +464,56 @@ function EditorShell() {
 }
 
 export default function App() {
+  const [authChecked, setAuthChecked] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [authRequired, setAuthRequired] = useState(false);
+  const isPrintRoute = typeof window !== 'undefined'
+    && window.location.pathname.startsWith('/print');
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchAuthStatus()
+      .then((status) => {
+        if (cancelled) return;
+        setAuthRequired(Boolean(status.authRequired));
+        setAuthenticated(Boolean(status.authenticated));
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setAuthRequired(false);
+        setAuthenticated(true);
+      })
+      .finally(() => {
+        if (!cancelled) setAuthChecked(true);
+      });
+    return () => { cancelled = true; };
+  }, []);
+
+  if (!authChecked) {
+    return <div style={{ padding: 24 }}>Loading…</div>;
+  }
+
+  // Print/export route: allow through when export cookie/key already authenticated the session.
+  if (authRequired && !authenticated && !isPrintRoute) {
+    return (
+      <ThemeProvider theme={muiTheme}>
+        <LoginPage onSuccess={() => setAuthenticated(true)} />
+      </ThemeProvider>
+    );
+  }
+
   return (
     <Routes>
       <Route path="/print" element={<PrintApp />} />
-      <Route path="/*" element={<EditorShell />} />
+      <Route path="/*" element={
+        authRequired && !authenticated
+          ? (
+            <ThemeProvider theme={muiTheme}>
+              <LoginPage onSuccess={() => setAuthenticated(true)} />
+            </ThemeProvider>
+          )
+          : <EditorShell />
+      } />
     </Routes>
   );
 }

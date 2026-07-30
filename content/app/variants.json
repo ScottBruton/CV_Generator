@@ -1,5 +1,5 @@
 {
-  "activeVariantId": "intellihub-group-product-engineer-ev-charging-hardware",
+  "activeVariantId": "vertiv",
   "variants": [
     {
       "id": "default",
@@ -10,7 +10,20 @@
       "cvId": "default",
       "portfolioId": "default",
       "careerPathId": "default",
-      "updatedAt": "2026-07-22T03:31:55.727Z"
+      "educationId": "default",
+      "updatedAt": "2026-07-30T07:17:31.919Z"
+    },
+    {
+      "id": "arista",
+      "label": "Arista",
+      "company": "Arista",
+      "isTemplate": false,
+      "coverId": "arista",
+      "cvId": "arista",
+      "portfolioId": "arista",
+      "careerPathId": "arista",
+      "educationId": "arista",
+      "updatedAt": "2026-07-29T11:19:54.717Z"
     },
     {
       "id": "breville",
@@ -21,7 +34,8 @@
       "cvId": "breville",
       "portfolioId": "breville",
       "careerPathId": "breville",
-      "updatedAt": "2026-07-22T03:31:55.744Z"
+      "educationId": "default",
+      "updatedAt": "2026-07-30T07:17:31.939Z"
     },
     {
       "id": "drone-shield-antenna-enginner",
@@ -32,6 +46,7 @@
       "cvId": "drone-shield-antenna-enginner",
       "portfolioId": "drone-shield-antenna-enginner",
       "careerPathId": "drone-shield-antenna-enginner",
+      "educationId": "default",
       "updatedAt": "2026-07-22T05:01:31.104Z"
     },
     {
@@ -43,7 +58,20 @@
       "cvId": "intellihub-group-product-engineer-ev-charging-hardware",
       "portfolioId": "intellihub-group-product-engineer-ev-charging-hardware",
       "careerPathId": "intellihub-group-product-engineer-ev-charging-hardware",
+      "educationId": "default",
       "updatedAt": "2026-07-22T05:10:13.186Z"
+    },
+    {
+      "id": "resmed",
+      "label": "Resmed",
+      "company": "Resmed",
+      "isTemplate": false,
+      "coverId": "resmed",
+      "cvId": "resmed",
+      "portfolioId": "resmed",
+      "careerPathId": "resmed",
+      "educationId": "resmed",
+      "updatedAt": "2026-07-29T10:51:34.764Z"
     },
     {
       "id": "rhl",
@@ -54,6 +82,7 @@
       "cvId": "rhl",
       "portfolioId": "rhl",
       "careerPathId": "rhl",
+      "educationId": "default",
       "updatedAt": "2026-07-22T03:01:05.363Z"
     },
     {
@@ -65,7 +94,20 @@
       "cvId": "senior-systems-engineer",
       "portfolioId": "senior-systems-engineer",
       "careerPathId": "senior-systems-engineer",
+      "educationId": "default",
       "updatedAt": "2026-07-22T04:51:06.076Z"
+    },
+    {
+      "id": "vertiv",
+      "label": "Vertiv",
+      "company": "Vertiv",
+      "isTemplate": false,
+      "coverId": "vertiv",
+      "cvId": "vertiv",
+      "portfolioId": "vertiv",
+      "careerPathId": "vertiv",
+      "educationId": "vertiv",
+      "updatedAt": "2026-07-29T11:22:43.341Z"
     }
   ]
 }

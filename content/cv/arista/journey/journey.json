@@ -1,0 +1,87 @@
+{
+  "sectionNumber": "01",
+  "sectionTitle": "Journey",
+  "timeline": [
+    {
+      "organization": "CTI Education Group",
+      "image": "assets/logos/education/CTI.svg",
+      "url": "https://www.eduvos.com/",
+      "startDate": "2011",
+      "endDate": "2011",
+      "role": "Diploma Information Systems",
+      "honor": "Distinction",
+      "companyId": "cti",
+      "education": true,
+      "company": false
+    },
+    {
+      "organization": "Nelson Mandela University",
+      "image": "assets/logos/education/nmu.jpg",
+      "url": "https://www.mandela.ac.za/",
+      "startDate": "2011",
+      "endDate": "2015",
+      "role": "Mechatronics (Honours)",
+      "honor": "Distinction",
+      "companyId": "nmu",
+      "education": true,
+      "company": false
+    },
+    {
+      "organization": "University of Cape Town",
+      "image": "assets/logos/education/uct.jpg",
+      "url": "https://www.uct.ac.za/",
+      "startDate": "2016",
+      "endDate": "2018",
+      "role": "MSc Biomedical Engineering",
+      "honor": "Cum Laude",
+      "companyId": "uct",
+      "education": true,
+      "company": false
+    },
+    {
+      "organization": "DISA Vascular",
+      "image": "assets/logos/companies/disa.jpg",
+      "url": "https://disavascular.com/",
+      "startDate": "2018",
+      "endDate": "2020",
+      "role": "Biomedical Engineer",
+      "companyId": "disa",
+      "education": false,
+      "company": true
+    },
+    {
+      "organization": "Medical Diagnostech",
+      "image": "assets/logos/companies/medtech.jpg",
+      "url": "https://www.medi-tech.co.za/",
+      "startDate": "2020",
+      "endDate": "2020",
+      "dateLabel": "Apr–Aug 2020",
+      "role": "Biomedical Engineer",
+      "companyId": "medtech",
+      "education": false,
+      "company": true
+    },
+    {
+      "organization": "Signature Orthopaedics",
+      "image": "assets/logos/companies/signature-ortho.jpg",
+      "url": "https://www.signatureortho.com.au/",
+      "startDate": "2020",
+      "endDate": "2023",
+      "role": "Biomedical Engineer",
+      "companyId": "signature",
+      "education": false,
+      "company": true
+    },
+    {
+      "organization": "IDE Group",
+      "image": "assets/logos/companies/ide.jpg",
+      "url": "https://ide.group/",
+      "startDate": "2023",
+      "endDate": null,
+      "role": "Senior Med-Tech Product Developer",
+      "companyId": "ide",
+      "education": false,
+      "company": true
+    }
+  ]
+}

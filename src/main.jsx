@@ -14,6 +14,7 @@ import '../portfolio.css';
 import '../tools.css';
 import '../cover.css';
 import '../career-path.css';
+import '../education.css';
 import '../app.css';
 import '../print.css';
 import './styles/shell.css';

@@ -2,6 +2,7 @@ import CoverDocument from './CoverDocument.jsx';
 import CvDocument from './CvDocument.jsx';
 import PortfolioDocument from './PortfolioDocument.jsx';
 import CareerPathDocument from './CareerPathDocument.jsx';
+import EducationDocument from './EducationDocument.jsx';
 
 export default function DocumentPreview({
   activeDoc,
@@ -9,6 +10,7 @@ export default function DocumentPreview({
   cv,
   portfolio,
   careerPath,
+  education,
   sharedProfile,
   versionIds
 }) {
@@ -23,6 +25,9 @@ export default function DocumentPreview({
   }
   if (activeDoc === 'career-path' && !careerPath) {
     return <div className="shell-preview"><p>Loading career path…</p></div>;
+  }
+  if (activeDoc === 'education' && !education) {
+    return <div className="shell-preview"><p>Loading education…</p></div>;
   }
 
   return (
@@ -48,6 +53,12 @@ export default function DocumentPreview({
           <CareerPathDocument
             content={careerPath}
             versionId={versionIds?.careerPath || careerPath?.id || 'default'}
+          />
+        ) : null}
+        {activeDoc === 'education' ? (
+          <EducationDocument
+            content={education}
+            versionId={versionIds?.education || education?.id || 'default'}
           />
         ) : null}
       </div>

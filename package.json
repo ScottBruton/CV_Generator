@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "export-pdf": "node scripts/export-pdf.js",
     "export-server": "node scripts/export-server.js",
+    "start:prod": "node scripts/export-server.js",
     "generate-markers": "node scripts/generate-company-markers.js",
     "start": "npm run dev",
     "run": "npm run start",
@@ -30,7 +31,11 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.0",
+    "sharp": "^0.35.3",
     "zod": "^4.4.3"
+  },
+  "optionalDependencies": {
+    "puppeteer": "^24.22.3"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.7.0",

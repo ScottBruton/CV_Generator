@@ -3,7 +3,8 @@ export default function DocTabs({ labels, activeDoc, onChange }) {
     { id: 'cover', label: labels?.cover || 'Cover Letter' },
     { id: 'cv', label: labels?.cv || 'CV' },
     { id: 'portfolio', label: labels?.portfolio || 'Portfolio' },
-    { id: 'career-path', label: labels?.careerPath || 'Career Path' }
+    { id: 'career-path', label: labels?.careerPath || 'Career Path' },
+    { id: 'education', label: labels?.education || 'Education' }
   ];
 
   return (

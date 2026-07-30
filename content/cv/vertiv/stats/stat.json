@@ -1,0 +1,22 @@
+{
+  "stats": [
+    {
+      "variant": "blue",
+      "icon": "trend",
+      "title": "8+ Years",
+      "description": "Specialized in Biomedical R&D and Product Development Engineering."
+    },
+    {
+      "variant": "green",
+      "icon": "target",
+      "title": "My Goal & Focus",
+      "description": " Inventing, Designing, and Developing Products to Increase Quality of Life."
+    },
+    {
+      "variant": "purple",
+      "icon": "multi",
+      "title": "MULTIDISCIPLINARY",
+      "description": "Professional expertise across mechanical, electrical, and software engineering."
+    }
+  ]
+}
