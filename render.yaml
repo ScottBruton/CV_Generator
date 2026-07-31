@@ -5,10 +5,14 @@ services:
     plan: free
     region: oregon
     branch: main
-    buildCommand: npm install && npx puppeteer browsers install chrome && npm run build
+    # --include=dev: NODE_ENV=production would otherwise skip vite (devDependency) → exit 127
+    buildCommand: npm install --include=dev && npm run build && (npx puppeteer browsers install chrome || true)
     startCommand: npm run start:prod
     healthCheckPath: /api/auth/me
     envVars:
+      # node:sqlite (DatabaseSync) requires Node 22.5+
+      - key: NODE_VERSION
+        value: "22.16.0"
       - key: NODE_ENV
         value: production
       - key: HOST

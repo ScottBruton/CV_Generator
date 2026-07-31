@@ -3,6 +3,9 @@
   "version": "2.0.0",
   "private": true,
   "description": "Variant-centric React CV Generator with local JSON content and PDF export",
+  "engines": {
+    "node": ">=22.5.0"
+  },
   "scripts": {
     "dev": "concurrently -n web,api -c blue,magenta \"vite\" \"npm run export-server\"",
     "dev:web": "vite",
@@ -32,15 +35,13 @@
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.0",
     "sharp": "^0.35.3",
-    "zod": "^4.4.3"
-  },
-  "optionalDependencies": {
-    "puppeteer": "^24.22.3"
+    "zod": "^4.4.3",
+    "puppeteer": "^24.22.3",
+    "@vitejs/plugin-react": "^4.7.0",
+    "vite": "^7.1.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.7.0",
     "concurrently": "^9.1.2",
-    "vite": "^7.1.0",
     "vitest": "^4.1.10"
   }
 }

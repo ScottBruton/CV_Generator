@@ -16,6 +16,7 @@
   /* Claim all leftover page height; never shrink (Tools flexes first). */
   flex: 1 0 0%;
   min-height: 0;
+  /* Pull Impact up into space freed around the Career Path title. */
   margin-top: -10px;
   margin-bottom: 0;
   /* Hard stop: Impact may never paint into the Tools footer. */
@@ -28,9 +29,10 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  min-height: 48px;
+  min-height: 52px;
   margin-bottom: 0;
-  padding-bottom: 6px;
+  /* Room for shortened legs; nodes sit on the pillar top edge. */
+  padding-bottom: 14px;
 }
 
 .framework__box--achievements {
@@ -88,6 +90,7 @@
 
 .framework__node {
   position: absolute;
+  /* Center of node sits on the framework bottom = pillar top edge. */
   bottom: 0;
   width: 7px;
   height: 7px;
@@ -193,8 +196,8 @@
 
 /* Technical fills the full left column height beside the right stack. */
 .pillar-col--technical .pillar {
-  flex: 1 1 auto;
-  height: 100%;
+  flex: 0 0 auto;
+  height: auto;
   min-height: 0;
 }
 
@@ -368,7 +371,7 @@
   font-size: 0.62rem;
   font-weight: 400;
   color: var(--text-secondary);
-  line-height: 1.38;
+  line-height: 1.32;
 }
 
 .pillar__body-item {
@@ -571,7 +574,7 @@
 .pillar--leadership .pillar__body-link { color: var(--impact-purple); }
 
 .pillar__body-footnote {
-  margin: 8px 0 2px;
+  margin: 4px 0 2px;
   font-size: 0.55rem;
   font-style: italic;
   color: var(--text-secondary);

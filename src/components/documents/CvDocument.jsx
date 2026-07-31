@@ -335,6 +335,39 @@ export default function CvDocument({ content, versionId }) {
 
       <section className="impact" aria-labelledby="impact-heading">
         <div className="framework framework--achievements">
+          <svg
+            className="framework__wiring framework__wiring--achievements"
+            viewBox="0 0 1200 58"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <path
+              className="framework__branch framework__branch--blue"
+              d="M 468 22 H 200 V 52"
+              fill="none"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              className="framework__branch framework__branch--green"
+              d="M 600 30 V 52"
+              fill="none"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+            <path
+              className="framework__branch framework__branch--purple"
+              d="M 732 22 H 1000 V 52"
+              fill="none"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <span className="framework__node framework__node--blue" aria-hidden="true" />
+          <span className="framework__node framework__node--green" aria-hidden="true" />
+          <span className="framework__node framework__node--purple" aria-hidden="true" />
           <div className="framework__box framework__box--achievements">
             <span className="framework__title" id="impact-heading">
               {content.impact?.frameworkTitle || 'Professional Achievements'}

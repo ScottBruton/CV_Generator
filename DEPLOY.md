@@ -42,12 +42,27 @@ Render should track **branch `main`**.
 2. **New → Blueprint** (uses `render.yaml`) **or** **New → Web Service**
 3. Connect GitHub repo `ScottBruton/CV_Generator`
 4. Branch: `main`
-5. Build: `npm install && npx puppeteer browsers install chrome && npm run build`
+5. Build: `npm install --include=dev && npm run build && (npx puppeteer browsers install chrome || true)`
 6. Start: `npm run start:prod`
-7. Add the env vars from section 1
+7. Add the env vars from section 1, plus **`NODE_VERSION=22.16.0`** (required for `node:sqlite`)
 8. Deploy
 
-Confirm `https://<your-service>.onrender.com` shows the **login** page, then the app after sign-in.
+Confirm `https://cv-generator-h2mj.onrender.com` (or your service URL) shows the **login** page, then the app after sign-in.
+
+### If deploy fails with **Exited with status 127**
+
+Vite lives in dependencies / must be installed with `--include=dev`. In the Render service **Settings → Build & Deploy**, set Build Command to:
+
+`npm install --include=dev && npm run build && (npx puppeteer browsers install chrome || true)`
+
+Then **Manual Deploy → Clear build cache & deploy**.
+
+### If you see **502 Bad Gateway**
+
+1. Open Render → **cv-generator** → **Logs**
+2. Look for crash lines near startup (common: `Cannot find module 'node:sqlite'` → Node too old; set `NODE_VERSION=22.16.0` and redeploy)
+3. **Manual Deploy → Clear build cache & deploy**
+4. Retry the `.onrender.com` URL (not the custom domain) until it loads
 
 ## 4. Point scottbruton.net at Render
 
