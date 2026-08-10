@@ -1,6 +1,10 @@
 {
   "coverLetters": [
     {
+      "id": "altissimo",
+      "label": "Altissimo Cover Letter"
+    },
+    {
       "id": "arista",
       "label": "Arista Cover Letter"
     },
@@ -42,6 +46,10 @@
     }
   ],
   "cvs": [
+    {
+      "id": "altissimo",
+      "label": "Altissimo CV"
+    },
     {
       "id": "arista",
       "label": "Arista CV"
@@ -85,6 +93,10 @@
   ],
   "portfolios": [
     {
+      "id": "altissimo",
+      "label": "Altissimo Portfolio"
+    },
+    {
       "id": "arista",
       "label": "Arista Portfolio"
     },
@@ -127,6 +139,10 @@
   ],
   "careerPaths": [
     {
+      "id": "altissimo",
+      "label": "Altissimo Career Path"
+    },
+    {
       "id": "arista",
       "label": "Arista Career Path"
     },
@@ -168,6 +184,10 @@
     }
   ],
   "educations": [
+    {
+      "id": "altissimo",
+      "label": "Altissimo Education"
+    },
     {
       "id": "arista",
       "label": "Arista Education"
