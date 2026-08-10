@@ -13,14 +13,13 @@
 
   display: flex;
   flex-direction: column;
-  /* Claim all leftover page height; never shrink (Tools flexes first). */
-  flex: 1 0 0%;
-  min-height: 0;
+  /* Size to content; page height grows instead of clipping into Tools. */
+  flex: 0 0 auto;
+  min-height: auto;
   /* Pull Impact up into space freed around the Career Path title. */
   margin-top: -10px;
   margin-bottom: 0;
-  /* Hard stop: Impact may never paint into the Tools footer. */
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* Framework — floating title card + branch wiring */
@@ -119,10 +118,10 @@
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: var(--s1);
-  align-items: stretch;
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow: hidden;
+  align-items: start;
+  flex: 0 0 auto;
+  min-height: auto;
+  overflow: visible;
 }
 
 .pillars-layout__main {
@@ -149,13 +148,13 @@
   flex-direction: column;
   gap: var(--s1);
   min-width: 0;
-  min-height: 0;
-  overflow: hidden;
+  min-height: auto;
+  overflow: visible;
 }
 
 .pillar-col--technical {
-  height: 100%;
-  min-height: 0;
+  height: auto;
+  min-height: auto;
 }
 
 .pillar-col--business,
@@ -181,11 +180,11 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-height: 0;
+  min-height: auto;
   border-radius: var(--radius);
   border: 1px solid rgba(17, 23, 47, 0.08);
   box-shadow: 0 2px 10px rgba(17, 23, 47, 0.05);
-  overflow: hidden;
+  overflow: visible;
   position: relative;
   z-index: 2;
   /* Reserved clear space below body — flex items lay out inside the content box,
@@ -319,9 +318,9 @@
 
 /* Pillar body content */
 .pillar__body {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow: hidden;
+  flex: 0 0 auto;
+  min-height: auto;
+  overflow: visible;
   padding: 3px var(--s1) 0;
 }
 

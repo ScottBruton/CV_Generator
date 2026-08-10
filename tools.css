@@ -8,17 +8,17 @@
 }
 
 .page > .tools-footer {
-  /* Cancel most of the page gap so Tools sits close under Impact. */
-  margin-top: calc(2px - var(--s2));
-  flex: 0 1 auto;
-  min-height: 0;
-  overflow: hidden;
+  /* Keep a small clear gap under Impact (page gap is --s2 / 16px). */
+  margin-top: calc(var(--s1) - var(--s2));
+  flex: 0 0 auto;
+  min-height: auto;
+  overflow: visible;
 }
 
 .tools-footer {
   top: 0;
-  flex-shrink: 1;
-  min-height: 0;
+  flex-shrink: 0;
+  min-height: auto;
   border-top: 1px solid var(--border);
   background: var(--bg-white);
   /* Modest breathing room under the divider */

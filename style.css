@@ -20,7 +20,7 @@
   --bg-white: #FFFFFF;
   --framework-bg: #1A1A2E;
 
-  /* Layout — fixed A4 canvas (screen px ≈ 96 dpi; print uses mm) */
+  /* Layout — A4 width; height is a minimum (page grows with content) */
   --page-width: 210mm;
   --page-height: 297mm;
   --page-margin: 5mm;
@@ -118,15 +118,15 @@ hr {
   width: var(--page-width);
   min-width: var(--page-width);
   max-width: var(--page-width);
-  height: var(--page-height);
+  height: auto;
   min-height: var(--page-height);
-  max-height: var(--page-height);
+  max-height: none;
   background: var(--bg-white);
   padding: var(--page-margin);
   display: flex;
   flex-direction: column;
   gap: var(--s2);
-  overflow: hidden;
+  overflow: visible;
   flex-shrink: 0;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
   position: relative;
@@ -368,13 +368,13 @@ hr {
 
   .page {
     width: var(--page-width);
-    height: var(--page-height);
+    height: auto;
     min-height: var(--page-height);
-    max-height: var(--page-height);
+    max-height: none;
     box-shadow: none;
     page-break-after: always;
-    page-break-inside: avoid;
-    overflow: hidden;
+    page-break-inside: auto;
+    overflow: visible;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
