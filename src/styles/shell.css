@@ -391,10 +391,34 @@ body {
   background: #fff;
 }
 
-.shell-bullet--sub {
-  margin-left: 16px;
+.shell-bullet--sub,
+.shell-bullet--depth-1 {
+  margin-left: 12px;
   border-left: 3px solid #93a4c7;
   background: #fbfcff;
+}
+
+.shell-bullet--depth-2 {
+  margin-left: 20px;
+}
+
+.shell-bullet--depth-3 {
+  margin-left: 36px;
+  border-left: 3px solid #93a4c7;
+  background: #fbfcff;
+}
+
+.shell-editor__add-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 4px 0 10px;
+  padding-left: 2px;
+}
+
+.shell-btn--tiny:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
 }
 
 .shell-bullet__head {
