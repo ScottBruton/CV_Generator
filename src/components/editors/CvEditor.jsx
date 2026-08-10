@@ -109,6 +109,34 @@ function normalizePillarBody(body) {
   coalesceAdjacentStandalones(body);
 }
 
+/** How many body entries move with this item (heading/subheading include children). */
+function blockSpan(body, entryIndex) {
+  const type = entryType(body[entryIndex]);
+  if (type === 'heading') return sectionEnd(body, entryIndex, 'heading') - entryIndex;
+  if (type === 'subheading') return sectionEnd(body, entryIndex, 'subheading') - entryIndex;
+  return 1;
+}
+
+/** Move a body block (and children) to a body insertion index. */
+function moveBodyBlock(body, fromIndex, toIndex) {
+  const span = blockSpan(body, fromIndex);
+  if (toIndex > fromIndex && toIndex < fromIndex + span) return;
+  if (toIndex === fromIndex || toIndex === fromIndex + span) return;
+  const chunk = body.splice(fromIndex, span);
+  const adjusted = toIndex > fromIndex ? toIndex - span : toIndex;
+  body.splice(adjusted, 0, ...chunk);
+}
+
+function sameDragSource(a, b) {
+  if (!a || !b) return false;
+  return (
+    a.pillarIndex === b.pillarIndex &&
+    a.kind === b.kind &&
+    a.entryIndex === b.entryIndex &&
+    a.bulletIndex === b.bulletIndex
+  );
+}
+
 function asParentEntry(bullet) {
   if (typeof bullet === 'string') return { text: bullet, bullets: [] };
   return {
@@ -174,12 +202,57 @@ function BulletRow({
   onOutdent,
   onAddSub,
   canIndent = false,
-  canOutdent = false
+  canOutdent = false,
+  draggable = false,
+  dragging = false,
+  dropActive = false,
+  onDragStart,
+  onDragEnd,
+  onDragOver,
+  onDrop,
+  onDropBefore
 }) {
   return (
-    <div className={`shell-bullet${depth ? ` shell-bullet--depth-${depth}` : ''}`}>
+    <div
+      className={[
+        'shell-bullet',
+        depth ? `shell-bullet--depth-${depth}` : '',
+        dragging ? 'shell-bullet--dragging' : '',
+        dropActive ? 'shell-bullet--drop-target' : ''
+      ].filter(Boolean).join(' ')}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
+    >
+      {onDropBefore ? (
+        <div
+          className={`shell-drop-slot${dropActive ? ' is-active' : ''}`}
+          onDragOver={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onDragOver?.(e);
+          }}
+          onDrop={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onDropBefore(e);
+          }}
+        />
+      ) : null}
       <div className="shell-bullet__head">
-        <span className="shell-bullet__label">{label}</span>
+        <div className="shell-bullet__title">
+          {draggable ? (
+            <span
+              className="shell-drag-handle"
+              draggable
+              title="Drag to move"
+              onDragStart={onDragStart}
+              onDragEnd={onDragEnd}
+            >
+              ⋮⋮
+            </span>
+          ) : null}
+          <span className="shell-bullet__label">{label}</span>
+        </div>
         <div className="shell-bullet__actions">
           <button
             type="button"
@@ -220,8 +293,28 @@ function AddRow({ children }) {
   return <div className="shell-editor__add-row">{children}</div>;
 }
 
+function BodyDropSlot({ active, onDragOver, onDrop }) {
+  return (
+    <div
+      className={`shell-drop-slot shell-drop-slot--body${active ? ' is-active' : ''}`}
+      onDragOver={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onDragOver?.(e);
+      }}
+      onDrop={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onDrop?.(e);
+      }}
+    />
+  );
+}
+
 export default function CvEditor({ content, onSave, onChange, status }) {
   const [draft, setDraft] = useState(content || null);
+  const [dragSource, setDragSource] = useState(null);
+  const [dropTarget, setDropTarget] = useState(null);
 
   useEffect(() => {
     if (!content) {
@@ -539,6 +632,159 @@ export default function CvEditor({ content, onSave, onChange, status }) {
     return type === 'subheading' || type === 'parent';
   }
 
+  function beginDrag(source, event) {
+    setDragSource(source);
+    setDropTarget(null);
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('text/plain', JSON.stringify(source));
+  }
+
+  function endDrag() {
+    setDragSource(null);
+    setDropTarget(null);
+  }
+
+  function setDropHint(target) {
+    setDropTarget((prev) => (JSON.stringify(prev) === JSON.stringify(target) ? prev : target));
+  }
+
+  function applyDrop(target) {
+    if (!dragSource || dragSource.pillarIndex !== target.pillarIndex) {
+      endDrag();
+      return;
+    }
+
+    withPillarBody(dragSource.pillarIndex, (body) => {
+      const src = dragSource;
+
+      if (src.kind === 'block') {
+        if (target.kind === 'under' && target.entryIndex === src.entryIndex) return;
+        let toIndex = target.bodyIndex;
+        if (target.kind === 'under') {
+          const mode = entryType(body[target.entryIndex]) === 'heading' ? 'heading' : 'subheading';
+          toIndex = sectionEnd(body, target.entryIndex, mode);
+        } else if (target.kind === 'standalone') {
+          // Place whole block before this bullet list
+          toIndex = target.entryIndex;
+        }
+        if (typeof toIndex !== 'number') return;
+        moveBodyBlock(body, src.entryIndex, toIndex);
+        return;
+      }
+
+      if (src.kind === 'standalone') {
+        const fromList = body[src.entryIndex];
+        if (entryType(fromList) !== 'standalone') return;
+        if (src.bulletIndex < 0 || src.bulletIndex >= fromList.bullets.length) return;
+        const [bullet] = fromList.bullets.splice(src.bulletIndex, 1);
+
+        if (target.kind === 'standalone') {
+          let toEntry = target.entryIndex;
+          let toBullet = target.bulletIndex;
+          // Adjust if same list and removing shifted later indices
+          if (toEntry === src.entryIndex && toBullet > src.bulletIndex) toBullet -= 1;
+          if (fromList.bullets.length === 0) {
+            body.splice(src.entryIndex, 1);
+            if (toEntry > src.entryIndex) toEntry -= 1;
+          }
+          const toList = body[toEntry];
+          if (!toList || entryType(toList) !== 'standalone') {
+            body.splice(toEntry, 0, asStandaloneList([bullet]));
+          } else {
+            toList.bullets.splice(toBullet, 0, bullet);
+          }
+          return;
+        }
+
+        if (target.kind === 'body' || target.kind === 'under') {
+          let toIndex = target.bodyIndex;
+          if (target.kind === 'under') {
+            const mode = entryType(body[target.entryIndex]) === 'heading' ? 'heading' : 'subheading';
+            toIndex = sectionEnd(body, target.entryIndex, mode);
+          }
+          if (fromList.bullets.length === 0) {
+            body.splice(src.entryIndex, 1);
+            if (toIndex > src.entryIndex) toIndex -= 1;
+          }
+          const prev = body[toIndex - 1];
+          if (prev && entryType(prev) === 'standalone') {
+            prev.bullets.push(bullet);
+          } else if (body[toIndex] && entryType(body[toIndex]) === 'standalone') {
+            body[toIndex].bullets.unshift(bullet);
+          } else {
+            body.splice(toIndex, 0, asStandaloneList([bullet]));
+          }
+          return;
+        }
+
+        if (target.kind === 'sub') {
+          if (fromList.bullets.length === 0) body.splice(src.entryIndex, 1);
+          let parentIndex = target.entryIndex;
+          if (fromList.bullets.length === 0 && src.entryIndex < parentIndex) parentIndex -= 1;
+          const parent = body[parentIndex];
+          if (!parent || entryType(parent) !== 'parent') {
+            body.splice(parentIndex + 1, 0, asStandaloneList([bullet]));
+            return;
+          }
+          if (!parent.bullets) parent.bullets = [];
+          parent.bullets.splice(target.bulletIndex, 0, asBullet(bullet));
+        }
+        return;
+      }
+
+      if (src.kind === 'sub') {
+        const parent = body[src.entryIndex];
+        if (!parent?.bullets?.[src.bulletIndex]) return;
+        const [bullet] = parent.bullets.splice(src.bulletIndex, 1);
+
+        if (target.kind === 'sub') {
+          let toEntry = target.entryIndex;
+          let toBullet = target.bulletIndex;
+          if (toEntry === src.entryIndex && toBullet > src.bulletIndex) toBullet -= 1;
+          const toParent = body[toEntry];
+          if (!toParent) return;
+          if (!toParent.bullets) toParent.bullets = [];
+          toParent.bullets.splice(toBullet, 0, bullet);
+          return;
+        }
+
+        if (target.kind === 'standalone') {
+          const toList = body[target.entryIndex];
+          if (toList && entryType(toList) === 'standalone') {
+            toList.bullets.splice(target.bulletIndex, 0, asBullet(bullet));
+          }
+          return;
+        }
+
+        if (target.kind === 'body' || target.kind === 'under') {
+          let toIndex = target.bodyIndex;
+          if (target.kind === 'under') {
+            const mode = entryType(body[target.entryIndex]) === 'heading' ? 'heading' : 'subheading';
+            toIndex = sectionEnd(body, target.entryIndex, mode);
+          }
+          const prev = body[toIndex - 1];
+          if (prev && entryType(prev) === 'standalone') {
+            prev.bullets.push(asBullet(bullet));
+          } else if (body[toIndex] && entryType(body[toIndex]) === 'standalone') {
+            body[toIndex].bullets.unshift(asBullet(bullet));
+          } else {
+            body.splice(toIndex, 0, asStandaloneList([bullet]));
+          }
+        }
+      }
+    });
+
+    endDrag();
+  }
+
+  function isDropActive(target) {
+    return Boolean(dragSource && dropTarget && JSON.stringify(dropTarget) === JSON.stringify(target));
+  }
+
+  function isDragging(source) {
+    return sameDragSource(dragSource, source);
+  }
+
   function renderSectionAddRows(pillarIndex, body, entryIndex) {
     const next = body[entryIndex + 1];
     const closesSub = !next || entryType(next) === 'heading' || entryType(next) === 'subheading';
@@ -614,7 +860,7 @@ export default function CvEditor({ content, onSave, onChange, status }) {
     <div>
       <h3 className="shell-editor__title">Edit CV</h3>
       <p className="shell-editor__hint">
-        Use ← → to move between heading → subheading → bullet → sub-bullet. Add buttons insert at that section and shift following items down.
+        Drag ⋮⋮ to move an item (and its children). Drop on a gap to place it, or on a heading/subheading to move it under that section. Use ← → to change level.
       </p>
 
       <label className="shell-field">
@@ -644,58 +890,97 @@ export default function CvEditor({ content, onSave, onChange, status }) {
           <div className="shell-editor__section" key={pillar.variant || pillarIndex}>
             <h4 className="shell-editor__title">{pillar.title || pillar.variant}</h4>
 
+            <BodyDropSlot
+              active={isDropActive({ pillarIndex, kind: 'body', bodyIndex: 0 })}
+              onDragOver={() => setDropHint({ pillarIndex, kind: 'body', bodyIndex: 0 })}
+              onDrop={() => applyDrop({ pillarIndex, kind: 'body', bodyIndex: 0 })}
+            />
+
             {body.map((entry, entryIndex) => {
               const type = entryType(entry);
+              const blockSource = { pillarIndex, kind: 'block', entryIndex };
               const nodes = [];
 
-              if (type === 'heading') {
+              if (type === 'heading' || type === 'subheading') {
+                const underTarget = { pillarIndex, kind: 'under', entryIndex };
                 nodes.push(
                   <BulletRow
-                    key={`h-${entryIndex}`}
-                    label="Heading"
-                    depth={0}
-                    value={entry.heading || ''}
-                    onChange={(value) => updateHeading(pillarIndex, entryIndex, value)}
+                    key={`${type}-${entryIndex}`}
+                    label={type === 'heading' ? 'Heading' : 'Subheading'}
+                    depth={type === 'heading' ? 0 : 1}
+                    value={type === 'heading' ? (entry.heading || '') : (entry.subheading || '')}
+                    onChange={(value) => (
+                      type === 'heading'
+                        ? updateHeading(pillarIndex, entryIndex, value)
+                        : updateSubheading(pillarIndex, entryIndex, value)
+                    )}
                     onRemove={() => removeEntry(pillarIndex, entryIndex)}
                     onIndent={() => indentEntry(pillarIndex, entryIndex)}
-                    onOutdent={() => {}}
+                    onOutdent={type === 'heading' ? () => {} : () => outdentEntry(pillarIndex, entryIndex)}
                     canIndent
-                    canOutdent={false}
-                  />
-                );
-              } else if (type === 'subheading') {
-                nodes.push(
-                  <BulletRow
-                    key={`sh-${entryIndex}`}
-                    label="Subheading"
-                    depth={1}
-                    value={entry.subheading || ''}
-                    onChange={(value) => updateSubheading(pillarIndex, entryIndex, value)}
-                    onRemove={() => removeEntry(pillarIndex, entryIndex)}
-                    onIndent={() => indentEntry(pillarIndex, entryIndex)}
-                    onOutdent={() => outdentEntry(pillarIndex, entryIndex)}
-                    canIndent
-                    canOutdent
+                    canOutdent={type !== 'heading'}
+                    draggable
+                    dragging={isDragging(blockSource)}
+                    dropActive={isDropActive(underTarget)}
+                    onDragStart={(e) => beginDrag(blockSource, e)}
+                    onDragEnd={endDrag}
+                    onDragOver={() => {
+                      if (dragSource && dragSource.kind !== 'sub') setDropHint(underTarget);
+                    }}
+                    onDrop={() => {
+                      if (dragSource && dragSource.kind !== 'sub') applyDrop(underTarget);
+                    }}
                   />
                 );
               } else if (type === 'standalone') {
                 const bullets = entry.bullets || [];
                 nodes.push(
                   <div className="shell-bullet-group" key={`st-${entryIndex}`}>
-                    {bullets.map((bullet, bulletIndex) => (
-                      <BulletRow
-                        key={bulletIndex}
-                        label={`Bullet ${bulletIndex + 1}`}
-                        depth={2}
-                        value={bulletText(bullet)}
-                        onChange={(value) => updateNestedBullet(pillarIndex, entryIndex, bulletIndex, value)}
-                        onRemove={() => removeNestedBullet(pillarIndex, entryIndex, bulletIndex)}
-                        onIndent={() => indentStandaloneBullet(pillarIndex, entryIndex, bulletIndex)}
-                        onOutdent={() => outdentStandaloneBullet(pillarIndex, entryIndex, bulletIndex)}
-                        canIndent={canIndentStandaloneBullet(body, entryIndex, bulletIndex)}
-                        canOutdent
-                      />
-                    ))}
+                    {bullets.map((bullet, bulletIndex) => {
+                      const source = { pillarIndex, kind: 'standalone', entryIndex, bulletIndex };
+                      const beforeTarget = { pillarIndex, kind: 'standalone', entryIndex, bulletIndex };
+                      return (
+                        <BulletRow
+                          key={bulletIndex}
+                          label={`Bullet ${bulletIndex + 1}`}
+                          depth={2}
+                          value={bulletText(bullet)}
+                          onChange={(value) => updateNestedBullet(pillarIndex, entryIndex, bulletIndex, value)}
+                          onRemove={() => removeNestedBullet(pillarIndex, entryIndex, bulletIndex)}
+                          onIndent={() => indentStandaloneBullet(pillarIndex, entryIndex, bulletIndex)}
+                          onOutdent={() => outdentStandaloneBullet(pillarIndex, entryIndex, bulletIndex)}
+                          canIndent={canIndentStandaloneBullet(body, entryIndex, bulletIndex)}
+                          canOutdent
+                          draggable
+                          dragging={isDragging(source)}
+                          dropActive={isDropActive(beforeTarget)}
+                          onDragStart={(e) => beginDrag(source, e)}
+                          onDragEnd={endDrag}
+                          onDragOver={() => setDropHint(beforeTarget)}
+                          onDropBefore={() => applyDrop(beforeTarget)}
+                        />
+                      );
+                    })}
+                    <BodyDropSlot
+                      active={isDropActive({
+                        pillarIndex,
+                        kind: 'standalone',
+                        entryIndex,
+                        bulletIndex: bullets.length
+                      })}
+                      onDragOver={() => setDropHint({
+                        pillarIndex,
+                        kind: 'standalone',
+                        entryIndex,
+                        bulletIndex: bullets.length
+                      })}
+                      onDrop={() => applyDrop({
+                        pillarIndex,
+                        kind: 'standalone',
+                        entryIndex,
+                        bulletIndex: bullets.length
+                      })}
+                    />
                     <AddRow>
                       <button
                         type="button"
@@ -722,21 +1007,56 @@ export default function CvEditor({ content, onSave, onChange, status }) {
                       onAddSub={() => addSubBullet(pillarIndex, entryIndex)}
                       canIndent={canIndentEntry(body, entryIndex)}
                       canOutdent={canOutdentEntry(body, entryIndex)}
+                      draggable
+                      dragging={isDragging(blockSource)}
+                      onDragStart={(e) => beginDrag(blockSource, e)}
+                      onDragEnd={endDrag}
                     />
-                    {bullets.map((bullet, bulletIndex) => (
-                      <BulletRow
-                        key={bulletIndex}
-                        depth={3}
-                        label={`Sub-bullet ${bulletIndex + 1}`}
-                        value={bulletText(bullet)}
-                        onChange={(value) => updateNestedBullet(pillarIndex, entryIndex, bulletIndex, value)}
-                        onRemove={() => removeNestedBullet(pillarIndex, entryIndex, bulletIndex)}
-                        onIndent={() => {}}
-                        onOutdent={() => outdentSubBullet(pillarIndex, entryIndex, bulletIndex)}
-                        canIndent={false}
-                        canOutdent
-                      />
-                    ))}
+                    {bullets.map((bullet, bulletIndex) => {
+                      const source = { pillarIndex, kind: 'sub', entryIndex, bulletIndex };
+                      const beforeTarget = { pillarIndex, kind: 'sub', entryIndex, bulletIndex };
+                      return (
+                        <BulletRow
+                          key={bulletIndex}
+                          depth={3}
+                          label={`Sub-bullet ${bulletIndex + 1}`}
+                          value={bulletText(bullet)}
+                          onChange={(value) => updateNestedBullet(pillarIndex, entryIndex, bulletIndex, value)}
+                          onRemove={() => removeNestedBullet(pillarIndex, entryIndex, bulletIndex)}
+                          onIndent={() => {}}
+                          onOutdent={() => outdentSubBullet(pillarIndex, entryIndex, bulletIndex)}
+                          canIndent={false}
+                          canOutdent
+                          draggable
+                          dragging={isDragging(source)}
+                          dropActive={isDropActive(beforeTarget)}
+                          onDragStart={(e) => beginDrag(source, e)}
+                          onDragEnd={endDrag}
+                          onDragOver={() => setDropHint(beforeTarget)}
+                          onDropBefore={() => applyDrop(beforeTarget)}
+                        />
+                      );
+                    })}
+                    <BodyDropSlot
+                      active={isDropActive({
+                        pillarIndex,
+                        kind: 'sub',
+                        entryIndex,
+                        bulletIndex: bullets.length
+                      })}
+                      onDragOver={() => setDropHint({
+                        pillarIndex,
+                        kind: 'sub',
+                        entryIndex,
+                        bulletIndex: bullets.length
+                      })}
+                      onDrop={() => applyDrop({
+                        pillarIndex,
+                        kind: 'sub',
+                        entryIndex,
+                        bulletIndex: bullets.length
+                      })}
+                    />
                     <AddRow>
                       <button
                         type="button"
@@ -750,9 +1070,16 @@ export default function CvEditor({ content, onSave, onChange, status }) {
                 );
               }
 
+              const afterBody = { pillarIndex, kind: 'body', bodyIndex: entryIndex + 1 };
+
               return (
                 <div key={`wrap-${entryIndex}`}>
                   {nodes}
+                  <BodyDropSlot
+                    active={isDropActive(afterBody)}
+                    onDragOver={() => setDropHint(afterBody)}
+                    onDrop={() => applyDrop(afterBody)}
+                  />
                   {renderSectionAddRows(pillarIndex, body, entryIndex)}
                 </div>
               );

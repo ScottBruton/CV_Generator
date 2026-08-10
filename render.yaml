@@ -27,3 +27,12 @@ services:
         sync: false
       - key: SESSION_SECRET
         generateValue: true
+      # Persist website edits (variants/content) back to GitHub
+      - key: GITHUB_REPO
+        value: ScottBruton/CV_Generator
+      - key: GITHUB_BRANCH
+        value: main
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: CONTENT_SYNC_ENABLED
+        value: "true"

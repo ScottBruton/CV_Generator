@@ -382,6 +382,7 @@ body {
 }
 
 .shell-bullet {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -389,6 +390,55 @@ body {
   border: 1px solid #dde3ef;
   border-radius: 8px;
   background: #fff;
+}
+
+.shell-bullet--dragging {
+  opacity: 0.45;
+}
+
+.shell-bullet--drop-target {
+  outline: 2px solid #3d6df2;
+  outline-offset: 1px;
+}
+
+.shell-bullet__title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.shell-drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  color: #8a95ab;
+  cursor: grab;
+  user-select: none;
+  font-size: 0.85rem;
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+.shell-drag-handle:active {
+  cursor: grabbing;
+}
+
+.shell-drop-slot {
+  height: 6px;
+  margin: 1px 0;
+  border-radius: 3px;
+  transition: background 0.1s ease, height 0.1s ease;
+}
+
+.shell-drop-slot--body {
+  height: 8px;
+}
+
+.shell-drop-slot.is-active {
+  height: 12px;
+  background: #3d6df2;
 }
 
 .shell-bullet--sub,

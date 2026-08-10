@@ -30,6 +30,7 @@ const {
   syncCatalogFromFilesystem
 } = require('./db');
 const { handleJobSummary, handleTailor } = require('./ai/handlers');
+const { scheduleContentSync, flushContentSync, isContentSyncEnabled } = require('./content-sync');
 
 const isProd = process.env.NODE_ENV === 'production';
 const PORT = Number(process.env.PORT || process.env.EXPORT_PORT || 3001);
@@ -350,6 +351,7 @@ async function handleApi(req, res, url) {
   if (req.method === 'POST' && url.pathname === '/api/active-variant') {
     const body = await readJsonBody(req);
     const variant = setActiveVariantId(body.id);
+    scheduleContentSync(`active variant → ${variant.id}`);
     sendJson(res, 200, { variant, bootstrap: getBootstrapData() });
     return;
   }
@@ -357,6 +359,7 @@ async function handleApi(req, res, url) {
   if (req.method === 'POST' && url.pathname === '/api/variants') {
     const body = await readJsonBody(req);
     const variant = createVariantFrom(body);
+    flushContentSync(`create variant ${variant.id}`);
     sendJson(res, 201, { variant, bootstrap: getBootstrapData() });
     return;
   }
@@ -364,6 +367,7 @@ async function handleApi(req, res, url) {
   if (req.method === 'DELETE' && url.pathname.startsWith('/api/variants/')) {
     const id = decodeURIComponent(url.pathname.slice('/api/variants/'.length));
     deleteVariant(id);
+    flushContentSync(`delete variant ${id}`);
     sendJson(res, 200, { ok: true, bootstrap: getBootstrapData() });
     return;
   }
@@ -383,6 +387,7 @@ async function handleApi(req, res, url) {
     const id = decodeURIComponent(parts[3] || 'default');
     const body = await readJsonBody(req, 8e6);
     const content = putContent(kind, id, body.content ?? body);
+    scheduleContentSync(`save ${kind}/${id}`);
     sendJson(res, 200, { content });
     return;
   }
@@ -390,6 +395,7 @@ async function handleApi(req, res, url) {
   if (req.method === 'POST' && url.pathname === '/api/upload/cover-logo') {
     const body = await readJsonBody(req, 8e6);
     const uploaded = saveCoverLogoUpload(body);
+    scheduleContentSync(`upload cover logo ${uploaded.filename}`);
     sendJson(res, 200, uploaded);
     return;
   }
@@ -515,6 +521,11 @@ server.on('error', (error) => {
 server.listen(PORT, HOST, () => {
   syncCatalogFromFilesystem();
   console.log(`App API + export server listening on http://${HOST}:${PORT} (${DEVICE_SCALE_FACTOR}x → ${ORIGIN || 'same-origin'})`);
+  console.log(
+    isContentSyncEnabled()
+      ? `[content-sync] Enabled → ${process.env.GITHUB_REPO || 'ScottBruton/CV_Generator'}@${process.env.GITHUB_BRANCH || 'main'}`
+      : '[content-sync] Disabled (set GITHUB_TOKEN on Render to persist live edits to GitHub)'
+  );
   if (authEnabled()) console.log('Login gate: enabled (AUTH_USERNAME / AUTH_PASSWORD)');
   else console.log('Login gate: disabled (set AUTH_USERNAME and AUTH_PASSWORD to enable)');
 });

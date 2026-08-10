@@ -79,8 +79,27 @@ Website Builder can remain in your GoDaddy account unused; the domain will serve
 
 Every push to `main` triggers a Render redeploy. Keep secrets only in Render Environment.
 
+## 6. Persist variants created on the live site (GitHub sync)
+
+Render’s free disk is ephemeral (redeploy / spin-down wipes local files). To keep variants you create on the website:
+
+1. Create a GitHub **fine-grained personal access token** with access to `ScottBruton/CV_Generator` and permission **Contents: Read and write**.
+2. In Render → **cv-generator** → **Environment**, set:
+
+| Key | Value |
+|-----|--------|
+| `GITHUB_TOKEN` | your PAT |
+| `GITHUB_REPO` | `ScottBruton/CV_Generator` |
+| `GITHUB_BRANCH` | `main` |
+| `CONTENT_SYNC_ENABLED` | `true` |
+
+3. Redeploy once so the new env vars load.
+4. Creating/saving/deleting variants (or saving CV/cover content) will commit `content/` (+ `assets/cover/`) back to `main` within a few seconds.
+
+Check Render **Logs** for `[content-sync] Pushed …`. Pull locally when you want those commits on your machine (`git pull`).
+
 ## Notes
 
 - Free Render services may spin down when idle (first request can be slow)
 - PDF export needs Chromium (installed in the build command via Puppeteer)
-- Content JSON in the repo is the source of truth; disk on Render is ephemeral across deploys
+- With GitHub sync enabled, content in the repo is the source of truth across deploys
