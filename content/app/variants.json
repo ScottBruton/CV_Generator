@@ -11,7 +11,7 @@
       "portfolioId": "default",
       "careerPathId": "default",
       "educationId": "default",
-      "updatedAt": "2026-08-10T01:30:07.432Z"
+      "updatedAt": "2026-08-10T01:35:19.622Z"
     },
     {
       "id": "altissimo",
@@ -23,7 +23,7 @@
       "portfolioId": "altissimo",
       "careerPathId": "altissimo",
       "educationId": "altissimo",
-      "updatedAt": "2026-08-10T01:34:12.719Z"
+      "updatedAt": "2026-08-10T01:35:19.471Z"
     },
     {
       "id": "arista",
@@ -35,7 +35,7 @@
       "portfolioId": "arista",
       "careerPathId": "arista",
       "educationId": "arista",
-      "updatedAt": "2026-08-10T01:30:07.275Z"
+      "updatedAt": "2026-08-10T01:35:19.484Z"
     },
     {
       "id": "breville",
@@ -47,7 +47,7 @@
       "portfolioId": "breville",
       "careerPathId": "breville",
       "educationId": "default",
-      "updatedAt": "2026-08-10T01:30:07.446Z"
+      "updatedAt": "2026-08-10T01:35:19.636Z"
     },
     {
       "id": "cochlear",
@@ -59,7 +59,7 @@
       "portfolioId": "cochlear",
       "careerPathId": "cochlear",
       "educationId": "cochlear",
-      "updatedAt": "2026-08-10T01:30:07.309Z"
+      "updatedAt": "2026-08-10T01:35:19.512Z"
     },
     {
       "id": "drone-shield-antenna-enginner",
@@ -71,7 +71,7 @@
       "portfolioId": "drone-shield-antenna-enginner",
       "careerPathId": "drone-shield-antenna-enginner",
       "educationId": "default",
-      "updatedAt": "2026-08-10T01:30:07.332Z"
+      "updatedAt": "2026-08-10T01:35:19.526Z"
     },
     {
       "id": "intellihub-group-product-engineer-ev-charging-hardware",
@@ -83,7 +83,7 @@
       "portfolioId": "intellihub-group-product-engineer-ev-charging-hardware",
       "careerPathId": "intellihub-group-product-engineer-ev-charging-hardware",
       "educationId": "default",
-      "updatedAt": "2026-08-10T01:30:07.346Z"
+      "updatedAt": "2026-08-10T01:35:19.539Z"
     },
     {
       "id": "resmed",
@@ -95,7 +95,7 @@
       "portfolioId": "resmed",
       "careerPathId": "resmed",
       "educationId": "resmed",
-      "updatedAt": "2026-08-10T01:30:07.360Z"
+      "updatedAt": "2026-08-10T01:35:19.551Z"
     },
     {
       "id": "rhl",
@@ -107,7 +107,7 @@
       "portfolioId": "rhl",
       "careerPathId": "rhl",
       "educationId": "default",
-      "updatedAt": "2026-08-10T01:30:07.374Z"
+      "updatedAt": "2026-08-10T01:35:19.564Z"
     },
     {
       "id": "senior-systems-engineer",
@@ -119,7 +119,7 @@
       "portfolioId": "senior-systems-engineer",
       "careerPathId": "senior-systems-engineer",
       "educationId": "default",
-      "updatedAt": "2026-08-10T01:30:07.387Z"
+      "updatedAt": "2026-08-10T01:35:19.577Z"
     },
     {
       "id": "vertiv",
@@ -131,7 +131,7 @@
       "portfolioId": "vertiv",
       "careerPathId": "vertiv",
       "educationId": "vertiv",
-      "updatedAt": "2026-08-10T01:30:07.401Z"
+      "updatedAt": "2026-08-10T01:35:19.590Z"
     }
   ]
 }
