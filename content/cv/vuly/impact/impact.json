@@ -87,21 +87,20 @@
               "company": ""
             },
             {
-              "text": "Self-orienting femoral stem broach system (patent in progress)",
               "endToEnd": true,
               "company": "",
-              "href": "#self-orienting-femoral-stem-broach-system"
+              "href": "#self-orienting-femoral-stem-broach-system",
+              "text": "Self-orienting femoral stem broach system (patent in progress)"
+            },
+            {
+              "company": "",
+              "href": "#flagship-chassis",
+              "text": "Next-generation flagship contrast injector chassis (system integration) (Mechanical Lead)"
             }
           ]
         },
         {
           "subheading": "Electro-mechanical"
-        },
-        {
-          "text": "Next-generation flagship contrast injector chassis (system integration) (Mechanical Lead)",
-          "plain": true,
-          "company": "",
-          "href": "#flagship-chassis"
         },
         {
           "text": "Cardiac monitoring and ultrasound integrated display system (Mechanical Lead)",
