@@ -159,12 +159,20 @@ function openDb() {
       portfolio_id TEXT NOT NULL,
       career_path_id TEXT,
       education_id TEXT,
+      category_id TEXT,
+      sort_order INTEGER NOT NULL DEFAULT 0,
       updated_at TEXT NOT NULL,
       FOREIGN KEY (cover_id) REFERENCES covers(id),
       FOREIGN KEY (cv_id) REFERENCES cvs(id),
       FOREIGN KEY (portfolio_id) REFERENCES portfolios(id),
       FOREIGN KEY (career_path_id) REFERENCES career_paths(id),
       FOREIGN KEY (education_id) REFERENCES educations(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS variant_categories (
+      id TEXT PRIMARY KEY,
+      label TEXT NOT NULL,
+      sort_order INTEGER NOT NULL DEFAULT 0
     );
 
     CREATE TABLE IF NOT EXISTS app_meta (
@@ -191,10 +199,23 @@ function openDb() {
     // column already exists
   }
 
+  try {
+    dbInstance.exec('ALTER TABLE applications ADD COLUMN category_id TEXT');
+  } catch (error) {
+    // column already exists
+  }
+
+  try {
+    dbInstance.exec('ALTER TABLE applications ADD COLUMN sort_order INTEGER NOT NULL DEFAULT 0');
+  } catch (error) {
+    // column already exists
+  }
+
   syncCatalogFromFilesystem();
   backfillCareerPathIds();
   backfillEducationIds();
   seedVariantsIfNeeded();
+  backfillVariantPlacement();
   return dbInstance;
 }
 
@@ -264,6 +285,7 @@ function backfillEducationIds() {
 
 function mapVariantRow(row) {
   if (!row) return null;
+  const categoryId = row.categoryId ?? row.category_id;
   return {
     id: row.id,
     label: row.label,
@@ -274,8 +296,164 @@ function mapVariantRow(row) {
     portfolioId: row.portfolioId ?? row.portfolio_id,
     careerPathId: row.careerPathId ?? row.career_path_id ?? 'default',
     educationId: row.educationId ?? row.education_id ?? 'default',
+    categoryId: categoryId || null,
+    sortOrder: Number(row.sortOrder ?? row.sort_order ?? 0) || 0,
     updatedAt: row.updatedAt ?? row.updated_at
   };
+}
+
+function mapCategoryRow(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    label: row.label,
+    sortOrder: Number(row.sortOrder ?? row.sort_order ?? 0) || 0
+  };
+}
+
+function listCategories() {
+  const db = openDb();
+  const rows = db.prepare(`
+    SELECT id, label, sort_order AS sortOrder
+    FROM variant_categories
+    ORDER BY sort_order ASC, label COLLATE NOCASE
+  `).all();
+  return rows.map(mapCategoryRow);
+}
+
+function getCategory(id) {
+  if (!id) return null;
+  const db = openDb();
+  const row = db.prepare(`
+    SELECT id, label, sort_order AS sortOrder
+    FROM variant_categories
+    WHERE id = ?
+  `).get(id);
+  return mapCategoryRow(row);
+}
+
+function createCategory({ label }) {
+  const db = openDb();
+  const trimmed = String(label || '').trim();
+  if (!trimmed) throw new Error('Category label is required.');
+  const id = slugify(trimmed);
+  if (getCategory(id)) throw new Error(`Category "${id}" already exists.`);
+  const max = db.prepare('SELECT COALESCE(MAX(sort_order), -1) AS maxOrder FROM variant_categories').get();
+  const sortOrder = Number(max?.maxOrder ?? -1) + 1;
+  db.prepare(`
+    INSERT INTO variant_categories (id, label, sort_order) VALUES (?, ?, ?)
+  `).run(id, trimmed, sortOrder);
+  persistVariantsJson();
+  return getCategory(id);
+}
+
+function renameCategory(id, { label }) {
+  const existing = getCategory(id);
+  if (!existing) throw new Error(`Category "${id}" was not found.`);
+  const trimmed = String(label || '').trim();
+  if (!trimmed) throw new Error('Category label is required.');
+  const db = openDb();
+  db.prepare('UPDATE variant_categories SET label = ? WHERE id = ?').run(trimmed, id);
+  persistVariantsJson();
+  return getCategory(id);
+}
+
+function deleteCategory(id) {
+  const existing = getCategory(id);
+  if (!existing) throw new Error(`Category "${id}" was not found.`);
+  const db = openDb();
+  db.prepare('UPDATE applications SET category_id = NULL WHERE category_id = ?').run(id);
+  db.prepare('DELETE FROM variant_categories WHERE id = ?').run(id);
+  backfillVariantPlacement();
+  persistVariantsJson();
+  return true;
+}
+
+function backfillVariantPlacement() {
+  const db = openDb();
+  const rows = db.prepare(`
+    SELECT id, category_id AS categoryId, sort_order AS sortOrder, is_template AS isTemplate, label
+    FROM applications
+    ORDER BY is_template DESC, label COLLATE NOCASE
+  `).all();
+
+  const byBucket = new Map();
+  for (const row of rows) {
+    const key = row.categoryId || '';
+    if (!byBucket.has(key)) byBucket.set(key, []);
+    byBucket.get(key).push(row);
+  }
+
+  const update = db.prepare('UPDATE applications SET sort_order = ? WHERE id = ?');
+  for (const group of byBucket.values()) {
+    group.forEach((row, index) => {
+      if (Number(row.sortOrder) !== index) update.run(index, row.id);
+    });
+  }
+}
+
+function nextSortOrder(categoryId) {
+  const db = openDb();
+  const row = categoryId
+    ? db.prepare('SELECT COALESCE(MAX(sort_order), -1) AS maxOrder FROM applications WHERE category_id = ?').get(categoryId)
+    : db.prepare('SELECT COALESCE(MAX(sort_order), -1) AS maxOrder FROM applications WHERE category_id IS NULL OR category_id = \'\'').get();
+  return Number(row?.maxOrder ?? -1) + 1;
+}
+
+function patchVariantPlacement(id, { categoryId, sortOrder } = {}) {
+  const existing = getVariant(id);
+  if (!existing) throw new Error(`Variant "${id}" was not found.`);
+  const db = openDb();
+  let nextCategoryId = existing.categoryId;
+  if (categoryId !== undefined) {
+    const normalized = categoryId ? String(categoryId) : null;
+    if (normalized && !getCategory(normalized)) {
+      throw new Error(`Category "${normalized}" was not found.`);
+    }
+    nextCategoryId = normalized;
+  }
+  const nextOrder = sortOrder != null ? Number(sortOrder) : nextSortOrder(nextCategoryId);
+  db.prepare(`
+    UPDATE applications
+    SET category_id = ?, sort_order = ?, updated_at = ?
+    WHERE id = ?
+  `).run(nextCategoryId, Number.isFinite(nextOrder) ? nextOrder : 0, nowIso(), id);
+  persistVariantsJson();
+  return getVariant(id);
+}
+
+function reorderVariants(payload = {}) {
+  const db = openDb();
+  const categoryOrder = Array.isArray(payload.categoryOrder) ? payload.categoryOrder.map(String) : null;
+  const unassigned = Array.isArray(payload.unassigned) ? payload.unassigned.map(String) : [];
+  const grouped = payload.grouped && typeof payload.grouped === 'object' ? payload.grouped : {};
+
+  if (categoryOrder) {
+    const updateCat = db.prepare('UPDATE variant_categories SET sort_order = ? WHERE id = ?');
+    categoryOrder.forEach((catId, index) => {
+      if (getCategory(catId)) updateCat.run(index, catId);
+    });
+  }
+
+  const updateVar = db.prepare(`
+    UPDATE applications SET category_id = ?, sort_order = ?, updated_at = ? WHERE id = ?
+  `);
+  const stamp = nowIso();
+
+  unassigned.forEach((variantId, index) => {
+    if (getVariant(variantId)) updateVar.run(null, index, stamp, variantId);
+  });
+
+  for (const [catId, ids] of Object.entries(grouped)) {
+    if (!getCategory(catId)) continue;
+    const list = Array.isArray(ids) ? ids.map(String) : [];
+    list.forEach((variantId, index) => {
+      if (getVariant(variantId)) updateVar.run(catId, index, stamp, variantId);
+    });
+  }
+
+  persistVariantsJson();
+  return { categories: listCategories(), variants: listVariants() };
 }
 
 function ensureCanonicalVariants() {
@@ -317,11 +495,41 @@ function seedVariantsIfNeeded() {
 
   if (count === 0) {
     const fromVariants = readJson(VARIANTS_JSON, null);
+    if (fromVariants?.categories?.length) {
+      const db = openDb();
+      const insertCat = db.prepare(`
+        INSERT INTO variant_categories (id, label, sort_order) VALUES (?, ?, ?)
+        ON CONFLICT(id) DO UPDATE SET label = excluded.label, sort_order = excluded.sort_order
+      `);
+      fromVariants.categories.forEach((category, index) => {
+        const id = slugify(category.id || category.label);
+        if (!id) return;
+        insertCat.run(id, String(category.label || id).trim(), Number(category.sortOrder ?? index) || 0);
+      });
+    }
     if (fromVariants?.variants?.length) {
       for (const variant of fromVariants.variants) {
         upsertVariant(variant, { persist: false });
       }
       setActiveVariantId(fromVariants.activeVariantId || 'default', { persist: false });
+    }
+  } else {
+    // Hydrate categories from JSON when DB has variants but no categories yet
+    const catCount = openDb().prepare('SELECT COUNT(*) AS count FROM variant_categories').get().count;
+    if (catCount === 0) {
+      const fromVariants = readJson(VARIANTS_JSON, null);
+      if (fromVariants?.categories?.length) {
+        const db = openDb();
+        const insertCat = db.prepare(`
+          INSERT INTO variant_categories (id, label, sort_order) VALUES (?, ?, ?)
+          ON CONFLICT(id) DO UPDATE SET label = excluded.label, sort_order = excluded.sort_order
+        `);
+        fromVariants.categories.forEach((category, index) => {
+          const id = slugify(category.id || category.label);
+          if (!id) return;
+          insertCat.run(id, String(category.label || id).trim(), Number(category.sortOrder ?? index) || 0);
+        });
+      }
     }
   }
 
@@ -361,9 +569,15 @@ function listVariants() {
       portfolio_id AS portfolioId,
       career_path_id AS careerPathId,
       education_id AS educationId,
+      category_id AS categoryId,
+      sort_order AS sortOrder,
       updated_at AS updatedAt
     FROM applications
-    ORDER BY is_template DESC, label COLLATE NOCASE
+    ORDER BY
+      CASE WHEN category_id IS NULL OR category_id = '' THEN 0 ELSE 1 END,
+      sort_order ASC,
+      is_template DESC,
+      label COLLATE NOCASE
   `).all();
   return rows.map(mapVariantRow);
 }
@@ -381,6 +595,8 @@ function getVariant(id) {
       portfolio_id AS portfolioId,
       career_path_id AS careerPathId,
       education_id AS educationId,
+      category_id AS categoryId,
+      sort_order AS sortOrder,
       updated_at AS updatedAt
     FROM applications
     WHERE id = ?
@@ -431,6 +647,16 @@ function upsertVariant(input, options = {}) {
   const careerPathId = input.careerPathId || input.career_path_id || 'default';
   const educationId = input.educationId || input.education_id || 'default';
   const isTemplate = input.isTemplate ? 1 : 0;
+  const existing = getVariant(id);
+  let categoryId = input.categoryId !== undefined
+    ? (input.categoryId || null)
+    : (existing?.categoryId || null);
+  if (categoryId && !getCategory(categoryId)) {
+    categoryId = null;
+  }
+  const sortOrder = input.sortOrder != null
+    ? Number(input.sortOrder)
+    : (existing?.sortOrder ?? nextSortOrder(categoryId));
 
   if (!label) throw new Error('Variant label is required.');
   if (!catalog.covers.some((item) => item.id === coverId)) throw new Error(`Cover "${coverId}" was not found.`);
@@ -440,8 +666,11 @@ function upsertVariant(input, options = {}) {
   if (!catalog.educations.some((item) => item.id === educationId)) throw new Error(`Education "${educationId}" was not found.`);
 
   db.prepare(`
-    INSERT INTO applications (id, label, company, is_template, cover_id, cv_id, portfolio_id, career_path_id, education_id, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO applications (
+      id, label, company, is_template, cover_id, cv_id, portfolio_id, career_path_id, education_id,
+      category_id, sort_order, updated_at
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(id) DO UPDATE SET
       label = excluded.label,
       company = excluded.company,
@@ -451,8 +680,23 @@ function upsertVariant(input, options = {}) {
       portfolio_id = excluded.portfolio_id,
       career_path_id = excluded.career_path_id,
       education_id = excluded.education_id,
+      category_id = excluded.category_id,
+      sort_order = excluded.sort_order,
       updated_at = excluded.updated_at
-  `).run(id, label, company, isTemplate, coverId, cvId, portfolioId, careerPathId, educationId, nowIso());
+  `).run(
+    id,
+    label,
+    company,
+    isTemplate,
+    coverId,
+    cvId,
+    portfolioId,
+    careerPathId,
+    educationId,
+    categoryId,
+    Number.isFinite(sortOrder) ? sortOrder : 0,
+    nowIso()
+  );
 
   if (!getActiveVariantId()) setMeta('active_variant_id', id);
   if (options.persist !== false) persistVariantsJson();
@@ -482,6 +726,7 @@ function persistVariantsJson() {
   const catalog = getCatalog();
   const payload = {
     activeVariantId: getActiveVariantId(),
+    categories: listCategories(),
     variants: listVariants()
   };
   writeJson(VARIANTS_JSON, payload);
@@ -503,12 +748,21 @@ function getBootstrapData() {
   syncCatalogFromFilesystem();
   const catalog = getCatalog();
   const variants = listVariants();
+  const categories = listCategories();
   const activeVariantId = getActiveVariantId();
   const activeVariant = activeVariantId ? getVariant(activeVariantId) : null;
+  let focusChips = [];
+  try {
+    focusChips = require('./ai/focus-chips').getFocusChips();
+  } catch {
+    focusChips = [];
+  }
 
   return {
     catalog,
     variants,
+    categories,
+    focusChips,
     activeVariantId,
     activeVariant,
     // backward-compatible aliases
@@ -611,12 +865,17 @@ function duplicateEducation({ fromId, id, label }) {
   return getCatalog().educations.find((item) => item.id === targetId);
 }
 
-function createVariantFrom({ label, company, fromId }) {
+function createVariantFrom({ label, company, fromId, categoryId }) {
   const source = getVariant(fromId || 'default');
   if (!source) throw new Error(`Clone source "${fromId || 'default'}" was not found.`);
 
   const id = slugify(label || company);
   if (getVariant(id)) throw new Error(`Variant "${id}" already exists.`);
+
+  const normalizedCategoryId = categoryId ? String(categoryId) : null;
+  if (normalizedCategoryId && !getCategory(normalizedCategoryId)) {
+    throw new Error(`Category "${normalizedCategoryId}" was not found.`);
+  }
 
   const coverLabel = `${label} Cover Letter`;
   const cvLabel = `${label} CV`;
@@ -639,7 +898,9 @@ function createVariantFrom({ label, company, fromId }) {
     cvId: id,
     portfolioId: id,
     careerPathId: id,
-    educationId: id
+    educationId: id,
+    categoryId: normalizedCategoryId,
+    sortOrder: nextSortOrder(normalizedCategoryId)
   });
 
   setActiveVariantId(variant.id);
@@ -776,6 +1037,13 @@ module.exports = {
   listPortfolioFiles,
   listCareerPathFiles,
   listEducationFiles,
+  listCategories,
+  getCategory,
+  createCategory,
+  renameCategory,
+  deleteCategory,
+  patchVariantPlacement,
+  reorderVariants,
   listApplications,
   getApplication,
   getActiveApplicationId,

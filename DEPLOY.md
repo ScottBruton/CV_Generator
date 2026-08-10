@@ -42,18 +42,22 @@ Render should track **branch `main`**.
 2. **New → Blueprint** (uses `render.yaml`) **or** **New → Web Service**
 3. Connect GitHub repo `ScottBruton/CV_Generator`
 4. Branch: `main`
-5. Build: `npm install --include=dev && npm run build && (npx puppeteer browsers install chrome || true)`
+5. Build: `npm install --include=dev && npx puppeteer browsers install chrome && npm run build`
 6. Start: `npm run start:prod`
-7. Add the env vars from section 1, plus **`NODE_VERSION=22.16.0`** (required for `node:sqlite`)
+7. Add the env vars from section 1, plus:
+   - **`NODE_VERSION=22.16.0`** (required for `node:sqlite`)
+   - **`PUPPETEER_CACHE_DIR=/opt/render/project/src/.cache/puppeteer`** (PDF export Chrome on Render)
 8. Deploy
 
 Confirm `https://cv-generator-h2mj.onrender.com` (or your service URL) shows the **login** page, then the app after sign-in.
+
+On boot, Logs should show `PDF export browser: …/chrome`. If it says **not found**, the Chrome install step failed — fix the build command and redeploy.
 
 ### If deploy fails with **Exited with status 127**
 
 Vite lives in dependencies / must be installed with `--include=dev`. In the Render service **Settings → Build & Deploy**, set Build Command to:
 
-`npm install --include=dev && npm run build && (npx puppeteer browsers install chrome || true)`
+`npm install --include=dev && npx puppeteer browsers install chrome && npm run build`
 
 Then **Manual Deploy → Clear build cache & deploy**.
 

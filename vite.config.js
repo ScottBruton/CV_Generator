@@ -17,7 +17,12 @@ export default defineConfig({
         timeout: 600_000,
         proxyTimeout: 600_000
       },
-      '/export': 'http://127.0.0.1:3001'
+      // PDF export can take a while (headless Chrome + image compression).
+      '/export': {
+        target: 'http://127.0.0.1:3001',
+        timeout: 600_000,
+        proxyTimeout: 600_000
+      }
     }
   },
   resolve: {

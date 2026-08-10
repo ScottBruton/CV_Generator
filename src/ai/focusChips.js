@@ -1,28 +1,30 @@
-import FOCUS_CHIPS from './focusChipsData.json';
+import DEFAULT_FOCUS_CHIPS from './focusChipsData.json';
 
-export function getFocusChips() {
-  return FOCUS_CHIPS;
+export function getFocusChips(chips = DEFAULT_FOCUS_CHIPS) {
+  return Array.isArray(chips) ? chips : DEFAULT_FOCUS_CHIPS;
 }
 
-export function chipsByCategory() {
+export function chipsByCategory(chips = DEFAULT_FOCUS_CHIPS) {
+  const list = getFocusChips(chips);
   return {
-    role: FOCUS_CHIPS.filter((chip) => chip.category === 'role'),
-    capability: FOCUS_CHIPS.filter((chip) => chip.category === 'capability')
+    role: list.filter((chip) => chip.category === 'role'),
+    capability: list.filter((chip) => chip.category === 'capability')
   };
 }
 
-export function resolveFocusChips(selectedIds = []) {
+export function resolveFocusChips(selectedIds = [], chips = DEFAULT_FOCUS_CHIPS) {
+  const catalog = getFocusChips(chips);
   const idSet = new Set((selectedIds || []).map(String));
-  const chips = FOCUS_CHIPS.filter((chip) => idSet.has(chip.id));
+  const matched = catalog.filter((chip) => idSet.has(chip.id));
   const seen = new Set();
   const consolidatedInstructions = [];
-  for (const chip of chips) {
+  for (const chip of matched) {
     const key = chip.instruction.trim().toLowerCase();
     if (seen.has(key)) continue;
     seen.add(key);
     consolidatedInstructions.push(chip.instruction);
   }
-  return { chips, consolidatedInstructions };
+  return { chips: matched, consolidatedInstructions };
 }
 
-export { FOCUS_CHIPS };
+export { DEFAULT_FOCUS_CHIPS as FOCUS_CHIPS };

@@ -60,16 +60,61 @@ export function setActiveVariant(id) {
   });
 }
 
-export function createVariant({ label, company, fromId }) {
+export function createVariant({ label, company, fromId, categoryId }) {
   return request('/api/variants', {
     method: 'POST',
-    body: JSON.stringify({ label, company, fromId })
+    body: JSON.stringify({ label, company, fromId, categoryId: categoryId || null })
   });
 }
 
 export function deleteVariant(id) {
   return request(`/api/variants/${encodeURIComponent(id)}`, {
     method: 'DELETE'
+  });
+}
+
+export function fetchFocusChips() {
+  return request('/api/focus-chips');
+}
+
+export function saveFocusChips(focusChips) {
+  return request('/api/focus-chips', {
+    method: 'PUT',
+    body: JSON.stringify({ focusChips })
+  });
+}
+
+export function createVariantCategory({ label }) {
+  return request('/api/variant-categories', {
+    method: 'POST',
+    body: JSON.stringify({ label })
+  });
+}
+
+export function renameVariantCategory(id, { label }) {
+  return request(`/api/variant-categories/${encodeURIComponent(id)}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ label })
+  });
+}
+
+export function deleteVariantCategory(id) {
+  return request(`/api/variant-categories/${encodeURIComponent(id)}`, {
+    method: 'DELETE'
+  });
+}
+
+export function reorderVariants(payload) {
+  return request('/api/variants/reorder', {
+    method: 'PUT',
+    body: JSON.stringify(payload)
+  });
+}
+
+export function patchVariant(id, payload) {
+  return request(`/api/variants/${encodeURIComponent(id)}`, {
+    method: 'PATCH',
+    body: JSON.stringify(payload)
   });
 }
 

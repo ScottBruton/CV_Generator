@@ -591,15 +591,118 @@ body {
   color: rgba(255, 255, 255, 0.65);
 }
 
+.drawer__categories {
+  flex: 1;
+  overflow: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.drawer__category {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 6px;
+}
+
+.drawer__category-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.drawer__category-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  padding: 6px 4px;
+}
+
+.drawer__category-chevron {
+  width: 1rem;
+  opacity: 0.8;
+}
+
+.drawer__category-count {
+  margin-left: auto;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.drawer__category-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 0 4px 4px;
+}
+
+.drawer__icon-btn {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 0.65rem;
+  padding: 3px 6px;
+  cursor: pointer;
+}
+
+.drawer__icon-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.drawer__icon-btn--danger {
+  border-color: rgba(255, 120, 120, 0.35);
+  color: #ffb4b4;
+}
+
+.drawer__category-input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 0.72rem;
+  padding: 6px 8px;
+}
+
+.drawer__category-input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
 .drawer__list {
   list-style: none;
   margin: 0;
-  padding: 10px;
-  overflow: auto;
-  flex: 1;
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+.drawer__list--nested {
+  padding: 4px 0 2px;
+}
+
+.drawer__empty-drop {
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.45);
+  padding: 8px 6px;
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
 }
 
 .drawer__item {
@@ -611,7 +714,11 @@ body {
   border-radius: 10px;
   padding: 12px;
   font: inherit;
-  cursor: pointer;
+  cursor: grab;
+}
+
+.drawer__item:active {
+  cursor: grabbing;
 }
 
 .drawer__item strong {
@@ -645,6 +752,12 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.drawer__add-category {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .drawer__footer .shell-btn {

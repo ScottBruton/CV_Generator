@@ -22,8 +22,8 @@ import {
 } from '@mui/material';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import CloseIcon from '@mui/icons-material/Close';
-import { analyseJobSummary, tailorDocuments } from '../../api/client';
-import { chipsByCategory } from '../../ai/focusChips.js';
+import { analyseJobSummary, saveFocusChips, tailorDocuments } from '../../api/client';
+import { chipsByCategory, FOCUS_CHIPS as DEFAULT_FOCUS_CHIPS } from '../../ai/focusChips.js';
 import { applyFieldUpdates, createClientSnapshot } from '../../ai/documentFields.js';
 import {
   buildChangeGroups,
@@ -128,18 +128,40 @@ function JobSummaryView({ summary }) {
   );
 }
 
+function slugChipId(category, label) {
+  const slug = String(label || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'chip';
+  return `${category === 'capability' ? 'cap' : 'role'}-${slug}`;
+}
+
 export default function AiTailoringDialog({
   open,
   onClose,
   variantId,
   cover,
   cv,
-  onSaveDocuments
+  onSaveDocuments,
+  focusChips: focusChipsProp,
+  onFocusChipsChange
 }) {
   const fileInputRef = useRef(null);
-  const categories = useMemo(() => chipsByCategory(), []);
   const boundVariantRef = useRef(null);
   const stateRef = useRef(null);
+
+  const [focusChips, setFocusChips] = useState(() => (
+    Array.isArray(focusChipsProp) && focusChipsProp.length ? focusChipsProp : DEFAULT_FOCUS_CHIPS
+  ));
+  const categories = useMemo(() => chipsByCategory(focusChips), [focusChips]);
+  const [chipDrafts, setChipDrafts] = useState({
+    role: { label: '', instruction: '' },
+    capability: { label: '', instruction: '' }
+  });
+  const [editingChipId, setEditingChipId] = useState(null);
+  const [chipBusy, setChipBusy] = useState(false);
+  const [chipError, setChipError] = useState('');
 
   const [customInstructions, setCustomInstructions] = useState('');
   const [selectedChips, setSelectedChips] = useState(() => new Set());
@@ -165,6 +187,74 @@ export default function AiTailoringDialog({
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
   const [saveSuccess, setSaveSuccess] = useState('');
+
+  useEffect(() => {
+    if (Array.isArray(focusChipsProp)) setFocusChips(focusChipsProp);
+  }, [focusChipsProp]);
+
+  async function persistFocusChips(nextChips) {
+    setChipBusy(true);
+    setChipError('');
+    try {
+      const data = await saveFocusChips(nextChips);
+      const saved = data.focusChips || nextChips;
+      setFocusChips(saved);
+      onFocusChipsChange?.(saved);
+      return saved;
+    } catch (error) {
+      setChipError(error.message || 'Could not save focus chips.');
+      throw error;
+    } finally {
+      setChipBusy(false);
+    }
+  }
+
+  async function handleAddChip(category) {
+    const draft = chipDrafts[category] || { label: '', instruction: '' };
+    const label = draft.label.trim();
+    const instruction = draft.instruction.trim();
+    if (!label || !instruction) {
+      setChipError('Label and instruction are required.');
+      return;
+    }
+    let id = slugChipId(category, label);
+    if (focusChips.some((chip) => chip.id === id)) id = `${id}-${Date.now().toString(36)}`;
+    const next = [...focusChips, { id, label, category, instruction }];
+    await persistFocusChips(next);
+    setChipDrafts((prev) => ({ ...prev, [category]: { label: '', instruction: '' } }));
+  }
+
+  async function handleUpdateChip(chipId) {
+    const draft = chipDrafts[categories.role.some((c) => c.id === chipId) ? 'role' : 'capability'];
+    const chip = focusChips.find((item) => item.id === chipId);
+    if (!chip) return;
+    const label = (draft?.label || chip.label).trim();
+    const instruction = (draft?.instruction || chip.instruction).trim();
+    if (!label || !instruction) {
+      setChipError('Label and instruction are required.');
+      return;
+    }
+    const next = focusChips.map((item) => (
+      item.id === chipId ? { ...item, label, instruction } : item
+    ));
+    await persistFocusChips(next);
+    setEditingChipId(null);
+    setChipDrafts((prev) => ({
+      ...prev,
+      [chip.category]: { label: '', instruction: '' }
+    }));
+  }
+
+  async function handleDeleteChip(chipId) {
+    const next = focusChips.filter((chip) => chip.id !== chipId);
+    await persistFocusChips(next);
+    setSelectedChips((prev) => {
+      const copy = new Set(prev);
+      copy.delete(chipId);
+      return copy;
+    });
+    if (editingChipId === chipId) setEditingChipId(null);
+  }
 
   function applySession(session) {
     const next = session || createEmptySession();
@@ -487,32 +577,100 @@ export default function AiTailoringDialog({
 
           <Box>
             <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 800 }}>2. Tailoring focus</Typography>
-            <Typography variant="caption" color="text.secondary">Role focus</Typography>
-            <Stack direction="row" gap={1} sx={{ my: 1, flexWrap: 'wrap' }}>
-              {categories.role.map((chip) => (
-                <Chip
-                  key={chip.id}
-                  label={chip.label}
-                  color={selectedChips.has(chip.id) ? 'primary' : 'default'}
-                  variant={selectedChips.has(chip.id) ? 'filled' : 'outlined'}
-                  onClick={() => toggleChip(chip.id)}
-                  aria-pressed={selectedChips.has(chip.id)}
-                />
-              ))}
-            </Stack>
-            <Typography variant="caption" color="text.secondary">Industry and capability focus</Typography>
-            <Stack direction="row" gap={1} sx={{ mt: 1, flexWrap: 'wrap' }}>
-              {categories.capability.map((chip) => (
-                <Chip
-                  key={chip.id}
-                  label={chip.label}
-                  color={selectedChips.has(chip.id) ? 'primary' : 'default'}
-                  variant={selectedChips.has(chip.id) ? 'filled' : 'outlined'}
-                  onClick={() => toggleChip(chip.id)}
-                  aria-pressed={selectedChips.has(chip.id)}
-                />
-              ))}
-            </Stack>
+            {chipError ? <Alert severity="error" sx={{ mb: 1 }}>{chipError}</Alert> : null}
+            {[
+              { key: 'role', title: 'Role focus', chips: categories.role },
+              { key: 'capability', title: 'Industry and capability focus', chips: categories.capability }
+            ].map((section) => (
+              <Box key={section.key} sx={{ mb: 2 }}>
+                <Typography variant="caption" color="text.secondary">{section.title}</Typography>
+                <Stack direction="row" gap={1} sx={{ my: 1, flexWrap: 'wrap' }}>
+                  {section.chips.map((chip) => (
+                    <Chip
+                      key={chip.id}
+                      label={chip.label}
+                      color={selectedChips.has(chip.id) ? 'primary' : 'default'}
+                      variant={selectedChips.has(chip.id) ? 'filled' : 'outlined'}
+                      onClick={() => toggleChip(chip.id)}
+                      onDelete={() => handleDeleteChip(chip.id)}
+                      aria-pressed={selectedChips.has(chip.id)}
+                      title={chip.instruction}
+                    />
+                  ))}
+                </Stack>
+                <Stack spacing={1} sx={{ mt: 1, p: 1.5, border: '1px dashed #cfd6e4', borderRadius: 2 }}>
+                  <Typography variant="caption" sx={{ fontWeight: 700 }}>
+                    {editingChipId && section.chips.some((c) => c.id === editingChipId)
+                      ? `Edit ${section.key} chip`
+                      : `Add ${section.key} chip`}
+                  </Typography>
+                  <TextField
+                    size="small"
+                    label="Label"
+                    value={chipDrafts[section.key].label}
+                    disabled={chipBusy}
+                    onChange={(e) => setChipDrafts((prev) => ({
+                      ...prev,
+                      [section.key]: { ...prev[section.key], label: e.target.value }
+                    }))}
+                  />
+                  <TextField
+                    size="small"
+                    label="Instruction"
+                    multiline
+                    minRows={2}
+                    value={chipDrafts[section.key].instruction}
+                    disabled={chipBusy}
+                    onChange={(e) => setChipDrafts((prev) => ({
+                      ...prev,
+                      [section.key]: { ...prev[section.key], instruction: e.target.value }
+                    }))}
+                  />
+                  <Stack direction="row" spacing={1}>
+                    {editingChipId && section.chips.some((c) => c.id === editingChipId) ? (
+                      <>
+                        <Button size="small" variant="contained" disabled={chipBusy} onClick={() => handleUpdateChip(editingChipId)}>
+                          Save chip
+                        </Button>
+                        <Button
+                          size="small"
+                          onClick={() => {
+                            setEditingChipId(null);
+                            setChipDrafts((prev) => ({ ...prev, [section.key]: { label: '', instruction: '' } }));
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </>
+                    ) : (
+                      <Button size="small" variant="outlined" disabled={chipBusy} onClick={() => handleAddChip(section.key)}>
+                        Add chip
+                      </Button>
+                    )}
+                  </Stack>
+                  {section.chips.length > 1 ? (
+                    <Stack direction="row" gap={0.5} sx={{ flexWrap: 'wrap' }}>
+                      {section.chips.map((chip) => (
+                        <Button
+                          key={`edit-${chip.id}`}
+                          size="small"
+                          sx={{ textTransform: 'none', minWidth: 0, px: 1 }}
+                          onClick={() => {
+                            setEditingChipId(chip.id);
+                            setChipDrafts((prev) => ({
+                              ...prev,
+                              [section.key]: { label: chip.label, instruction: chip.instruction }
+                            }));
+                          }}
+                        >
+                          Edit “{chip.label}”
+                        </Button>
+                      ))}
+                    </Stack>
+                  ) : null}
+                </Stack>
+              </Box>
+            ))}
           </Box>
 
           <Box>
@@ -725,19 +883,51 @@ export default function AiTailoringDialog({
                             <DiffText originalText={suggestion.originalText} proposedText={suggestion.proposedText} mode="proposed" />
                           ) : suggestion.originalText}
                         </Typography>
-                        <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-                          <Button size="small" variant="contained" color="success" onClick={() => {
-                            const group = groups.find((item) => item.suggestionId === suggestion.id);
-                            if (group) handleAccept(group.id);
-                          }}>
-                            Accept
-                          </Button>
-                          <Button size="small" variant="outlined" color="error" onClick={() => {
-                            const group = groups.find((item) => item.suggestionId === suggestion.id);
-                            if (group) handleReject(group.id);
-                          }}>
-                            Reject
-                          </Button>
+                        <Stack direction="row" spacing={1} sx={{ mt: 1 }} alignItems="center">
+                          {decision === 'accepted' ? (
+                            <>
+                              <Button
+                                size="small"
+                                variant="contained"
+                                color="success"
+                                disabled
+                                sx={{ '&.Mui-disabled': { bgcolor: 'success.main', color: '#fff', opacity: 1 } }}
+                              >
+                                Accepted
+                              </Button>
+                              <Button
+                                size="small"
+                                variant="contained"
+                                onClick={() => {
+                                  const group = groups.find((item) => item.suggestionId === suggestion.id);
+                                  if (group) pushGroups(setGroupStatus(groups, group.id, 'pending'));
+                                }}
+                                sx={{ bgcolor: '#2563eb', '&:hover': { bgcolor: '#1d4ed8' } }}
+                              >
+                                Undo
+                              </Button>
+                            </>
+                          ) : (
+                            <>
+                              <Button
+                                size="small"
+                                variant="contained"
+                                onClick={() => {
+                                  const group = groups.find((item) => item.suggestionId === suggestion.id);
+                                  if (group) handleAccept(group.id);
+                                }}
+                                sx={{ bgcolor: '#93c5fd', color: '#0f172a', '&:hover': { bgcolor: '#60a5fa' } }}
+                              >
+                                Accept
+                              </Button>
+                              <Button size="small" variant="outlined" color="error" onClick={() => {
+                                const group = groups.find((item) => item.suggestionId === suggestion.id);
+                                if (group) handleReject(group.id);
+                              }}>
+                                Reject
+                              </Button>
+                            </>
+                          )}
                         </Stack>
                       </Box>
                     </Box>

@@ -5,7 +5,7 @@ require('./ai/env');
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
-const { exportPdfBuffer, DEFAULT_FILENAME, DEVICE_SCALE_FACTOR } = require('./export-pdf');
+const { exportPdfBuffer, DEFAULT_FILENAME, DEVICE_SCALE_FACTOR, findBrowserExecutable } = require('./export-pdf');
 const { compressExportImage } = require('./export-image');
 const {
   authEnabled,
@@ -27,9 +27,16 @@ const {
   createVariantFrom,
   getContent,
   putContent,
-  syncCatalogFromFilesystem
+  syncCatalogFromFilesystem,
+  listCategories,
+  createCategory,
+  renameCategory,
+  deleteCategory,
+  patchVariantPlacement,
+  reorderVariants
 } = require('./db');
 const { handleJobSummary, handleTailor } = require('./ai/handlers');
+const { getFocusChips, saveFocusChips } = require('./ai/focus-chips');
 const { scheduleContentSync, flushContentSync, isContentSyncEnabled } = require('./content-sync');
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -340,12 +347,70 @@ async function handleApi(req, res, url) {
     return;
   }
 
+  if (req.method === 'GET' && url.pathname === '/api/focus-chips') {
+    sendJson(res, 200, { focusChips: getFocusChips() });
+    return;
+  }
+
+  if (req.method === 'PUT' && url.pathname === '/api/focus-chips') {
+    const body = await readJsonBody(req, 2e6);
+    const focusChips = saveFocusChips(body.focusChips ?? body.chips ?? body);
+    scheduleContentSync('focus chips update');
+    sendJson(res, 200, { focusChips });
+    return;
+  }
+
   if (req.method === 'GET' && url.pathname === '/api/variants') {
     sendJson(res, 200, {
       variants: listVariants(),
+      categories: listCategories(),
       activeVariantId: getActiveVariantId()
     });
     return;
+  }
+
+  if (req.method === 'POST' && url.pathname === '/api/variant-categories') {
+    const body = await readJsonBody(req);
+    const category = createCategory(body);
+    scheduleContentSync(`create category ${category.id}`);
+    sendJson(res, 201, { category, bootstrap: getBootstrapData() });
+    return;
+  }
+
+  if (req.method === 'PATCH' && url.pathname.startsWith('/api/variant-categories/')) {
+    const id = decodeURIComponent(url.pathname.slice('/api/variant-categories/'.length));
+    const body = await readJsonBody(req);
+    const category = renameCategory(id, body);
+    scheduleContentSync(`rename category ${id}`);
+    sendJson(res, 200, { category, bootstrap: getBootstrapData() });
+    return;
+  }
+
+  if (req.method === 'DELETE' && url.pathname.startsWith('/api/variant-categories/')) {
+    const id = decodeURIComponent(url.pathname.slice('/api/variant-categories/'.length));
+    deleteCategory(id);
+    scheduleContentSync(`delete category ${id}`);
+    sendJson(res, 200, { ok: true, bootstrap: getBootstrapData() });
+    return;
+  }
+
+  if (req.method === 'PUT' && url.pathname === '/api/variants/reorder') {
+    const body = await readJsonBody(req, 2e6);
+    reorderVariants(body);
+    scheduleContentSync('reorder variants');
+    sendJson(res, 200, { bootstrap: getBootstrapData() });
+    return;
+  }
+
+  if (req.method === 'PATCH' && url.pathname.startsWith('/api/variants/')) {
+    const id = decodeURIComponent(url.pathname.slice('/api/variants/'.length));
+    if (id && id !== 'reorder') {
+      const body = await readJsonBody(req);
+      const variant = patchVariantPlacement(id, body);
+      scheduleContentSync(`move variant ${id}`);
+      sendJson(res, 200, { variant, bootstrap: getBootstrapData() });
+      return;
+    }
   }
 
   if (req.method === 'POST' && url.pathname === '/api/active-variant') {
@@ -528,4 +593,7 @@ server.listen(PORT, HOST, () => {
   );
   if (authEnabled()) console.log('Login gate: enabled (AUTH_USERNAME / AUTH_PASSWORD)');
   else console.log('Login gate: disabled (set AUTH_USERNAME and AUTH_PASSWORD to enable)');
+  const browser = findBrowserExecutable();
+  if (browser) console.log(`PDF export browser: ${browser}`);
+  else console.warn('PDF export browser: not found (run `npx puppeteer browsers install chrome` in the build)');
 });

@@ -27,3 +27,6 @@ data/*.db-*
 # Vite
 dist/
 .vite/
+
+# Puppeteer Chrome cache (installed on Render during build)
+.cache/

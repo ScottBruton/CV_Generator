@@ -1,5 +1,5 @@
 {
-  "activeApplicationId": "altissimo",
+  "activeApplicationId": "cochlear",
   "applications": [
     {
       "id": "default",
@@ -11,19 +11,9 @@
       "portfolioId": "default",
       "careerPathId": "default",
       "educationId": "default",
-      "updatedAt": "2026-08-10T01:47:27.752Z"
-    },
-    {
-      "id": "altissimo",
-      "label": "Altissimo",
-      "company": "Altissimo",
-      "isTemplate": false,
-      "coverId": "altissimo",
-      "cvId": "altissimo",
-      "portfolioId": "altissimo",
-      "careerPathId": "altissimo",
-      "educationId": "altissimo",
-      "updatedAt": "2026-08-10T01:47:27.596Z"
+      "categoryId": null,
+      "sortOrder": 0,
+      "updatedAt": "2026-08-10T09:47:30.043Z"
     },
     {
       "id": "arista",
@@ -35,7 +25,9 @@
       "portfolioId": "arista",
       "careerPathId": "arista",
       "educationId": "arista",
-      "updatedAt": "2026-08-10T01:47:27.609Z"
+      "categoryId": null,
+      "sortOrder": 1,
+      "updatedAt": "2026-07-29T11:19:54.717Z"
     },
     {
       "id": "breville",
@@ -47,7 +39,9 @@
       "portfolioId": "breville",
       "careerPathId": "breville",
       "educationId": "default",
-      "updatedAt": "2026-08-10T01:47:27.765Z"
+      "categoryId": null,
+      "sortOrder": 2,
+      "updatedAt": "2026-08-10T09:47:30.065Z"
     },
     {
       "id": "cochlear",
@@ -59,7 +53,9 @@
       "portfolioId": "cochlear",
       "careerPathId": "cochlear",
       "educationId": "cochlear",
-      "updatedAt": "2026-08-10T01:47:27.637Z"
+      "categoryId": null,
+      "sortOrder": 3,
+      "updatedAt": "2026-07-30T07:44:43.234Z"
     },
     {
       "id": "drone-shield-antenna-enginner",
@@ -71,7 +67,9 @@
       "portfolioId": "drone-shield-antenna-enginner",
       "careerPathId": "drone-shield-antenna-enginner",
       "educationId": "default",
-      "updatedAt": "2026-08-10T01:47:27.652Z"
+      "categoryId": null,
+      "sortOrder": 4,
+      "updatedAt": "2026-07-22T05:01:31.104Z"
     },
     {
       "id": "intellihub-group-product-engineer-ev-charging-hardware",
@@ -83,7 +81,9 @@
       "portfolioId": "intellihub-group-product-engineer-ev-charging-hardware",
       "careerPathId": "intellihub-group-product-engineer-ev-charging-hardware",
       "educationId": "default",
-      "updatedAt": "2026-08-10T01:47:27.665Z"
+      "categoryId": null,
+      "sortOrder": 5,
+      "updatedAt": "2026-07-22T05:10:13.186Z"
     },
     {
       "id": "resmed",
@@ -95,7 +95,9 @@
       "portfolioId": "resmed",
       "careerPathId": "resmed",
       "educationId": "resmed",
-      "updatedAt": "2026-08-10T01:47:27.678Z"
+      "categoryId": null,
+      "sortOrder": 6,
+      "updatedAt": "2026-07-29T10:51:34.764Z"
     },
     {
       "id": "rhl",
@@ -107,7 +109,9 @@
       "portfolioId": "rhl",
       "careerPathId": "rhl",
       "educationId": "default",
-      "updatedAt": "2026-08-10T01:47:27.692Z"
+      "categoryId": null,
+      "sortOrder": 7,
+      "updatedAt": "2026-07-22T03:01:05.363Z"
     },
     {
       "id": "senior-systems-engineer",
@@ -119,7 +123,9 @@
       "portfolioId": "senior-systems-engineer",
       "careerPathId": "senior-systems-engineer",
       "educationId": "default",
-      "updatedAt": "2026-08-10T01:47:27.705Z"
+      "categoryId": null,
+      "sortOrder": 8,
+      "updatedAt": "2026-07-22T04:51:06.076Z"
     },
     {
       "id": "vertiv",
@@ -131,7 +137,9 @@
       "portfolioId": "vertiv",
       "careerPathId": "vertiv",
       "educationId": "vertiv",
-      "updatedAt": "2026-08-10T01:47:27.718Z"
+      "categoryId": null,
+      "sortOrder": 9,
+      "updatedAt": "2026-07-29T11:22:43.341Z"
     }
   ]
 }

@@ -1,8 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export default function AddVariantDialog({ open, variants, onClose, onCreate, busy }) {
+export default function AddVariantDialog({ open, variants, categories, onClose, onCreate, busy }) {
   const [label, setLabel] = useState('');
   const [fromId, setFromId] = useState('default');
+  const [categoryId, setCategoryId] = useState('');
+
+  useEffect(() => {
+    if (!open) return;
+    setLabel('');
+    setFromId((variants || []).find((item) => item.isTemplate)?.id || (variants || [])[0]?.id || 'default');
+    setCategoryId('');
+  }, [open, variants]);
 
   if (!open) return null;
 
@@ -23,12 +31,26 @@ export default function AddVariantDialog({ open, variants, onClose, onCreate, bu
             ))}
           </select>
         </label>
+        <label className="shell-field">
+          <span>Category</span>
+          <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
+            <option value="">Unassigned</option>
+            {(categories || []).map((category) => (
+              <option key={category.id} value={category.id}>{category.label}</option>
+            ))}
+          </select>
+        </label>
         <div className="dialog-actions">
           <button
             type="button"
             className="shell-btn shell-btn--primary"
             disabled={busy || !label.trim()}
-            onClick={() => onCreate({ label: label.trim(), company: label.trim(), fromId })}
+            onClick={() => onCreate({
+              label: label.trim(),
+              company: label.trim(),
+              fromId,
+              categoryId: categoryId || null
+            })}
           >
             Create
           </button>

@@ -1,0 +1,20 @@
+[
+  { "id": "role-systems-engineer", "label": "Systems Engineer", "category": "role", "instruction": "Emphasise systems-level thinking, integration across disciplines, requirements flow-down, and end-to-end product architecture." },
+  { "id": "role-mechanical-engineer", "label": "Mechanical Engineer", "category": "role", "instruction": "Emphasise mechanical design, CAD, materials, mechanisms, and manufacturing-aware engineering." },
+  { "id": "role-senior-mechanical", "label": "Senior Mechanical Engineer", "category": "role", "instruction": "Emphasise senior mechanical ownership, technical judgment, mentoring, and delivery of complex mechanical workstreams." },
+  { "id": "role-product-dev", "label": "Product Development Engineer", "category": "role", "instruction": "Emphasise product development lifecycle ownership from concept through validation and production transfer." },
+  { "id": "role-biomedical", "label": "Biomedical Engineer", "category": "role", "instruction": "Emphasise biomedical engineering, clinical context, biocompatible materials, and patient-facing device constraints." },
+  { "id": "role-med-device", "label": "Medical Device Engineer", "category": "role", "instruction": "Emphasise medical-device development, device classifications, and regulated design controls." },
+  { "id": "role-mechatronics", "label": "Mechatronics Engineer", "category": "role", "instruction": "Emphasise mechatronics integration across mechanical, electrical, firmware, and software domains." },
+  { "id": "role-rd", "label": "R&D Engineer", "category": "role", "instruction": "Emphasise research and development experimentation, prototyping, and novel technical problem solving." },
+  { "id": "role-tech-lead", "label": "Technical Lead", "category": "role", "instruction": "Emphasise technical leadership, design reviews, architecture decisions, and guiding engineering quality." },
+  { "id": "role-product-lead", "label": "Product Lead", "category": "role", "instruction": "Emphasise product leadership, stakeholder management, prioritisation, and cross-functional delivery ownership." },
+  { "id": "cap-med-devices", "label": "Medical Devices", "category": "capability", "instruction": "Highlight medical-device programmes, implant/instrument work, and MedTech product delivery." },
+  { "id": "cap-consumer", "label": "Consumer Products", "category": "capability", "instruction": "Highlight transferable product-development practices relevant to consumer hardware where supported by evidence." },
+  { "id": "cap-regulated", "label": "Regulated Product Development", "category": "capability", "instruction": "Emphasise regulated development, design controls, risk management, and compliance-aware engineering." },
+  { "id": "cap-dfm", "label": "Design for Manufacture", "category": "capability", "instruction": "Emphasise design for manufacture, process capability, tolerance strategy, and production readiness." },
+  { "id": "cap-vnv", "label": "Verification and Validation", "category": "capability", "instruction": "Emphasise verification and validation planning, protocols, evidence generation, and test readiness." },
+  { "id": "cap-systems", "label": "Systems Engineering", "category": "capability", "instruction": "Emphasise systems engineering methods, interfaces, requirements traceability, and integration." },
+  { "id": "cap-mech-design", "label": "Mechanical Design", "category": "capability", "instruction": "Emphasise detailed mechanical design quality, CAD fluency, and mechanism/component design outcomes." },
+  { "id": "cap-tech-leadership", "label": "Technical Leadership", "category": "capability", "instruction": "Emphasise mentoring, review leadership, and coordinating technical contributors without inventing unsupported claims." }
+]

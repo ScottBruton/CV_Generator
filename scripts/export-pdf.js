@@ -22,6 +22,7 @@ const SIZE_ATTEMPTS = [
 
 const BROWSER_CANDIDATES = [
   process.env.CHROME_PATH,
+  process.env.PUPPETEER_EXECUTABLE_PATH,
   process.env.EDGE_PATH,
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
   'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
@@ -30,32 +31,70 @@ const BROWSER_CANDIDATES = [
   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
   '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',
   '/usr/bin/google-chrome',
+  '/usr/bin/google-chrome-stable',
   '/usr/bin/chromium',
   '/usr/bin/chromium-browser'
 ].filter(Boolean);
 
-function findBrowserExecutable() {
-  const candidates = [
-    ...BROWSER_CANDIDATES,
-    process.env.PUPPETEER_EXECUTABLE_PATH
-  ].filter(Boolean);
+const CHROME_EXE_NAMES = new Set([
+  'chrome',
+  'chrome.exe',
+  'chromium',
+  'chromium.exe',
+  'google-chrome',
+  'google-chrome-stable'
+]);
 
-  for (const candidate of candidates) {
-    if (fs.existsSync(candidate)) {
-      return candidate;
+function findChromeInDir(rootAbs, depth = 0) {
+  if (!rootAbs || depth > 8 || !fs.existsSync(rootAbs)) return null;
+  let entries;
+  try {
+    entries = fs.readdirSync(rootAbs, { withFileTypes: true });
+  } catch {
+    return null;
+  }
+  for (const entry of entries) {
+    const abs = path.join(rootAbs, entry.name);
+    if (entry.isFile() && CHROME_EXE_NAMES.has(entry.name.toLowerCase())) {
+      return abs;
     }
+  }
+  for (const entry of entries) {
+    if (!entry.isDirectory()) continue;
+    const found = findChromeInDir(path.join(rootAbs, entry.name), depth + 1);
+    if (found) return found;
+  }
+  return null;
+}
+
+function puppeteerCacheRoots() {
+  return [
+    process.env.PUPPETEER_CACHE_DIR,
+    path.join(process.cwd(), '.cache', 'puppeteer'),
+    path.join(os.homedir(), '.cache', 'puppeteer'),
+    '/opt/render/.cache/puppeteer'
+  ].filter(Boolean);
+}
+
+function findBrowserExecutable() {
+  for (const candidate of BROWSER_CANDIDATES) {
+    if (candidate && fs.existsSync(candidate)) return candidate;
   }
 
   try {
-    // Optional production dependency on Render / CI
-    // eslint-disable-next-line import/no-extraneous-dependencies, global-require
+    // eslint-disable-next-line global-require, import/no-extraneous-dependencies
     const puppeteer = require('puppeteer');
     if (typeof puppeteer.executablePath === 'function') {
       const installed = puppeteer.executablePath();
       if (installed && fs.existsSync(installed)) return installed;
     }
   } catch {
-    // puppeteer not installed locally
+    // puppeteer not installed
+  }
+
+  for (const root of puppeteerCacheRoots()) {
+    const found = findChromeInDir(root);
+    if (found) return found;
   }
 
   return null;
@@ -80,6 +119,10 @@ function runHeadlessPrint(executable, url, outputPath, deviceScaleFactor = DEVIC
     const args = [
       '--headless=new',
       '--disable-gpu',
+      // Required on Render / Linux containers without a sandbox user.
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
       '--run-all-compositor-stages-before-draw',
       // Extra time so compressed image swaps can finish before capture.
       '--virtual-time-budget=20000',
@@ -132,7 +175,11 @@ async function exportOnce(executable, url, attempt) {
 async function exportPdfBuffer(options = {}) {
   const executable = findBrowserExecutable();
   if (!executable) {
-    throw new Error('Chrome or Edge was not found. Install Chrome/Edge or set CHROME_PATH.');
+    throw new Error(
+      'Chrome or Edge was not found. On Render, ensure the build runs '
+      + '`npx puppeteer browsers install chrome` with PUPPETEER_CACHE_DIR set. '
+      + 'Locally install Chrome/Edge or set CHROME_PATH / PUPPETEER_EXECUTABLE_PATH.'
+    );
   }
 
   const url = options.url || DEFAULT_URL;
@@ -183,6 +230,7 @@ module.exports = {
   DEFAULT_FILENAME,
   DEVICE_SCALE_FACTOR,
   SIZE_ATTEMPTS,
+  findBrowserExecutable,
   exportPdfBuffer,
   exportPdfToFile,
   formatBytes

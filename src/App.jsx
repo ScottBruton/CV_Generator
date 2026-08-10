@@ -5,10 +5,14 @@ import Button from '@mui/material/Button';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import {
   createVariant,
+  createVariantCategory,
+  deleteVariantCategory,
   exportPdf,
   fetchAuthStatus,
   fetchBootstrap,
   fetchContent,
+  renameVariantCategory,
+  reorderVariants,
   saveContent,
   setActiveVariant
 } from './api/client';
@@ -181,6 +185,57 @@ function EditorShell() {
     }
   }
 
+  async function handleAddCategory(label) {
+    setBusy(true);
+    try {
+      const data = await createVariantCategory({ label });
+      await refresh(data.bootstrap);
+      setStatus({ message: `Created category “${label}”.` });
+    } catch (err) {
+      setStatus({ error: true, message: err.message });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleRenameCategory(id, label) {
+    setBusy(true);
+    try {
+      const data = await renameVariantCategory(id, { label });
+      await refresh(data.bootstrap);
+      setStatus({ message: `Renamed category to “${label}”.` });
+    } catch (err) {
+      setStatus({ error: true, message: err.message });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleDeleteCategory(id) {
+    setBusy(true);
+    try {
+      const data = await deleteVariantCategory(id);
+      await refresh(data.bootstrap);
+      setStatus({ message: 'Category deleted. Variants moved to Unassigned.' });
+    } catch (err) {
+      setStatus({ error: true, message: err.message });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleReorderVariants(payload) {
+    setBusy(true);
+    try {
+      const data = await reorderVariants(payload);
+      await refresh(data.bootstrap);
+    } catch (err) {
+      setStatus({ error: true, message: err.message });
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function handleSave(kind, content) {
     if (!activeVariant) return;
     setBusy(true);
@@ -257,23 +312,32 @@ function EditorShell() {
         portfolioId: activeVariant.portfolioId,
         maxMb: exportMaxMb || undefined
       });
+      if (!blob || blob.size === 0) {
+        throw new Error('Export returned an empty PDF.');
+      }
+      const type = blob.type || '';
+      if (type && !type.includes('pdf') && !type.includes('octet-stream')) {
+        throw new Error(`Export did not return a PDF (got ${type}).`);
+      }
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
       link.download = `Scott-Bruton-${activeVariant.label.replace(/\s+/g, '-')}.pdf`;
+      link.rel = 'noopener';
+      document.body.appendChild(link);
       link.click();
-      URL.revokeObjectURL(url);
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 60_000);
       setExportOpen(false);
       const sizeMb = (blob.size / (1024 * 1024)).toFixed(2);
       setStatus({ message: `Exported PDF (${sizeMb} MB).` });
     } catch (err) {
       console.warn('Export server failed', err);
-      setStatus({ error: true, message: err.message || 'Export failed.' });
-      // Only fall back to browser print when the server is unreachable / not a size limit failure.
-      if (!/under .*MB/i.test(String(err.message || ''))) {
-        window.open(`/print?variant=${encodeURIComponent(activeVariant.id)}&mode=${encodeURIComponent(mode)}`, '_blank');
-        setExportOpen(false);
-      }
+      setStatus({
+        error: true,
+        message: `${err.message || 'Export failed.'} The PDF was not downloaded. Check that Chrome/Edge is installed and the API server is running.`
+      });
+      setExportOpen(false);
     } finally {
       setBusy(false);
     }
@@ -420,10 +484,16 @@ function EditorShell() {
       <VariantDrawer
         open={drawerOpen}
         variants={bootstrap.variants || []}
+        categories={bootstrap.categories || []}
         activeVariantId={activeVariant.id}
+        busy={busy}
         onClose={() => setDrawerOpen(false)}
         onSelect={handleSelectVariant}
         onAdd={() => setAddOpen(true)}
+        onAddCategory={handleAddCategory}
+        onRenameCategory={handleRenameCategory}
+        onDeleteCategory={handleDeleteCategory}
+        onReorder={handleReorderVariants}
         debugConsoleOpen={debugConsoleOpen}
         onToggleDebugConsole={() => {
           setDebugConsoleOpen((open) => !open);
@@ -436,6 +506,7 @@ function EditorShell() {
       <AddVariantDialog
         open={addOpen}
         variants={bootstrap.variants || []}
+        categories={bootstrap.categories || []}
         busy={busy}
         onClose={() => setAddOpen(false)}
         onCreate={handleCreateVariant}
@@ -455,6 +526,10 @@ function EditorShell() {
         variantId={activeVariant.id}
         cover={coverContent}
         cv={cvContent}
+        focusChips={bootstrap.focusChips}
+        onFocusChipsChange={(focusChips) => {
+          setBootstrap((prev) => (prev ? { ...prev, focusChips } : prev));
+        }}
         onSaveDocuments={handleAiSaveDocuments}
         onClose={() => setAiOpen(false)}
       />
