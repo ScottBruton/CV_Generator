@@ -43,6 +43,10 @@
     {
       "id": "vertiv",
       "label": "Vertiv Cover Letter"
+    },
+    {
+      "id": "vuly",
+      "label": "Vuly Cover Letter"
     }
   ],
   "cvs": [
@@ -89,6 +93,10 @@
     {
       "id": "vertiv",
       "label": "Vertiv CV"
+    },
+    {
+      "id": "vuly",
+      "label": "Vuly CV"
     }
   ],
   "portfolios": [
@@ -135,6 +143,10 @@
     {
       "id": "vertiv",
       "label": "Vertiv Portfolio"
+    },
+    {
+      "id": "vuly",
+      "label": "Vuly Portfolio"
     }
   ],
   "careerPaths": [
@@ -181,6 +193,10 @@
     {
       "id": "vertiv",
       "label": "Vertiv Career Path"
+    },
+    {
+      "id": "vuly",
+      "label": "Vuly Career Path"
     }
   ],
   "educations": [
@@ -207,6 +223,10 @@
     {
       "id": "vertiv",
       "label": "Vertiv Education"
+    },
+    {
+      "id": "vuly",
+      "label": "Vuly Education"
     }
   ]
 }

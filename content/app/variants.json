@@ -1,5 +1,5 @@
 {
-  "activeVariantId": "cochlear",
+  "activeVariantId": "vuly",
   "categories": [],
   "variants": [
     {
@@ -141,6 +141,20 @@
       "categoryId": null,
       "sortOrder": 9,
       "updatedAt": "2026-07-29T11:22:43.341Z"
+    },
+    {
+      "id": "vuly",
+      "label": "Vuly",
+      "company": "Vuly",
+      "isTemplate": false,
+      "coverId": "vuly",
+      "cvId": "vuly",
+      "portfolioId": "vuly",
+      "careerPathId": "vuly",
+      "educationId": "vuly",
+      "categoryId": null,
+      "sortOrder": 10,
+      "updatedAt": "2026-08-10T09:35:02.768Z"
     }
   ]
 }

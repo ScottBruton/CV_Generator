@@ -1,0 +1,14 @@
+{
+  "id": "vuly",
+  "label": "Vuly Cover Letter",
+  "recipient": "Hiring Manager",
+  "company": "",
+  "companyLogo": "assets/cover/Vuly-Logo.png",
+  "subject": "Application - Product Design Lead",
+  "paragraphs": [
+    "I'm a mechatronics engineer and product developer with more than eight years of R&D experience taking complex physical products from concept development through prototyping, testing, manufacturing readiness and regulatory delivery. My work spans implant systems, prosthetics, surgical tools, integrated medical devices and custom manufacturing equipment, supported by a Masters Degree in Biomedical Engineering and a Diploma in Software Development. I combine hands-on mechanical design with digital capability and a strong inventor's mindset.",
+    "Across recent roles, I've translated market research, user needs and technical requirements into product direction through concept workshops, rapid concepting and cross-functional alignment. I balance function, aesthetics, usability, manufacturability and compliance, using hands-on prototyping, materials selection, supplier collaboration and design reviews to pressure-test ideas and prepare them for engineering, manufacturing and validation.",
+    "Vuly's focus on differentiated, buildable physical products strongly matches my experience working where engineering, user experience, prototyping and real-world testing converge. I would welcome the opportunity to bring structured concept development, SolidWorks design, DFM thinking and cross-functional product leadership to the creation and validation of future play and outdoor product concepts."
+  ],
+  "closing": "Yours sincerely,"
+}
