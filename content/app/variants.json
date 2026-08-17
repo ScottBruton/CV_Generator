@@ -1,5 +1,5 @@
 {
-  "activeVariantId": "vuly",
+  "activeVariantId": "breville",
   "categories": [],
   "variants": [
     {
@@ -14,7 +14,7 @@
       "educationId": "default",
       "categoryId": null,
       "sortOrder": 0,
-      "updatedAt": "2026-08-10T09:47:30.043Z"
+      "updatedAt": "2026-08-10T10:54:46.486Z"
     },
     {
       "id": "arista",
@@ -28,7 +28,7 @@
       "educationId": "arista",
       "categoryId": null,
       "sortOrder": 1,
-      "updatedAt": "2026-07-29T11:19:54.717Z"
+      "updatedAt": "2026-08-10T10:54:46.226Z"
     },
     {
       "id": "breville",
@@ -42,7 +42,7 @@
       "educationId": "default",
       "categoryId": null,
       "sortOrder": 2,
-      "updatedAt": "2026-08-10T09:47:30.065Z"
+      "updatedAt": "2026-08-10T10:54:46.503Z"
     },
     {
       "id": "cochlear",
@@ -56,7 +56,7 @@
       "educationId": "cochlear",
       "categoryId": null,
       "sortOrder": 3,
-      "updatedAt": "2026-07-30T07:44:43.234Z"
+      "updatedAt": "2026-08-10T10:54:46.265Z"
     },
     {
       "id": "drone-shield-antenna-enginner",
@@ -70,7 +70,7 @@
       "educationId": "default",
       "categoryId": null,
       "sortOrder": 4,
-      "updatedAt": "2026-07-22T05:01:31.104Z"
+      "updatedAt": "2026-08-10T10:54:46.286Z"
     },
     {
       "id": "intellihub-group-product-engineer-ev-charging-hardware",
@@ -84,7 +84,7 @@
       "educationId": "default",
       "categoryId": null,
       "sortOrder": 5,
-      "updatedAt": "2026-07-22T05:10:13.186Z"
+      "updatedAt": "2026-08-10T10:54:46.302Z"
     },
     {
       "id": "resmed",
@@ -98,7 +98,7 @@
       "educationId": "resmed",
       "categoryId": null,
       "sortOrder": 6,
-      "updatedAt": "2026-07-29T10:51:34.764Z"
+      "updatedAt": "2026-08-10T10:54:46.317Z"
     },
     {
       "id": "rhl",
@@ -112,7 +112,7 @@
       "educationId": "default",
       "categoryId": null,
       "sortOrder": 7,
-      "updatedAt": "2026-07-22T03:01:05.363Z"
+      "updatedAt": "2026-08-10T10:54:46.332Z"
     },
     {
       "id": "senior-systems-engineer",
@@ -126,7 +126,7 @@
       "educationId": "default",
       "categoryId": null,
       "sortOrder": 8,
-      "updatedAt": "2026-07-22T04:51:06.076Z"
+      "updatedAt": "2026-08-10T10:54:46.395Z"
     },
     {
       "id": "vertiv",
@@ -140,7 +140,7 @@
       "educationId": "vertiv",
       "categoryId": null,
       "sortOrder": 9,
-      "updatedAt": "2026-07-29T11:22:43.341Z"
+      "updatedAt": "2026-08-10T10:54:46.418Z"
     },
     {
       "id": "vuly",
@@ -154,7 +154,7 @@
       "educationId": "vuly",
       "categoryId": null,
       "sortOrder": 10,
-      "updatedAt": "2026-08-10T09:35:02.768Z"
+      "updatedAt": "2026-08-10T10:54:46.434Z"
     }
   ]
 }
